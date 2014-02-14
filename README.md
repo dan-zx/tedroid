@@ -12,9 +12,9 @@ La documentación del proyecto puede ser consultada en [Google Drive](https://dr
 La información sobre descarga, instalación, construcción y depuración del proyecto se encuentra en la [wiki](https://github.com/dan-zx/tedroid/wiki)
 
 ### Autores:
-* Daniel Pedraza Arcega
-* Andrés Peña Peralta
-* Alejandro Díaz Torres
-* Wassim Lima Saad
+* Daniel Pedraza Arcega [@dan-zx](https://github.com/dan-zx)
+* Andrés Peña Peralta [@andres-pena-peralta](https://github.com/andres-pena-peralta)
+* Alejandro Díaz Torres [@alex9006](https://github.com/alex9006)
+* Wassim Lima Saad [@JohnDoe25](https://github.com/JohnDoe25)
 
 > Proyecto del curso Ingeniería de Software (IS 522)
