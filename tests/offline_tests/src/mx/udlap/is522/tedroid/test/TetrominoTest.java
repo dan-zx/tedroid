@@ -48,7 +48,7 @@ public class TetrominoTest {
     }
 
     @Test
-    public void shouldBuildRandomDefaultShape() throws Exception {
+    public void shouldBuildWithRandomDefaultShape() throws Exception {
 	Tetromino randomTetromino = new Tetromino.Builder(fakeGameBoardView)
 		.useRandomDefaultShape()
 		.build();
@@ -59,7 +59,7 @@ public class TetrominoTest {
     }
 
     @Test
-    public void shouldBuildNewShape() throws Exception {
+    public void shouldBuildWithCustomShape() throws Exception {
 	final int color = 0xffffff00; // amarillo
 	final int[][] shape = { 
 			{1, 1, 0},
