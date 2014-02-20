@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="tretromino_i">#ffaa0000</color>
+    <color name="tretromino_j">#ffffffff</color>
+    <color name="tretromino_l">#ffaa00aa</color>
+    <color name="tretromino_o">#ff0000aa</color>
+    <color name="tretromino_s">#ffaa0000</color>
+    <color name="tretromino_t">#ffaa5500</color>
+    <color name="tretromino_z">#ff00ffff</color>
+</resources>
