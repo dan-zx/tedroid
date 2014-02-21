@@ -1,23 +1,23 @@
-package mx.udlap.is522.tedroid.test;
+package mx.udlap.is522.tedroid.view.model;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-
 import mx.udlap.is522.tedroid.view.GameBoardView;
-import mx.udlap.is522.tedroid.view.model.DefaultShape;
-import mx.udlap.is522.tedroid.view.model.Tetromino;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import android.app.Activity;
 
+
 @RunWith(RobolectricTestRunner.class)
+@Config(manifest = "../../app/AndroidManifest.xml")
 public class TetrominoTest {
     
     private Activity fakeActivity;
@@ -40,11 +40,11 @@ public class TetrominoTest {
 	
 	assertNotNull("Tetromino wasn't built correctly", tetrominoZ);
 	assertNotNull("Tetromino matrix cannot be null", tetrominoZ.getShapeMatrix());
-	assertArrayEquals("Tetromino matrix is not the same", DefaultShape.Z.getShapeMatrix(), tetrominoZ.getShapeMatrix());
+	assertArrayEquals("Tetromino matrix isn't the same", DefaultShape.Z.getShapeMatrix(), tetrominoZ.getShapeMatrix());
 	assertNotEquals("Tetromino rotation wasn't changed", Tetromino.Builder.DEFAULT_HAS_ROATATION, tetrominoZ.hasRotation());
-	assertEquals("Tetromino rotation is not the same", DefaultShape.Z.hasRotation(), tetrominoZ.hasRotation());
+	assertEquals("Tetromino rotation isn't the same", DefaultShape.Z.hasRotation(), tetrominoZ.hasRotation());
 	assertNotEquals("Tetromino color wasn't changed", Tetromino.Builder.DEFAULT_COLOR, tetrominoZ.getForegroundColor());
-	assertEquals("Tetromino color is not the same", fakeActivity.getResources().getColor(DefaultShape.Z.getColorId()), tetrominoZ.getForegroundColor());
+	assertEquals("Tetromino color isn't the same", fakeActivity.getResources().getColor(DefaultShape.Z.getColorId()), tetrominoZ.getForegroundColor());
     }
 
     @Test
@@ -75,11 +75,11 @@ public class TetrominoTest {
 	
 	assertNotNull("Tetromino wasn't built correctly", newTetromino);
 	assertNotNull("Tetromino matrix cannot be null", newTetromino.getShapeMatrix());
-	assertArrayEquals("Tetromino matrix is not the same", shape, newTetromino.getShapeMatrix());
+	assertArrayEquals("Tetromino matrix isn't the same", shape, newTetromino.getShapeMatrix());
 	assertNotEquals("Tetromino rotation wasn't changed", Tetromino.Builder.DEFAULT_HAS_ROATATION, newTetromino.hasRotation());
-	assertEquals("Tetromino rotation is not the same", true, newTetromino.hasRotation());
+	assertEquals("Tetromino rotation isn't the same", true, newTetromino.hasRotation());
 	assertNotEquals("Tetromino color wasn't changed", Tetromino.Builder.DEFAULT_COLOR, newTetromino.getForegroundColor());
-	assertEquals("Tetromino color is not the same", color, newTetromino.getForegroundColor());
+	assertEquals("Tetromino color isn't the same", color, newTetromino.getForegroundColor());
     }
     
     @Test
@@ -106,15 +106,35 @@ public class TetrominoTest {
 		.build();
 	
 	tetrominoT.rotate();
-	assertArrayEquals("Tetromino matrix was not rotated correctly", rotatedShape1, tetrominoT.getShapeMatrix());
+	assertArrayEquals("Tetromino matrix wasn't rotated correctly", rotatedShape1, tetrominoT.getShapeMatrix());
 	
 	tetrominoT.rotate();
-	assertArrayEquals("Tetromino matrix was not rotated correctly", rotatedShape2, tetrominoT.getShapeMatrix());
+	assertArrayEquals("Tetromino matrix wasn't rotated correctly", rotatedShape2, tetrominoT.getShapeMatrix());
 	
 	tetrominoT.rotate();
-	assertArrayEquals("Tetromino matrix was not rotated correctly", rotatedShape3, tetrominoT.getShapeMatrix());
+	assertArrayEquals("Tetromino matrix wasn't rotated correctly", rotatedShape3, tetrominoT.getShapeMatrix());
 	
 	tetrominoT.rotate();
-	assertArrayEquals("Tetromino matrix was not rotated correctly", DefaultShape.T.getShapeMatrix(), tetrominoT.getShapeMatrix());
+	assertArrayEquals("Tetromino matrix wasn't rotated correctly", DefaultShape.T.getShapeMatrix(), tetrominoT.getShapeMatrix());
+    }
+    
+    @Test
+    public void shouldMove() throws Exception {
+	Tetromino tetrominoO = new Tetromino.Builder(fakeGameBoardView)
+        	.use(DefaultShape.O)
+        	.build();
+	
+	Tetromino.Position expectedPosition = new Tetromino.Position();
+	expectedPosition.setX(1);
+	expectedPosition.setY(3);
+	
+	tetrominoO.moveTo(Tetromino.Direction.RIGHT);
+	tetrominoO.moveTo(Tetromino.Direction.RIGHT);
+	tetrominoO.moveTo(Tetromino.Direction.LEFT);
+	tetrominoO.moveDown();
+	tetrominoO.moveDown();
+	tetrominoO.moveDown();
+	
+	assertEquals("Tetromino wasn't moved correctly", expectedPosition, tetrominoO.getPositionOnBoard());
     }
 }

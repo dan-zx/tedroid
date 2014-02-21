@@ -16,8 +16,11 @@ import android.view.View;
  */
 public class GameBoardView extends View {
 
+    private static final int DEFAULT_DIMENSIONS = 20;
+    
     private List<Tetromino> tetrominos;
     private Tetromino curretnTetromino;
+    private int[][] boardMatrix;
 
     /**
      * Construye un tablero de juego.
@@ -50,11 +53,18 @@ public class GameBoardView extends View {
      * Inicializa el layout de este tablero.
      */
     protected void setUpLayout() {
+	// TODO: crear matrix por medio de setters o atributo xml
+	boardMatrix = new int[DEFAULT_DIMENSIONS][DEFAULT_DIMENSIONS];
+	
 	tetrominos = new ArrayList<Tetromino>();
 	curretnTetromino = new Tetromino.Builder(this)
 		.useRandomDefaultShape()
 		.build();
 	
 	// TODO: implementar GameBoardView.setUpLayout()
+    }
+    
+    public int[][] getBoardMatrix() {
+	return boardMatrix;
     }
 }
