@@ -25,11 +25,10 @@ public class GameBoardView extends View {
 
     private static final float MOVE_SENSITIVITY = 3.5f;
     private static final int DEFAULT_DIMENSIONS = 18;
+    private static final int DROPDOWN_FACTOR = 4;
     private static final long DEFAULT_SPEED = 500l;
-    
-    // TODO: Quitar esto cuando ya no estemos en desarrollo
-    private boolean isUnderDebuging = true;
-    
+    private static final String TAG = GameBoardView.class.getSimpleName();
+
     private List<Tetromino> tetrominos;
     private Tetromino currentTetromino;
     private int[][] boardMatrix;
@@ -89,15 +88,12 @@ public class GameBoardView extends View {
         super.onDraw(canvas);
         drawBackground(canvas);
         drawTetrominos(canvas);
-
-        if (isUnderDebuging) {
-            drawGrid(canvas);
-        }
+        drawGrid(canvas);
         
         if (!startDropingTetrominos) {
             startDropingTetrominos = true;
-            moveDownCurrentTetrominoTask = new MoveDownCurrentTetrominoTask();
-            moveDownCurrentTetrominoTask.execute(speed);
+            stopDropingTaskIfNeeded();
+            startDropingTask(speed);
         }
     }
 
@@ -109,6 +105,10 @@ public class GameBoardView extends View {
 	gestureDetector.onTouchEvent(event);
 	switch (event.getAction()) {
 	    case MotionEvent.ACTION_DOWN:
+		return true;
+	    case MotionEvent.ACTION_UP:
+		stopDropingTaskIfNeeded();
+		startDropingTask(speed);
 		return true;
 	    default: return super.onTouchEvent(event);
 	}
@@ -199,6 +199,24 @@ public class GameBoardView extends View {
     }
 
     /**
+     * Detiene la caida del tetromino actual si esta callendo.
+     */
+    protected void stopDropingTaskIfNeeded() {
+	if (moveDownCurrentTetrominoTask != null && moveDownCurrentTetrominoTask.getStatus() == AsyncTask.Status.RUNNING) {
+	    moveDownCurrentTetrominoTask.cancel(true);
+	    moveDownCurrentTetrominoTask = null;
+	}
+    }
+
+    /**
+     * Inicia la caida del tetromino actual.
+     */
+    protected void startDropingTask(long speed) {
+	moveDownCurrentTetrominoTask = new MoveDownCurrentTetrominoTask();
+	moveDownCurrentTetrominoTask.execute(speed);
+    }
+
+    /**
      * @return la matriz del tablero.
      */
     public int[][] getBoardMatrix() {
@@ -237,10 +255,7 @@ public class GameBoardView extends View {
      * Detiene el juego y no se podrá reinciar más
      */
     public void stopGame() {
-	if (moveDownCurrentTetrominoTask != null && moveDownCurrentTetrominoTask.getStatus() == AsyncTask.Status.RUNNING) {
-	    moveDownCurrentTetrominoTask.cancel(true);
-	    moveDownCurrentTetrominoTask = null;
-	}
+	stopDropingTaskIfNeeded();
     }
 
     /**
@@ -273,14 +288,14 @@ public class GameBoardView extends View {
 	@Override
 	protected void onProgressUpdate(Void... values) {
 	    if (!currentTetromino.moveDown()) {
-		Log.d("Tetris", "New randow tetromino");
+		Log.d(TAG, "New randow tetromino");
 		updateBoardMatrix();
 		currentTetromino = new Tetromino.Builder(GameBoardView.this)
 			.useRandomDefaultShape()
 			.build();
 		tetrominos.add(currentTetromino);
 	    } else {
-		 Log.d("Tetris", "Move down tetromino");
+		 Log.d(TAG, "Move down tetromino");
 	    }
 	    invalidate();
 	}
@@ -294,18 +309,24 @@ public class GameBoardView extends View {
      */
     private class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
+	@Override
+	public void onLongPress(MotionEvent e) {
+	    stopDropingTaskIfNeeded();
+            startDropingTask(speed/DROPDOWN_FACTOR);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 	    if (distanceX < -MOVE_SENSITIVITY) {
-		Log.d("Tetris", "Move tetromino to the right");
+		Log.d(TAG, "Move tetromino to the right");
 		currentTetromino.moveTo(Tetromino.Direction.RIGHT);
 		invalidate();
 		return true;
 	    } else if (distanceX > MOVE_SENSITIVITY) {
-		Log.d("Tetris", "Move tetromino to the left");
+		Log.d(TAG, "Move tetromino to the left");
 		currentTetromino.moveTo(Tetromino.Direction.LEFT);
 		invalidate();
 		return true;
@@ -318,7 +339,7 @@ public class GameBoardView extends View {
 	 */
 	@Override
 	public boolean onSingleTapUp(MotionEvent e) {
-	    Log.d("Tetris", "Rotate tetromino");
+	    Log.d(TAG, "Rotate tetromino");
 	    currentTetromino.rotate();
 	    invalidate();
 	    return true;
