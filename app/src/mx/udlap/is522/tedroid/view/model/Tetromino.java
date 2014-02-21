@@ -1,10 +1,12 @@
 package mx.udlap.is522.tedroid.view.model;
 
-import java.util.Arrays;
-import java.util.Random;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 
 import mx.udlap.is522.tedroid.view.GameBoardView;
-import android.graphics.Paint;
+
+import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Define el comportamiento de cualquier tetromino o pieza de tetris. 
@@ -35,19 +37,33 @@ public class Tetromino {
     }
 
     /**
-     * Dibuja este tetromino en el tablero. 
+     * Dibuja este tetromino en el tablero.
+     * 
+     * @param canvas el objeto donde dibujar.
      */
-    public void drawOnBoard() {
-	// TODO: implementar Tetromino.drawOnBoard()
+    public void drawOnParentGameBoardView(Canvas canvas) {
+	for (int row = 0; row < shapeMatrix.length; row++) {
+	    for (int column = 0; column < shapeMatrix[0].length; column++) {
+		if (shapeMatrix[row][column] == 1) {
+		    canvas.drawRect(
+			    (column + positionOnBoard.getX()) * gameBoardView.getBoardWidth(),
+			    (row + positionOnBoard.getY()) * gameBoardView.getBoardHeight(),
+			    (column + 1 + positionOnBoard.getX()) * gameBoardView.getBoardWidth(),
+			    (row + 1 + positionOnBoard.getY()) * gameBoardView.getBoardHeight(),
+			    foreground);
+		}
+	    }
+	}
     }
 
     /**
      * Mueve este tetromino un lugar tablero usado {@link Direction#LEFT} o 
      * {@link Direction#RIGHT}.
      * 
-     * @param direction {@link Direction#LEFT} o {@link Direction#RIGHT} 
+     * @param direction {@link Direction#LEFT} o {@link Direction#RIGHT}.
+     * @return si se pudo mover o no.
      */
-    public void moveTo(Tetromino.Direction direction) {
+    public boolean moveTo(Tetromino.Direction direction) {
 	int[][] boardMatrix = gameBoardView.getBoardMatrix();
 	int horizontalSize = positionOnBoard.getX() + shapeMatrix[0].length;
 	switch (direction) {
@@ -55,34 +71,44 @@ public class Tetromino {
 		if (positionOnBoard.getX()-1 >= 0 && 
 			boardMatrix[positionOnBoard.getY()][positionOnBoard.getX()-1] == 0) {
 		    positionOnBoard.setX(positionOnBoard.getX()-1);
+		    return true;
 		}
-		break;
+		return false;
 	    case RIGHT:
 		if (horizontalSize < boardMatrix[0].length && 
 			boardMatrix[positionOnBoard.getY()][horizontalSize] == 0) {
 		    positionOnBoard.setX(positionOnBoard.getX()+1);
+		    return true;
 		}
-		break;
+		return false;
+	    default: return false;
 	}
     }
 
     /**
-     * Mueve este tetromino un lugar hacia abajo en el tablero
+     * Mueve este tetromino un lugar hacia abajo en el tablero.
+     * 
+     * @return si se pudo mover o no.
      */
-    public void moveDown() {
+    public boolean moveDown() {
 	int[][] boardMatrix = gameBoardView.getBoardMatrix();
 	int verticalSize = positionOnBoard.getY() + shapeMatrix.length;
 	if (verticalSize < boardMatrix.length && 
 		boardMatrix[verticalSize][positionOnBoard.getX()] == 0) {
 	    positionOnBoard.setY(positionOnBoard.getY()+1);
+	    return true;
 	}
+	
+	return false;
     }
 
     /**
      * Rota este tetromino 90° en sentido de las agujas del reloj en el tablero.
+     * 
+     * @return si se pudo mover o no.
      */
-    public void rotate() {
-	// TODO: rotar solo cuando puede rotar para que no se encime en otras piezas o se salga del tablero 
+    public boolean rotate() {
+	// TODO: Rotar solo cuando puede rotar para que no se encime en otras piezas o se salga del tablero 
 	if (hasRotation) {
 	    int[][] originalShapeMatrix = shapeMatrix;
 	    int[][] newShapeMatrix = new int[originalShapeMatrix[0].length][originalShapeMatrix.length];
@@ -93,7 +119,10 @@ public class Tetromino {
 	    }
 
 	    shapeMatrix = newShapeMatrix;
+	    return true;
 	}
+	
+	return false;
     }
 
     /**

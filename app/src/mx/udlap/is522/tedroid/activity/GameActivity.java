@@ -25,4 +25,10 @@ public class GameActivity extends Activity {
 	setContentView(R.layout.game);
 	gameBoardView = (GameBoardView) findViewById(R.id.game_board);
     }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        gameBoardView.stopGame();
+    }
 }

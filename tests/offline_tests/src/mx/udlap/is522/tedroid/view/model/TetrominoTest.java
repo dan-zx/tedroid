@@ -4,6 +4,10 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import android.app.Activity;
+
 import mx.udlap.is522.tedroid.view.GameBoardView;
 
 import org.junit.Before;
@@ -12,9 +16,6 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
-
-import android.app.Activity;
-
 
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "../../app/AndroidManifest.xml")
@@ -105,16 +106,16 @@ public class TetrominoTest {
 		.use(DefaultShape.T)
 		.build();
 	
-	tetrominoT.rotate();
+	assertTrue("Tetromino matrix wasn't rotated correctly", tetrominoT.rotate());
 	assertArrayEquals("Tetromino matrix wasn't rotated correctly", rotatedShape1, tetrominoT.getShapeMatrix());
 	
-	tetrominoT.rotate();
+	assertTrue("Tetromino matrix wasn't rotated correctly", tetrominoT.rotate());
 	assertArrayEquals("Tetromino matrix wasn't rotated correctly", rotatedShape2, tetrominoT.getShapeMatrix());
 	
-	tetrominoT.rotate();
+	assertTrue("Tetromino matrix wasn't rotated correctly", tetrominoT.rotate());
 	assertArrayEquals("Tetromino matrix wasn't rotated correctly", rotatedShape3, tetrominoT.getShapeMatrix());
 	
-	tetrominoT.rotate();
+	assertTrue("Tetromino matrix wasn't rotated correctly", tetrominoT.rotate());
 	assertArrayEquals("Tetromino matrix wasn't rotated correctly", DefaultShape.T.getShapeMatrix(), tetrominoT.getShapeMatrix());
     }
     
@@ -128,13 +129,17 @@ public class TetrominoTest {
 	expectedPosition.setX(1);
 	expectedPosition.setY(3);
 	
-	tetrominoO.moveTo(Tetromino.Direction.RIGHT);
-	tetrominoO.moveTo(Tetromino.Direction.RIGHT);
-	tetrominoO.moveTo(Tetromino.Direction.LEFT);
-	tetrominoO.moveDown();
-	tetrominoO.moveDown();
-	tetrominoO.moveDown();
+	assertTrue("Tetromino wasn't moved correctly", tetrominoO.moveTo(Tetromino.Direction.RIGHT));
+	assertTrue("Tetromino wasn't moved correctly", tetrominoO.moveTo(Tetromino.Direction.RIGHT));
+	assertTrue("Tetromino wasn't moved correctly", tetrominoO.moveTo(Tetromino.Direction.LEFT));
+	assertTrue("Tetromino wasn't moved correctly", tetrominoO.moveDown());
+	assertTrue("Tetromino wasn't moved correctly", tetrominoO.moveDown());
+	assertTrue("Tetromino wasn't moved correctly", tetrominoO.moveDown());
 	
 	assertEquals("Tetromino wasn't moved correctly", expectedPosition, tetrominoO.getPositionOnBoard());
     }
+    
+    // TODO: Probar caso cuando se dibuja en la pantalla
+    // TODO: Probar caso cuando no se debe rotar
+    // TODO: Probar caso cuando no se debe mover
 }
