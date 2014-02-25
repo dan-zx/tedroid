@@ -10,6 +10,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import mx.udlap.is522.tedroid.view.model.Direction;
 import mx.udlap.is522.tedroid.view.model.Tetromino;
 
 import java.util.ArrayList;
@@ -287,7 +288,7 @@ public class GameBoardView extends View {
 	 */
 	@Override
 	protected void onProgressUpdate(Void... values) {
-	    if (!currentTetromino.moveDown()) {
+	    if (!currentTetromino.moveTo(Direction.DOWN)) {
 		Log.d(TAG, "New randow tetromino");
 		updateBoardMatrix();
 		currentTetromino = new Tetromino.Builder(GameBoardView.this)
@@ -322,12 +323,12 @@ public class GameBoardView extends View {
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 	    if (distanceX < -MOVE_SENSITIVITY) {
 		Log.d(TAG, "Move tetromino to the right");
-		currentTetromino.moveTo(Tetromino.Direction.RIGHT);
+		currentTetromino.moveTo(Direction.RIGHT);
 		invalidate();
 		return true;
 	    } else if (distanceX > MOVE_SENSITIVITY) {
 		Log.d(TAG, "Move tetromino to the left");
-		currentTetromino.moveTo(Tetromino.Direction.LEFT);
+		currentTetromino.moveTo(Direction.LEFT);
 		invalidate();
 		return true;
 	    }
