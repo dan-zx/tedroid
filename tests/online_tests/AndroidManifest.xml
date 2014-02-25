@@ -10,12 +10,11 @@
 
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
-        android:targetPackage="mx.udlap.tedroid" />
+        android:targetPackage="mx.udlap.is522.tedroid" />
 
     <application
         android:allowBackup="true"
-        android:icon="@android:drawable/sym_def_app_icon"
-        android:label="@string/app_name" >
+        android:icon="@android:drawable/sym_def_app_icon" >
         <uses-library android:name="android.test.runner" />
     </application>
 

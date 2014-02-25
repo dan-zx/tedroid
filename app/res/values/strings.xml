@@ -2,5 +2,14 @@
 <resources>
 
     <string name="app_name">Tedroid</string>
+    
+    <!-- DIALOGS -->
+    <string name="exit_message">¿De verdad quieres salir del juego?</string>
+    <string name="restart_message">¿De verdad quieres reiniciar el juego?</string>
+    
+    <!-- MENU -->
+    <string name="action_pause">Pausa</string>
+    <string name="action_resume">Resumir</string>
+    <string name="action_restart">Reiniciar</string>
 
 </resources>

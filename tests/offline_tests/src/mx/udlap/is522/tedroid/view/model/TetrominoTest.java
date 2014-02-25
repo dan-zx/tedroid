@@ -10,9 +10,11 @@ import static org.junit.Assert.assertTrue;
 import android.app.Activity;
 
 import mx.udlap.is522.tedroid.view.GameBoardView;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;

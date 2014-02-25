@@ -6,7 +6,6 @@ import android.graphics.Paint;
 import mx.udlap.is522.tedroid.view.GameBoardView;
 
 import java.util.Arrays;
-import java.util.Random;
 
 /**
  * Define el comportamiento de cualquier tetromino o pieza de tetris.
@@ -394,18 +393,6 @@ public class Tetromino {
 	    color = gameBoardView.getContext().getResources().getColor(shape.getColorId());
 	    hasRotation = shape.hasRotation();
 	    return this;
-	}
-
-	/**
-	 * Construira un nuevo tetromino escogiendo al azar una de las figuras
-	 * predefinadas.
-	 * 
-	 * @return este Builder.
-	 */
-	public Builder useRandomDefaultShape() {
-	    int randomIndex = new Random().nextInt(DefaultShape.values().length);
-	    DefaultShape randomShape = DefaultShape.values()[randomIndex];
-	    return use(randomShape);
 	}
 
 	/**

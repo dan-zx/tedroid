@@ -10,11 +10,13 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import mx.udlap.is522.tedroid.view.model.DefaultShape;
 import mx.udlap.is522.tedroid.view.model.Direction;
 import mx.udlap.is522.tedroid.view.model.Tetromino;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Tablero del juego donde los tetrominos se acumlan.
@@ -25,14 +27,14 @@ import java.util.List;
 public class GameBoardView extends View {
 
     private static final float MOVE_SENSITIVITY = 3.5f;
-    private static final int DEFAULT_DIMENSIONS = 18;
     private static final int DROPDOWN_FACTOR = 4;
-    private static final long DEFAULT_SPEED = 500l;
     private static final String TAG = GameBoardView.class.getSimpleName();
 
     private List<Tetromino> tetrominos;
     private Tetromino currentTetromino;
     private int[][] boardMatrix;
+    private int rows;
+    private int columns;
     private long speed;
     private float width;
     private float height;
@@ -116,28 +118,12 @@ public class GameBoardView extends View {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void invalidate() {
-	if (!isPaused) super.invalidate();
-    }
-
-    /**
      * Inicializa el layout de este tablero.
      */
     protected void setUpLayout() {
-	// TODO: Crear matrix por medio de setters o atributo xml
-	boardMatrix = new int[DEFAULT_DIMENSIONS][DEFAULT_DIMENSIONS];
-	
-	// TODO: Inicializar velocidad del juego por medio de setters o atributo xml
-	speed = DEFAULT_SPEED;
-	
 	gestureDetector = new GestureDetector(getContext(), new GestureListener());
 	tetrominos = new ArrayList<Tetromino>();
-	currentTetromino = new Tetromino.Builder(this)
-        	.useRandomDefaultShape()
-        	.build();
+	currentTetromino = getNextTetromino();
         tetrominos.add(currentTetromino);
         isPaused = false;
         
@@ -218,6 +204,28 @@ public class GameBoardView extends View {
     }
 
     /**
+     * @return tetromino escogiendo al azar una de las figuras predefinadas.
+     */
+    protected Tetromino getNextTetromino() {
+        int randomIndex = new Random().nextInt(DefaultShape.values().length);
+        DefaultShape randomShape = DefaultShape.values()[randomIndex];
+        return new Tetromino.Builder(this)
+            .use(randomShape)
+            .build();
+    }
+
+    public void restartGame() {
+        stopDropingTaskIfNeeded();
+        boardMatrix = new int[rows][columns];
+        currentTetromino = getNextTetromino();
+        tetrominos = new ArrayList<Tetromino>();
+        startDropingTetrominos = false;
+        tetrominos.add(currentTetromino);
+        isPaused = false;
+        invalidate();
+    }
+
+    /**
      * @return la matriz del tablero.
      */
     public int[][] getBoardMatrix() {
@@ -239,6 +247,13 @@ public class GameBoardView extends View {
     }
 
     /**
+     * @return si el juego esta pausado o no
+     */
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    /**
      * Pausa el juego.
      */
     public void pauseGame() {
@@ -257,6 +272,27 @@ public class GameBoardView extends View {
      */
     public void stopGame() {
 	stopDropingTaskIfNeeded();
+    }
+
+    /**
+     * Inicializa las dimensiones del tablero de juego.
+     * 
+     * @param rows cuantas filas.
+     * @param columns cuantas columnas.
+     */
+    public void setDimensions(int rows, int columns) {
+        boardMatrix = new int[rows][columns];
+        this.rows = rows;
+        this.columns = columns;
+    }
+
+    /**
+     * Inicializa la velocidad del juego
+     * 
+     * @param speed velociadad en milisegundos.
+     */
+    public void setSpeed(long speed) {
+        this.speed = speed;
     }
 
     /**
@@ -288,17 +324,17 @@ public class GameBoardView extends View {
 	 */
 	@Override
 	protected void onProgressUpdate(Void... values) {
-	    if (!currentTetromino.moveTo(Direction.DOWN)) {
-		Log.d(TAG, "New randow tetromino");
-		updateBoardMatrix();
-		currentTetromino = new Tetromino.Builder(GameBoardView.this)
-			.useRandomDefaultShape()
-			.build();
-		tetrominos.add(currentTetromino);
-	    } else {
-		 Log.d(TAG, "Move down tetromino");
+	    if (!isPaused) {
+                if (!currentTetromino.moveTo(Direction.DOWN)) {
+                    Log.d(TAG, "New randow tetromino");
+                    updateBoardMatrix();
+                    currentTetromino = getNextTetromino();
+                    tetrominos.add(currentTetromino);
+                } else {
+                    Log.d(TAG, "Move down tetromino");
+                }
+                invalidate();
 	    }
-	    invalidate();
 	}
     }
 
