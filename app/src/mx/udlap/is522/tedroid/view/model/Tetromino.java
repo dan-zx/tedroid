@@ -14,8 +14,6 @@ import java.util.Arrays;
  * @since 1.0
  */
 public class Tetromino {
-	
-	
 
     private GameBoardView gameBoardView;
     private int[][] shapeMatrix;
