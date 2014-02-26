@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.view.GameBoardView;
+import mx.udlap.is522.tedroid.view.NextTetrominoView;
 
 /**
  * Actividad principal del juego donde se puede jugar realmente.
@@ -18,6 +19,7 @@ import mx.udlap.is522.tedroid.view.GameBoardView;
  */
 public class GameActivity extends ActionBarActivity {
 
+    private NextTetrominoView nextTetrominoView;
     private GameBoardView gameBoardView;
     private Menu menu;
     private AlertDialog restartDialog;
@@ -25,49 +27,50 @@ public class GameActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.game);
-	gameBoardView = (GameBoardView) findViewById(R.id.game_board);
-	gameBoardView.setDimensions(20, 20);
-	gameBoardView.setSpeed(500l);
-	restartDialog = new AlertDialog.Builder(this)
-	    .setMessage(R.string.restart_message)
-	    .setCancelable(false)
-	    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.game);
+        nextTetrominoView = (NextTetrominoView) findViewById(R.id.next_tetromino);
+        gameBoardView = (GameBoardView) findViewById(R.id.game_board);
+        gameBoardView.setNextTetrominoView(nextTetrominoView);
+        restartDialog = new AlertDialog.Builder(this)
+            .setMessage(R.string.restart_message)
+            .setCancelable(false)
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     gameBoardView.restartGame();
                 }
             })
             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                
+
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     gameBoardView.resumeGame();
                 }
             })
-	    .create();
-	exitDialog = new AlertDialog.Builder(this)
-	    .setMessage(R.string.exit_message)
-	    .setCancelable(false)
-	    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                
+            .create();
+        
+        exitDialog = new AlertDialog.Builder(this)
+            .setMessage(R.string.exit_message)
+            .setCancelable(false)
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     GameActivity.super.onBackPressed();
                 }
             })
             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                
+
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                     gameBoardView.resumeGame();
                 }
             })
-	    .create();
+            .create();
     }
 
     @Override
@@ -95,27 +98,32 @@ public class GameActivity extends ActionBarActivity {
                 return true;
             default: return super.onOptionsItemSelected(item);
         }
-        
+
     }
-    
+
     @Override
     protected void onPause() {
         super.onPause();
         gameBoardView.pauseGame();
     }
-    
+
     @Override
     public void onBackPressed() {
         gameBoardView.pauseGame();
         exitDialog.show();
     }
-    
+
     @Override
     public void finish() {
         gameBoardView.stopGame();
         super.finish();
     }
-    
+
+    /**
+     * Solo se usa para pruebas.
+     * 
+     * @return el menu de esta actividad. 
+     */
     public Menu getMenu() {
         return menu;
     }

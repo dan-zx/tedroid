@@ -15,7 +15,7 @@
         <activity
             android:name="mx.udlap.is522.tedroid.activity.GameActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat" >
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -7,6 +7,11 @@
     <string name="exit_message">¿De verdad quieres salir del juego?</string>
     <string name="restart_message">¿De verdad quieres reiniciar el juego?</string>
     
+    <!-- GAME LAYOUT -->
+    <string name="score_text">Puntage:</string>
+    <string name="score_sample">999,999</string>
+    <string name="next_tetromino_text">Siguiente:</string>
+    
     <!-- MENU -->
     <string name="action_pause">Pausa</string>
     <string name="action_resume">Resumir</string>
