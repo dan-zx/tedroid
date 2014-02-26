@@ -2,6 +2,7 @@ package mx.udlap.is522.tedroid.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -21,6 +22,7 @@ public class GameActivity extends ActionBarActivity {
 
     private NextTetrominoView nextTetrominoView;
     private GameBoardView gameBoardView;
+    private MediaPlayer mediaPlayer;
     private Menu menu;
     private AlertDialog restartDialog;
     private AlertDialog exitDialog;
@@ -29,6 +31,8 @@ public class GameActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
+        mediaPlayer = MediaPlayer.create(this, R.raw.tetris_theme);
+        mediaPlayer.setLooping(true);
         nextTetrominoView = (NextTetrominoView) findViewById(R.id.next_tetromino);
         gameBoardView = (GameBoardView) findViewById(R.id.game_board);
         gameBoardView.setNextTetrominoView(nextTetrominoView);
@@ -59,7 +63,7 @@ public class GameActivity extends ActionBarActivity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    GameActivity.super.onBackPressed();
+                    finish();
                 }
             })
             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -71,6 +75,13 @@ public class GameActivity extends ActionBarActivity {
                 }
             })
             .create();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (gameBoardView.isPaused()) gameBoardView.resumeGame();
+        if (!mediaPlayer.isPlaying()) mediaPlayer.start(); 
     }
 
     @Override
@@ -104,7 +115,8 @@ public class GameActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        gameBoardView.pauseGame();
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) mediaPlayer.pause();
+        if (!gameBoardView.isPaused()) gameBoardView.pauseGame();
     }
 
     @Override
@@ -115,8 +127,11 @@ public class GameActivity extends ActionBarActivity {
 
     @Override
     public void finish() {
-        gameBoardView.stopGame();
         super.finish();
+        gameBoardView.stopGame();
+        mediaPlayer.stop();
+        mediaPlayer.release();
+        mediaPlayer = null;
     }
 
     /**

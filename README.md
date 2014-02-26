@@ -12,6 +12,8 @@ La documentación del proyecto puede ser consultada en [Google Drive](https://dr
 
 La información sobre descarga, instalación, construcción y depuración del proyecto se encuentra en la [wiki](https://github.com/dan-zx/tedroid/wiki).
 
+La aplicación en desarrollo se puede descargar [aquí](https://dl.dropboxusercontent.com/u/1995295/apps/tedroid.apk) _*Puede contener errores_.
+
 ### Autores:
 * Daniel Pedraza Arcega [@dan-zx](https://github.com/dan-zx)
 * Andrés Peña Peralta [@andres-pena-peralta](https://github.com/andres-pena-peralta)
