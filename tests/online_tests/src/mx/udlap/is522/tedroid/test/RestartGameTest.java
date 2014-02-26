@@ -44,6 +44,7 @@ public class RestartGameTest extends ActivityInstrumentationTestCase2<GameActivi
         
         Log.d(TAG, "Ahh... better not");
         solo.clickOnButton(solo.getString(android.R.string.no));
+        solo.waitForDialogToClose();
         
         assertFalse("The game should be resumed", gameBoardView.isPaused());
         
@@ -55,6 +56,7 @@ public class RestartGameTest extends ActivityInstrumentationTestCase2<GameActivi
         
         Log.d(TAG, "Ok restart");
         solo.clickOnButton(solo.getString(android.R.string.yes));
+        solo.waitForDialogToClose();
 
         assertFalse("The game should be resumed", gameBoardView.isPaused());
     }

@@ -44,6 +44,7 @@ public class StopGameTest extends ActivityInstrumentationTestCase2<GameActivity>
         
         Log.d(TAG, "Ahh... better not");
         solo.clickOnButton(solo.getString(android.R.string.no));
+        solo.waitForDialogToClose();
         
         assertFalse("The game should be resumed", gameBoardView.isPaused());
         
@@ -55,7 +56,8 @@ public class StopGameTest extends ActivityInstrumentationTestCase2<GameActivity>
         
         Log.d(TAG, "Ok stop");
         solo.clickOnButton(solo.getString(android.R.string.yes));
+        solo.waitForDialogToClose();
         
-        assertTrue("Activity should be finished", solo.getCurrentActivity().isFinishing());
+        assertTrue("Activity should be finishing", solo.getCurrentActivity().isFinishing());
     }
 }

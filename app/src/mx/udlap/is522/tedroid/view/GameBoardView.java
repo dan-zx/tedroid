@@ -51,8 +51,8 @@ public class GameBoardView extends View {
      * @see android.view.View#View(Context)
      */
     public GameBoardView(Context context) {
-	super(context);
-	setUpLayout();
+        super(context);
+        setUpLayout();
     }
 
     /**
@@ -60,8 +60,8 @@ public class GameBoardView extends View {
      * @see android.view.View#View(Context, AttributeSet)
      */
     public GameBoardView(Context context, AttributeSet attrs) {
-	super(context, attrs);
-	setUpLayout();
+        super(context, attrs);
+        setUpLayout();
     }
 
     /**
@@ -69,8 +69,8 @@ public class GameBoardView extends View {
      * @see android.view.View#View(Context, AttributeSet, int)
      */
     public GameBoardView(Context context, AttributeSet attrs, int defStyleAttr) {
-	super(context, attrs, defStyleAttr);
-	setUpLayout();
+        super(context, attrs, defStyleAttr);
+        setUpLayout();
     }
 
     /**
@@ -78,9 +78,14 @@ public class GameBoardView extends View {
      */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-	super.onSizeChanged(w, h, oldw, oldh);
-	width = w / ((float) boardMatrix[0].length);
-	height = h / ((float) boardMatrix.length);
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (!isInEditMode()) {
+            width = w / ((float) boardMatrix[0].length);
+            height = h / ((float) boardMatrix.length);
+        } else {
+            width = 30;
+            height = 40;
+        }
     }
 
     /**
@@ -105,22 +110,23 @@ public class GameBoardView extends View {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-	gestureDetector.onTouchEvent(event);
-	switch (event.getAction()) {
-	    case MotionEvent.ACTION_DOWN:
-		return true;
-	    case MotionEvent.ACTION_UP:
-		stopDropingTaskIfNeeded();
-		startDropingTask(speed);
-		return true;
-	    default: return super.onTouchEvent(event);
-	}
+        gestureDetector.onTouchEvent(event);
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+            return true;
+            case MotionEvent.ACTION_UP:
+            stopDropingTaskIfNeeded();
+            startDropingTask(speed);
+            return true;
+            default: return super.onTouchEvent(event);
+        }
     }
 
     /**
      * Inicializa el layout de este tablero.
      */
     protected void setUpLayout() {
+        if (isInEditMode()) boardMatrix = new int[18][18];
 	gestureDetector = new GestureDetector(getContext(), new GestureListener());
 	tetrominos = new ArrayList<Tetromino>();
 	currentTetromino = getNextTetromino();
