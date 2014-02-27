@@ -12,7 +12,6 @@ import mx.udlap.is522.tedroid.view.GameBoardView;
 public class RestartGameTest extends ActivityInstrumentationTestCase2<GameActivity> {
 
     private static final String TAG = RestartGameTest.class.getSimpleName();
-    private static final int DELAY = 2000;
 
     private Solo solo;
 
@@ -32,7 +31,7 @@ public class RestartGameTest extends ActivityInstrumentationTestCase2<GameActivi
     
     public void testRun() throws Exception {
         Log.d(TAG, "Waiting for activity...");
-        solo.waitForActivity(GameActivity.class, DELAY);
+        solo.waitForActivity(GameActivity.class);
         
         Log.d(TAG, "Restarting game...");
         solo.clickOnActionBarItem(R.id.action_restart);

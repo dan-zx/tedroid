@@ -12,7 +12,6 @@ import mx.udlap.is522.tedroid.view.GameBoardView;
 public class StopGameTest extends ActivityInstrumentationTestCase2<GameActivity> {
 
     private static final String TAG = StopGameTest.class.getSimpleName();
-    private static final int DELAY = 2000;
 
     private Solo solo;
 
@@ -32,7 +31,7 @@ public class StopGameTest extends ActivityInstrumentationTestCase2<GameActivity>
     
     public void testRun() throws Exception {
         Log.d(TAG, "Waiting for activity...");
-        solo.waitForActivity(GameActivity.class, DELAY);
+        solo.waitForActivity(GameActivity.class);
         
         Log.d(TAG, "Stopping game...");
         solo.goBack();
@@ -58,6 +57,7 @@ public class StopGameTest extends ActivityInstrumentationTestCase2<GameActivity>
         solo.clickOnButton(solo.getString(android.R.string.yes));
         solo.waitForDialogToClose();
         
+        assertTrue("The game should be stopped", gameBoardView.isStopped());
         assertTrue("Activity should be finishing", solo.getCurrentActivity().isFinishing());
     }
 }

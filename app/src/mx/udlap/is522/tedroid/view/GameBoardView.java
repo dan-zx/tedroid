@@ -241,10 +241,24 @@ public class GameBoardView extends View {
     }
 
     /**
-     * @return si el juego esta pausado o no
+     * @return si el juego esta pausado o no.
      */
     public boolean isPaused() {
         return isPaused;
+    }
+
+    /**
+     * @return si el juego esta detenido o no.
+     */
+    public boolean isStopped() {
+        return moveDownCurrentTetrominoTask == null || moveDownCurrentTetrominoTask.getStatus() != AsyncTask.Status.RUNNING;
+    }
+
+    /**
+     * @return si el juego termino finalizo o no.
+     */
+    public boolean isGameOver() {
+        return false;
     }
 
     /**
