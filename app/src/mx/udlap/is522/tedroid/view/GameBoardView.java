@@ -44,6 +44,7 @@ public class GameBoardView extends View {
     private boolean isPaused;
     private GestureDetector gestureDetector;
     private MoveDownCurrentTetrominoTask moveDownCurrentTetrominoTask;
+    private Paint tetrominoHardcodedColor;
     private Paint background;
 
     /**
@@ -102,8 +103,9 @@ public class GameBoardView extends View {
             startDropingTask(speed);
         }
 
-        currentTetromino.drawOnParentGameBoardView(canvas);
         drawBackground(canvas);
+        currentTetromino.drawOnParentGameBoardView(canvas);
+        drawBoardMatrix(canvas);
     }
 
     /**
@@ -134,6 +136,9 @@ public class GameBoardView extends View {
 
         if (speed == 0) speed = DEFAULT_SPEED;
 
+        tetrominoHardcodedColor = new Paint();
+        tetrominoHardcodedColor.setStyle(Paint.Style.FILL_AND_STROKE);
+        tetrominoHardcodedColor.setColor(0xff000000);
         boardMatrix = new int[rows][columns];
         gestureDetector = new GestureDetector(getContext(), new GestureListener());
         isPaused = false;
@@ -156,11 +161,14 @@ public class GameBoardView extends View {
      * Actualiza la matriz del tablero con los valores del tetromino actual.
      */
     protected void updateBoardMatrix() {
-        for (int row = 0; row < currentTetromino.getShapeMatrix().length; row++) {
-            for (int column = 0; column < currentTetromino.getShapeMatrix()[0].length; column++) {
-                int boardMatrixRow = currentTetromino.getPositionOnBoard().getY() + row;
-                int boardMatrixColumn = currentTetromino.getPositionOnBoard().getX() + column;
-                boardMatrix[boardMatrixRow][boardMatrixColumn] = currentTetromino.getShapeMatrix()[row][column];
+    	int[][] shapeMatrix = currentTetromino.getShapeMatrix();
+        for (int row = 0; row < shapeMatrix.length; row++) {
+            for (int column = 0; column < shapeMatrix[0].length; column++) {
+            	if (shapeMatrix[row][column] != 0) {
+	                int boardMatrixRow = currentTetromino.getPositionOnBoard().getY() + row;
+	                int boardMatrixColumn = currentTetromino.getPositionOnBoard().getX() + column;
+	                boardMatrix[boardMatrixRow][boardMatrixColumn] = shapeMatrix[row][column];
+            	}
             }
         }
     }
@@ -168,7 +176,15 @@ public class GameBoardView extends View {
     protected void drawBoardMatrix(Canvas canvas) {
     	for (int row = 0; row < boardMatrix.length; row++) {
             for (int column = 0; column < boardMatrix[0].length; column++) {
-            	
+            	if (boardMatrix[row][column] != 0) {
+            		Log.d(TAG, "boardMatrix[" + row + "][" + column + "]");
+            		float x0 = column*width;
+            		float y0 = row*height;
+            		float x1 = (column+1)*width;
+            		float y1 = (row+1)*height;
+            		Log.d(TAG, "left[" + x0 + "] top[" + y0 + "] right[" + x1 + "] bottom[" + y1 + "]");
+            		canvas.drawRect(x0, y0, x1, y1, tetrominoHardcodedColor);
+            	}
             }
     	}
     }
