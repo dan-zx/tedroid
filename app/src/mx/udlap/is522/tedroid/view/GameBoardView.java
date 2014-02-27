@@ -172,11 +172,14 @@ public class GameBoardView extends View {
      * Actualiza la matriz del tablero con los valores del tetromino actual.
      */
     protected void updateBoardMatrix() {
-        for (int row = 0; row < currentTetromino.getShapeMatrix().length; row++) {
-            for (int column = 0; column < currentTetromino.getShapeMatrix()[0].length; column++) {
-                int boardMatrixRow = currentTetromino.getPositionOnBoard().getY() + row;
-                int boardMatrixColumn = currentTetromino.getPositionOnBoard().getX() + column;
-                boardMatrix[boardMatrixRow][boardMatrixColumn] = currentTetromino.getShapeMatrix()[row][column];
+    	int[][] shapeMatrix = currentTetromino.getShapeMatrix();
+        for (int row = 0; row < shapeMatrix.length; row++) {
+            for (int column = 0; column < shapeMatrix[0].length; column++) {
+                if (shapeMatrix[row][column] != 0) {
+	                int boardMatrixRow = currentTetromino.getPositionOnBoard().getY() + row;
+	                int boardMatrixColumn = currentTetromino.getPositionOnBoard().getX() + column;
+	                boardMatrix[boardMatrixRow][boardMatrixColumn] = shapeMatrix[row][column];
+            	}
             }
         }
     }
