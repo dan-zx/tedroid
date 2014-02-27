@@ -33,7 +33,7 @@ public class PauseResumeGameTest extends ActivityInstrumentationTestCase2<GameAc
     
     public void testRun() throws Exception {
         Log.d(TAG, "Waiting for activity...");
-        solo.waitForActivity(GameActivity.class, DELAY);
+        solo.waitForActivity(GameActivity.class);
         
         Log.d(TAG, "Pausing game...");
         solo.clickOnActionBarItem(R.id.action_pause_resume);
