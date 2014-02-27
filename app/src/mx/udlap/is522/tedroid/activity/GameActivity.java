@@ -80,7 +80,16 @@ public class GameActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (gameBoardView.isPaused()) gameBoardView.resumeGame();
+        if (gameBoardView.isPaused()) {
+            if (menu != null) {
+                MenuItem pauseResumeItem = menu.findItem(R.id.action_pause_resume);
+                if (pauseResumeItem.getIcon().getConstantState().equals
+                        (getResources().getDrawable(R.drawable.ic_action_pause).getConstantState())) {
+                    gameBoardView.resumeGame();
+                }
+            }
+        }
+        
         if (!mediaPlayer.isPlaying()) mediaPlayer.start(); 
     }
 
