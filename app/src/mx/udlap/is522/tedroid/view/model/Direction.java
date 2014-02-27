@@ -7,6 +7,6 @@ package mx.udlap.is522.tedroid.view.model;
  * @since 1.0
  */
 public enum Direction {
-    
+
     RIGHT, LEFT, DOWN, UP
 }

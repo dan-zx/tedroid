@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
 
+import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.view.GameBoardView;
 
 import org.junit.Before;
@@ -43,20 +44,16 @@ public class TetrominoTest {
         assertArrayEquals("Tetromino matrix isn't the same", DefaultShape.Z.getShapeMatrix(), tetrominoZ.getShapeMatrix());
         assertNotEquals("Tetromino rotation wasn't changed", Tetromino.Builder.DEFAULT_HAS_ROATATION, tetrominoZ.hasRotation());
         assertEquals("Tetromino rotation isn't the same", DefaultShape.Z.hasRotation(), tetrominoZ.hasRotation());
-        assertNotEquals("Tetromino color wasn't changed", Tetromino.Builder.DEFAULT_COLOR, tetrominoZ.getForegroundColor());
-        assertEquals("Tetromino color isn't the same", dummyActivity.getResources().getColor(DefaultShape.Z.getColorId()), tetrominoZ.getForegroundColor());
     }
 
     @Test
     public void shouldBuildWithCustomShape() throws Exception {
-        final int color = 0xffffff00; // amarillo
-        final int[][] shape = { { 1, 1, 0 }, 
-                                { 0, 1, 1 }, 
-                                { 0, 1, 0 } };
+        final int[][] shape = { { android.R.color.black,       android.R.color.black, android.R.color.transparent }, 
+                                { android.R.color.transparent, android.R.color.black, android.R.color.black }, 
+                                { android.R.color.transparent, android.R.color.black, android.R.color.transparent } };
 
         GameBoardView gameBoardView = new GameBoardView(dummyActivity);
         Tetromino newTetromino = new Tetromino.Builder(gameBoardView)
-            .setHexColor(color)
             .setShape(shape)
             .hasRotation()
             .build();
@@ -66,22 +63,20 @@ public class TetrominoTest {
         assertArrayEquals("Tetromino matrix isn't the same", shape, newTetromino.getShapeMatrix());
         assertNotEquals("Tetromino rotation wasn't changed", Tetromino.Builder.DEFAULT_HAS_ROATATION, newTetromino.hasRotation());
         assertEquals("Tetromino rotation isn't the same", true, newTetromino.hasRotation());
-        assertNotEquals("Tetromino color wasn't changed", Tetromino.Builder.DEFAULT_COLOR, newTetromino.getForegroundColor());
-        assertEquals("Tetromino color isn't the same", color, newTetromino.getForegroundColor());
     }
 
     @Test
     public void shouldRotate() throws Exception {
-        final int[][] rotatedShape1 = { { 0, 1, }, 
-                                        { 1, 1, }, 
-                                        { 0, 1, } };
+        final int[][] rotatedShape1 = { { android.R.color.transparent, R.color.brown, }, 
+                                        { R.color.brown, R.color.brown, }, 
+                                        { android.R.color.transparent, R.color.brown, } };
 
-        final int[][] rotatedShape2 = { { 0, 1, 0 }, 
-                                        { 1, 1, 1 } };
+        final int[][] rotatedShape2 = { { android.R.color.transparent, R.color.brown, android.R.color.transparent }, 
+                                        { R.color.brown, R.color.brown, R.color.brown } };
 
-        final int[][] rotatedShape3 = { { 1, 0, }, 
-                                        { 1, 1, }, 
-                                        { 1, 0, } };
+        final int[][] rotatedShape3 = { { R.color.brown, android.R.color.transparent, }, 
+                                        { R.color.brown, R.color.brown, }, 
+                                        { R.color.brown, android.R.color.transparent, } };
 
         GameBoardView gameBoardView = new GameBoardView(dummyActivity);
         Tetromino tetrominoT = new Tetromino.Builder(gameBoardView)
@@ -123,8 +118,8 @@ public class TetrominoTest {
         GameBoardView gameBoardView = new GameBoardView(dummyActivity) {
             @Override
             public int[][] getBoardMatrix() {
-                return new int[][] { {0, 0},
-                                     {0, 0} };
+                return new int[][] { {android.R.color.transparent, android.R.color.transparent},
+                                     {android.R.color.transparent, android.R.color.transparent} };
             }
         };
         
@@ -139,10 +134,10 @@ public class TetrominoTest {
         gameBoardView = new GameBoardView(dummyActivity) {
             @Override
             public int[][] getBoardMatrix() {
-                return new int[][] { {0, 0, 0, 0, 0},
-                                     {0, 0, 0, 0, 0},
-                                     {0, 1, 1, 0, 0},
-                                     {1, 1, 0, 0, 1} };
+                return new int[][] { {android.R.color.transparent, android.R.color.transparent, android.R.color.transparent, android.R.color.transparent, android.R.color.transparent},
+                                     {android.R.color.transparent, android.R.color.transparent, android.R.color.transparent, android.R.color.transparent, android.R.color.transparent},
+                                     {android.R.color.transparent, android.R.color.black,       android.R.color.black,       android.R.color.transparent, android.R.color.transparent},
+                                     {android.R.color.black,       android.R.color.black,       android.R.color.transparent, android.R.color.transparent, android.R.color.black} };
             }
         };
         
@@ -163,10 +158,10 @@ public class TetrominoTest {
         GameBoardView gameBoardView = new GameBoardView(dummyActivity) {
             @Override
             public int[][] getBoardMatrix() {
-                return new int[][] { {0, 0, 0},
-                                     {0, 0, 0},
-                                     {1, 1, 1},
-                                     {1, 0, 1} };
+                return new int[][] { {android.R.color.transparent, android.R.color.transparent, android.R.color.transparent},
+                                     {android.R.color.transparent, android.R.color.transparent, android.R.color.transparent},
+                                     {android.R.color.black,       android.R.color.black,       android.R.color.black},
+                                     {android.R.color.black,       android.R.color.transparent, android.R.color.black} };
             }
         };
         
@@ -179,9 +174,9 @@ public class TetrominoTest {
         gameBoardView = new GameBoardView(dummyActivity) {
             @Override
             public int[][] getBoardMatrix() {
-                return new int[][] { {0, 0, 0},
-                                     {0, 0, 0},
-                                     {0, 0, 0}, };
+                return new int[][] { {android.R.color.transparent, android.R.color.transparent, android.R.color.transparent},
+                                     {android.R.color.transparent, android.R.color.transparent, android.R.color.transparent},
+                                     {android.R.color.transparent, android.R.color.transparent, android.R.color.transparent}, };
             }
         };
         
