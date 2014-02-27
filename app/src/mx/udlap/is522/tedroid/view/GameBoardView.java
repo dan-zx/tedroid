@@ -1,13 +1,5 @@
 package mx.udlap.is522.tedroid.view;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
-import mx.udlap.is522.tedroid.view.model.DefaultShape;
-import mx.udlap.is522.tedroid.view.model.Direction;
-import mx.udlap.is522.tedroid.view.model.Tetromino;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -17,6 +9,15 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
+import mx.udlap.is522.tedroid.view.model.DefaultShape;
+import mx.udlap.is522.tedroid.view.model.Direction;
+import mx.udlap.is522.tedroid.view.model.Tetromino;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Tablero del juego donde los tetrominos se acumlan.
@@ -28,7 +29,7 @@ public class GameBoardView extends View {
 
     private static final float MOVE_SENSITIVITY = 3.5f;
     private static final long DEFAULT_SPEED = 500l;
-    private static final int DROPDOWN_FACTOR = 4;
+    private static final int DROPDOWN_FACTOR = 10;
     private static final int DEFAULT_COLUMNS = 10;
     private static final int DEFAULT_ROWS = 20;
     private static final String TAG = GameBoardView.class.getSimpleName();
@@ -79,9 +80,6 @@ public class GameBoardView extends View {
         setUp();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -89,9 +87,6 @@ public class GameBoardView extends View {
         height = h / ((float) boardMatrix.length);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -105,14 +100,11 @@ public class GameBoardView extends View {
             startDropingTask(speed);
         }
 
-        drawBackground(canvas);
         currentTetromino.drawOnParentGameBoardView(canvas);
         drawBoardMatrix(canvas);
+        drawBackground(canvas);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         gestureDetector.onTouchEvent(event);
@@ -163,60 +155,74 @@ public class GameBoardView extends View {
      * Actualiza la matriz del tablero con los valores del tetromino actual.
      */
     protected void updateBoardMatrix() {
-    	int[][] shapeMatrix = currentTetromino.getShapeMatrix();
+        int[][] shapeMatrix = currentTetromino.getShapeMatrix();
         for (int row = 0; row < shapeMatrix.length; row++) {
             for (int column = 0; column < shapeMatrix[0].length; column++) {
-            	if (shapeMatrix[row][column] != 0) {
-	                int boardMatrixRow = currentTetromino.getPositionOnBoard().getY() + row;
-	                int boardMatrixColumn = currentTetromino.getPositionOnBoard().getX() + column;
-	                boardMatrix[boardMatrixRow][boardMatrixColumn] = shapeMatrix[row][column];
-            	}
+                if (shapeMatrix[row][column] != 0) {
+                    int boardMatrixRow = currentTetromino.getPositionOnBoard().getY() + row;
+                    int boardMatrixColumn = currentTetromino.getPositionOnBoard().getX() + column;
+                    boardMatrix[boardMatrixRow][boardMatrixColumn] = shapeMatrix[row][column];
+                }
             }
         }
     }
 
+    /**
+     * Dibuja los tetrominos acumlados en el tablero.
+     * 
+     * @param canvas un Canvas donde dibujar.
+     */
     protected void drawBoardMatrix(Canvas canvas) {
-    	for (int row = 0; row < boardMatrix.length; row++) {
+        for (int row = 0; row < boardMatrix.length; row++) {
             for (int column = 0; column < boardMatrix[0].length; column++) {
-            	if (boardMatrix[row][column] != 0) {
-            		Log.d(TAG, "boardMatrix[" + row + "][" + column + "]");
-            		float x0 = column*width;
-            		float y0 = row*height;
-            		float x1 = (column+1)*width;
-            		float y1 = (row+1)*height;
-            		canvas.drawRect(x0, y0, x1, y1, tetrominoHardcodedColor);
-            	}
+                if (boardMatrix[row][column] != 0) {
+                    float x0 = column * width;
+                    float y0 = row * height;
+                    float x1 = (column + 1) * width;
+                    float y1 = (row + 1) * height;
+                    canvas.drawRect(x0, y0, x1, y1, tetrominoHardcodedColor);
+                }
             }
-    	}
-    }
-    
-    protected List<Integer> checkForCompletedLines() {
-    	ArrayList<Integer> rowsToClear = new ArrayList<Integer>(boardMatrix.length);
-    	for (int row = 0; row < boardMatrix.length; row++) {
-    		boolean isComplete = true;
-            for (int column = 0; column < boardMatrix[0].length; column++) {
-            	if (boardMatrix[row][column] == 0) {
-            		isComplete = false;
-            		break;
-            	}
-            }
-            
-            if (isComplete) rowsToClear.add(row);
-    	}
-    	
-    	return rowsToClear;
+        }
     }
 
+    /**
+     * Checa si hay lineas completas para borrar.
+     * 
+     * @return la lista con los indicies de las filas completas o una lista
+     *         vacia.
+     */
+    protected List<Integer> checkForCompletedLines() {
+        ArrayList<Integer> rowsToClear = new ArrayList<Integer>(boardMatrix.length);
+        for (int row = 0; row < boardMatrix.length; row++) {
+            boolean isComplete = true;
+            for (int column = 0; column < boardMatrix[0].length; column++) {
+                if (boardMatrix[row][column] == 0) {
+                    isComplete = false;
+                    break;
+                }
+            }
+
+            if (isComplete) rowsToClear.add(row);
+        }
+
+        return rowsToClear;
+    }
+
+    /**
+     * Limpia las lineas completas y baja las lineas arriba de las lineas
+     * completas.
+     * 
+     * @param rowsToClear los indicies de las filas que hay que limpiar.
+     */
     protected void clearCompletedLines(List<Integer> rowsToClear) {
-    	Log.d(TAG, "matrix before: " + Arrays.deepToString(boardMatrix));
-    	for (int rowToClear : rowsToClear) {
-    		for (int row = rowToClear; row >= 0; row--) {
-    			boardMatrix[row] = new int[boardMatrix[row].length];
-    			if (row == 0) Arrays.fill(boardMatrix[0], 0);
-    			else System.arraycopy(boardMatrix[row-1], 0, boardMatrix[row], 0, boardMatrix[row].length);
-    			Log.d(TAG, "matrix after row[" + row + "]: " + Arrays.deepToString(boardMatrix));
-    		}
-    	}
+        for (int rowToClear : rowsToClear) {
+            for (int row = rowToClear; row >= 0; row--) {
+                boardMatrix[row] = new int[boardMatrix[row].length];
+                if (row == 0) Arrays.fill(boardMatrix[0], 0);
+                else System.arraycopy(boardMatrix[row - 1], 0, boardMatrix[row], 0, boardMatrix[row].length);
+            }
+        }
     }
 
     /**
@@ -248,6 +254,9 @@ public class GameBoardView extends View {
             .build();
     }
 
+    /**
+     * Reinicia el juego.
+     */
     public void restartGame() {
         stopDropingTaskIfNeeded();
         boardMatrix = new int[rows][columns];
@@ -380,18 +389,17 @@ public class GameBoardView extends View {
         protected void onProgressUpdate(Void... values) {
             if (!isPaused) {
                 if (!currentTetromino.moveTo(Direction.DOWN)) {
-                    Log.d(TAG, "New randow tetromino");
                     updateBoardMatrix();
                     List<Integer> rowsToClear = checkForCompletedLines();
                     if (!rowsToClear.isEmpty()) clearCompletedLines(rowsToClear);
-                    
+
                     currentTetromino = nextTetromino;
                     nextTetromino = getNextTetromino();
                     if (nextTetrominoView != null) nextTetrominoView.setTetromino(nextTetromino);
                 } else {
                     Log.d(TAG, "Move down tetromino");
                 }
-                
+
                 invalidate();
             }
         }
