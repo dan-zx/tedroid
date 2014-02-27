@@ -1,5 +1,13 @@
 package mx.udlap.is522.tedroid.view;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
+import mx.udlap.is522.tedroid.view.model.DefaultShape;
+import mx.udlap.is522.tedroid.view.model.Direction;
+import mx.udlap.is522.tedroid.view.model.Tetromino;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -9,12 +17,6 @@ import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
-
-import mx.udlap.is522.tedroid.view.model.DefaultShape;
-import mx.udlap.is522.tedroid.view.model.Direction;
-import mx.udlap.is522.tedroid.view.model.Tetromino;
-
-import java.util.Random;
 
 /**
  * Tablero del juego donde los tetrominos se acumlan.
@@ -182,13 +184,41 @@ public class GameBoardView extends View {
             		float y0 = row*height;
             		float x1 = (column+1)*width;
             		float y1 = (row+1)*height;
-            		Log.d(TAG, "left[" + x0 + "] top[" + y0 + "] right[" + x1 + "] bottom[" + y1 + "]");
             		canvas.drawRect(x0, y0, x1, y1, tetrominoHardcodedColor);
             	}
             }
     	}
     }
     
+    protected List<Integer> checkForCompletedLines() {
+    	ArrayList<Integer> rowsToClear = new ArrayList<Integer>(boardMatrix.length);
+    	for (int row = 0; row < boardMatrix.length; row++) {
+    		boolean isComplete = true;
+            for (int column = 0; column < boardMatrix[0].length; column++) {
+            	if (boardMatrix[row][column] == 0) {
+            		isComplete = false;
+            		break;
+            	}
+            }
+            
+            if (isComplete) rowsToClear.add(row);
+    	}
+    	
+    	return rowsToClear;
+    }
+
+    protected void clearCompletedLines(List<Integer> rowsToClear) {
+    	Log.d(TAG, "matrix before: " + Arrays.deepToString(boardMatrix));
+    	for (int rowToClear : rowsToClear) {
+    		for (int row = rowToClear; row >= 0; row--) {
+    			boardMatrix[row] = new int[boardMatrix[row].length];
+    			if (row == 0) Arrays.fill(boardMatrix[0], 0);
+    			else System.arraycopy(boardMatrix[row-1], 0, boardMatrix[row], 0, boardMatrix[row].length);
+    			Log.d(TAG, "matrix after row[" + row + "]: " + Arrays.deepToString(boardMatrix));
+    		}
+    	}
+    }
+
     /**
      * Detiene la caida del tetromino actual si esta callendo.
      */
@@ -338,10 +368,12 @@ public class GameBoardView extends View {
                 if (!currentTetromino.moveTo(Direction.DOWN)) {
                     Log.d(TAG, "New randow tetromino");
                     updateBoardMatrix();
+                    List<Integer> rowsToClear = checkForCompletedLines();
+                    if (!rowsToClear.isEmpty()) clearCompletedLines(rowsToClear);
+                    
                     currentTetromino = nextTetromino;
                     nextTetromino = getNextTetromino();
-                    if (nextTetrominoView != null)
-                        nextTetrominoView.setTetromino(nextTetromino);
+                    if (nextTetrominoView != null) nextTetrominoView.setTetromino(nextTetromino);
                 } else {
                     Log.d(TAG, "Move down tetromino");
                 }
