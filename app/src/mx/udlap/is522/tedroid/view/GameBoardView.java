@@ -14,8 +14,6 @@ import mx.udlap.is522.tedroid.view.model.DefaultShape;
 import mx.udlap.is522.tedroid.view.model.Direction;
 import mx.udlap.is522.tedroid.view.model.Tetromino;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -33,7 +31,6 @@ public class GameBoardView extends View {
     private static final int DEFAULT_ROWS = 20;
     private static final String TAG = GameBoardView.class.getSimpleName();
 
-    private List<Tetromino> tetrominos;
     private Tetromino currentTetromino;
     private Tetromino nextTetromino;
     private NextTetrominoView nextTetrominoView;
@@ -102,11 +99,10 @@ public class GameBoardView extends View {
             currentTetromino = getNextTetromino();
             nextTetromino = getNextTetromino();
             if (nextTetrominoView != null) nextTetrominoView.setTetromino(nextTetromino);
-            tetrominos.add(currentTetromino);
             startDropingTask(speed);
         }
 
-        drawTetrominos(canvas);
+        currentTetromino.drawOnParentGameBoardView(canvas);
         drawBackground(canvas);
     }
 
@@ -140,7 +136,6 @@ public class GameBoardView extends View {
 
         boardMatrix = new int[rows][columns];
         gestureDetector = new GestureDetector(getContext(), new GestureListener());
-        tetrominos = new ArrayList<Tetromino>();
         isPaused = false;
         background = new Paint();
         background.setStyle(Paint.Style.STROKE);
@@ -158,17 +153,6 @@ public class GameBoardView extends View {
     }
 
     /**
-     * Dibuja todos los tetrominos que se han acumulado.
-     * 
-     * @param canvas un canvas para dibujar.
-     */
-    protected void drawTetrominos(Canvas canvas) {
-        for (Tetromino t : tetrominos) {
-            t.drawOnParentGameBoardView(canvas);
-        }
-    }
-
-    /**
      * Actualiza la matriz del tablero con los valores del tetromino actual.
      */
     protected void updateBoardMatrix() {
@@ -181,6 +165,14 @@ public class GameBoardView extends View {
         }
     }
 
+    protected void drawBoardMatrix(Canvas canvas) {
+    	for (int row = 0; row < boardMatrix.length; row++) {
+            for (int column = 0; column < boardMatrix[0].length; column++) {
+            	
+            }
+    	}
+    }
+    
     /**
      * Detiene la caida del tetromino actual si esta callendo.
      */
@@ -213,7 +205,6 @@ public class GameBoardView extends View {
     public void restartGame() {
         stopDropingTaskIfNeeded();
         boardMatrix = new int[rows][columns];
-        tetrominos = new ArrayList<Tetromino>();
         startDropingTetrominos = false;
         isPaused = false;
         invalidate();
@@ -335,7 +326,6 @@ public class GameBoardView extends View {
                     nextTetromino = getNextTetromino();
                     if (nextTetrominoView != null)
                         nextTetrominoView.setTetromino(nextTetromino);
-                    tetrominos.add(currentTetromino);
                 } else {
                     Log.d(TAG, "Move down tetromino");
                 }
