@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.view.GameBoardView;
 import mx.udlap.is522.tedroid.view.NextTetrominoView;
+import mx.udlap.is522.tedroid.view.model.Tetromino;
 
 /**
  * Actividad principal del juego donde se puede jugar realmente.
@@ -22,6 +24,8 @@ public class GameActivity extends ActionBarActivity {
 
     private NextTetrominoView nextTetrominoView;
     private GameBoardView gameBoardView;
+    private TextView scoreTextView;
+    private TextView linesTextView;
     private MediaPlayer mediaPlayer;
     private Menu menu;
     private AlertDialog restartDialog;
@@ -33,9 +37,32 @@ public class GameActivity extends ActionBarActivity {
         setContentView(R.layout.game);
         mediaPlayer = MediaPlayer.create(this, R.raw.tetris_theme);
         mediaPlayer.setLooping(true);
+        scoreTextView = (TextView) findViewById(R.id.score);
+        linesTextView = (TextView) findViewById(R.id.lines);
         nextTetrominoView = (NextTetrominoView) findViewById(R.id.next_tetromino);
         gameBoardView = (GameBoardView) findViewById(R.id.game_board);
-        gameBoardView.setNextTetrominoView(nextTetrominoView);
+        gameBoardView.setOnCommingNextTetrominoListener(new GameBoardView.OnCommingNextTetrominoListener() {
+            
+            @Override
+            public void onCommingNextTetromino(Tetromino nextTetromino) {
+                nextTetrominoView.setTetromino(nextTetromino);
+            }
+        });
+        gameBoardView.setOnScoreChangeListener(new GameBoardView.OnScoreChangeListener() {
+
+            private int totalLines;
+            
+            @Override
+            public void onScoreChange(int score) {
+                scoreTextView.setText(String.valueOf(score));
+            }
+            
+            @Override
+            public void onClearedLines(int linesCleared) {
+                totalLines += linesCleared;
+                linesTextView.setText(String.valueOf(totalLines));
+            }
+        });
         restartDialog = new AlertDialog.Builder(this)
             .setMessage(R.string.restart_message)
             .setCancelable(false)

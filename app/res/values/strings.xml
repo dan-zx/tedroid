@@ -9,7 +9,9 @@
     
     <!-- GAME LAYOUT -->
     <string name="score_text">Puntage:</string>
-    <string name="score_sample">999,999</string>
+    <string name="init_score">0</string>
+    <string name="lines_text">Lineas:</string>
+    <string name="init_lines">0</string>
     <string name="next_tetromino_text">Siguiente:</string>
     
     <!-- MENU -->

@@ -33,7 +33,27 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@id/score_text"
             android:layout_margin="8dp"
-            android:text="@string/score_sample"
+            android:text="@string/init_score"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lines_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/score"
+            android:layout_margin="8dp"
+            android:text="@string/lines_text"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/lines_text"
+            android:layout_margin="8dp"
+            android:text="@string/init_lines"
             android:textStyle="bold" />
 
         <TextView
@@ -41,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/score"
+            android:layout_below="@id/lines"
             android:layout_margin="8dp"
             android:text="@string/next_tetromino_text"
             android:textStyle="bold" />

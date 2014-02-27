@@ -36,20 +36,24 @@ public class GameBoardView extends View {
 
     private Tetromino currentTetromino;
     private Tetromino nextTetromino;
-    private NextTetrominoView nextTetrominoView;
     private int[][] boardMatrix;
     private int rows;
     private int columns;
+    private int tetrominoDownMoves;
     private long speed;
     private float width;
     private float height;
     private boolean startDropingTetrominos;
     private boolean isPaused;
+    private boolean isGameOver;
     private GestureDetector gestureDetector;
     private MoveDownCurrentTetrominoTask moveDownCurrentTetrominoTask;
     private Paint tetrominoBorder;
     private Paint tetrominoForeground;
     private Paint background;
+    private OnCommingNextTetrominoListener onCommingNextTetrominoListener;
+    private OnScoreChangeListener onScoreChangeListener;
+    private OnGameOverListener onGameOverListener;
 
     /**
      * Construye un tablero de juego.
@@ -97,7 +101,7 @@ public class GameBoardView extends View {
             stopDropingTaskIfNeeded();
             currentTetromino = getNextTetromino();
             nextTetromino = getNextTetromino();
-            if (nextTetrominoView != null) nextTetrominoView.setTetromino(nextTetromino);
+            if (onCommingNextTetrominoListener != null) onCommingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
             startDropingTask(speed);
         }
 
@@ -113,8 +117,10 @@ public class GameBoardView extends View {
             case MotionEvent.ACTION_DOWN:
                 return true;
             case MotionEvent.ACTION_UP:
-                stopDropingTaskIfNeeded();
-                startDropingTask(speed);
+                if (!isPaused && !isGameOver) {
+                    stopDropingTaskIfNeeded();
+                    startDropingTask(speed);
+                }
                 return true;
             default: return super.onTouchEvent(event);
         }
@@ -134,6 +140,7 @@ public class GameBoardView extends View {
         buildBoardMatrix();
         gestureDetector = new GestureDetector(getContext(), new GestureListener());
         isPaused = false;
+        isGameOver = false;
         tetrominoBorder = new Paint();
         tetrominoBorder.setStyle(Paint.Style.STROKE);
         tetrominoBorder.setColor(getContext().getResources().getColor(android.R.color.black));
@@ -275,6 +282,7 @@ public class GameBoardView extends View {
         buildBoardMatrix();
         startDropingTetrominos = false;
         isPaused = false;
+        isGameOver = false;
         invalidate();
     }
 
@@ -317,7 +325,7 @@ public class GameBoardView extends View {
      * @return si el juego termino finalizo o no.
      */
     public boolean isGameOver() {
-        return false;
+        return isGameOver;
     }
 
     /**
@@ -349,6 +357,82 @@ public class GameBoardView extends View {
     }
 
     /**
+     * @param onCommingNextTetrominoListener el listener que escuchará cuando
+     *        haya un nuevo tetromino listo.
+     */
+    public void setOnCommingNextTetrominoListener(OnCommingNextTetrominoListener onCommingNextTetrominoListener) {
+        this.onCommingNextTetrominoListener = onCommingNextTetrominoListener;
+    }
+
+    /**
+     * @param onScoreChangeListener listener que escuchará cuando cambie el
+     *        puntaje y las lineas completas.
+     */
+    public void setOnScoreChangeListener(OnScoreChangeListener onScoreChangeListener) {
+        this.onScoreChangeListener = onScoreChangeListener;
+    }
+
+    /**
+     * @param onGameOverListener listener que escuchará cuando se acabe el
+     *        juego.
+     */
+    public void setOnGameOverListener(OnGameOverListener onGameOverListener) {
+        this.onGameOverListener = onGameOverListener;
+    }
+
+    /**
+     * Listener que que escuchará cuando haya un nuevo tetromino listo.
+     * 
+     * @author Daniel Pedraza-Arcega
+     * @since versión 1.0
+     */
+    public static interface OnCommingNextTetrominoListener {
+
+        /**
+         * Ejecuta este método cuando se genera el siguente tetromino.
+         * 
+         * @param nextTetromino el siguente tetromino en caer.
+         */
+        void onCommingNextTetromino(Tetromino nextTetromino);
+    }
+
+    /**
+     * Listener que escuchará cuando cambie el puntaje y las lineas completas.
+     * 
+     * @author Daniel Pedraza-Arcega
+     * @since versión 1.0
+     */
+    public static interface OnScoreChangeListener {
+
+        /**
+         * Ejecuta este método cuando el puntaje cambia.
+         * 
+         * @param score el nuevo puntaje.
+         */
+        void onScoreChange(int score);
+
+        /**
+         * Ejecuta este método cuando hay lineas que se completaron.
+         * 
+         * @param linesCleared el numero de lineas completas.
+         */
+        void onClearedLines(int linesCleared);
+    }
+
+    /**
+     * Listener que escuchará cuando se acabe el juego.
+     * @author Daniel Pedraza-Arcega
+     * @since versión 1.0
+     */
+    public static interface OnGameOverListener {
+
+        /**
+         * Ejecuta este método cuando se termina el juego.
+         */
+        void onGameOver();
+    }
+    
+    /**
      * Inicializa las dimensiones del tablero de juego.
      * 
      * @param rows cuantas filas.
@@ -367,15 +451,6 @@ public class GameBoardView extends View {
      */
     public void setSpeed(long speed) {
         this.speed = speed;
-    }
-
-    /**
-     * Inicializa la vista para el siguiente tetromino en caer.
-     * 
-     * @param nextTetrominoView la vista para el siguiente tetromino en caer.
-     */
-    public void setNextTetrominoView(NextTetrominoView nextTetrominoView) {
-        this.nextTetrominoView = nextTetrominoView;
     }
 
     /**
@@ -407,16 +482,31 @@ public class GameBoardView extends View {
          */
         @Override
         protected void onProgressUpdate(Void... values) {
-            if (!isPaused) {
+            if (!isPaused && !isGameOver) {
                 if (!currentTetromino.moveTo(Direction.DOWN)) {
-                    updateBoardMatrix();
-                    List<Integer> rowsToClear = checkForCompletedLines();
-                    if (!rowsToClear.isEmpty()) clearCompletedLines(rowsToClear);
-
-                    currentTetromino = nextTetromino;
-                    nextTetromino = getNextTetromino();
-                    if (nextTetrominoView != null) nextTetrominoView.setTetromino(nextTetromino);
+                    if (tetrominoDownMoves == 0) {
+                        Log.i(TAG, "Game over");
+                        stopGame();
+                        isGameOver = true;
+                        if (onGameOverListener != null) onGameOverListener.onGameOver();
+                    } else {
+                        tetrominoDownMoves = 0;
+                        updateBoardMatrix();
+                        List<Integer> rowsToClear = checkForCompletedLines();
+                        if (!rowsToClear.isEmpty()) {
+                            clearCompletedLines(rowsToClear);
+                            if (onScoreChangeListener != null) {
+                                // TODO: calcular puntaje
+                                onScoreChangeListener.onScoreChange(0);
+                                onScoreChangeListener.onClearedLines(rowsToClear.size());
+                            }
+                        }
+                        currentTetromino = nextTetromino;
+                        nextTetromino = getNextTetromino();
+                        if (onCommingNextTetrominoListener != null) onCommingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
+                    }
                 } else {
+                    tetrominoDownMoves++;
                     Log.d(TAG, "Move down tetromino");
                 }
 
@@ -435,8 +525,10 @@ public class GameBoardView extends View {
 
         @Override
         public void onLongPress(MotionEvent e) {
-            stopDropingTaskIfNeeded();
-            startDropingTask(speed / DROPDOWN_FACTOR);
+            if (!isPaused && !isGameOver) {
+                stopDropingTaskIfNeeded();
+                startDropingTask(speed / DROPDOWN_FACTOR);
+            }
         }
 
         /**
@@ -444,17 +536,19 @@ public class GameBoardView extends View {
          */
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            if (!isPaused) {
+            if (!isPaused && !isGameOver) {
                 if (distanceX < -MOVE_SENSITIVITY) {
-                    Log.d(TAG, "Move tetromino to the right");
-                    currentTetromino.moveTo(Direction.RIGHT);
-                    invalidate();
-                    return true;
+                    if (currentTetromino.moveTo(Direction.RIGHT)){
+                        Log.d(TAG, "Move tetromino to the right");
+                        invalidate();
+                        return true;
+                    }
                 } else if (distanceX > MOVE_SENSITIVITY) {
-                    Log.d(TAG, "Move tetromino to the left");
-                    currentTetromino.moveTo(Direction.LEFT);
-                    invalidate();
-                    return true;
+                    if (currentTetromino.moveTo(Direction.LEFT)) {
+                        Log.d(TAG, "Move tetromino to the left");
+                        invalidate();
+                        return true;
+                    }
                 }
             }
             return false;
@@ -465,11 +559,12 @@ public class GameBoardView extends View {
          */
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
-            if (!isPaused) {
-                Log.d(TAG, "Rotate tetromino");
-                currentTetromino.rotate();
-                invalidate();
-                return true;
+            if (!isPaused && !isGameOver) {
+                if (currentTetromino.rotate()) {
+                    Log.d(TAG, "Rotate tetromino");
+                    invalidate();
+                    return true;
+                }
             }
             return false;
         }

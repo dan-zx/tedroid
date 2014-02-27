@@ -34,11 +34,18 @@ public class GameOverTest extends ActivityInstrumentationTestCase2<MockGameActiv
         Log.d(TAG, "Waiting for activity...");
         solo.waitForActivity(MockGameActivity.class);
         
+        GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.mock_game_board);
+        gameBoardView.setOnGameOverListener(new GameBoardView.OnGameOverListener() {
+            
+            @Override
+            public void onGameOver() {
+                Log.d(TAG, "Game over");
+            }
+        });
+        
         Log.d(TAG, "Wainting for Game Over...");
         Thread.sleep(DELAY);
-        
-        GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.mock_game_board);
-        
+
         assertTrue("Game should be Over", gameBoardView.isGameOver());
     }
 }
