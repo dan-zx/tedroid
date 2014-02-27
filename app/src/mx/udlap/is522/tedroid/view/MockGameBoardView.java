@@ -3,7 +3,6 @@ package mx.udlap.is522.tedroid.view;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import mx.udlap.is522.tedroid.view.GameBoardView;
 import mx.udlap.is522.tedroid.view.model.DefaultShape;
 import mx.udlap.is522.tedroid.view.model.Tetromino;
 

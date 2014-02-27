@@ -3,11 +3,11 @@ package mx.udlap.is522.tedroid.test;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
-import mx.udlap.is522.tedroid.R;
-import mx.udlap.is522.tedroid.view.GameBoardView;
-
 import com.robotium.solo.Solo;
+
+import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.activity.MockGameActivity;
+import mx.udlap.is522.tedroid.view.GameBoardView;
 
 public class GameOverTest extends ActivityInstrumentationTestCase2<MockGameActivity>{
 
