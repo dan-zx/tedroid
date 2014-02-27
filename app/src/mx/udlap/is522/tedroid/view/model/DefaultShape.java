@@ -10,43 +10,35 @@ import mx.udlap.is522.tedroid.R;
  */
 public enum DefaultShape {
 
-    I (new int[][] { { 1, 1, 1, 1 } }, R.color.tretromino_i, true), 
-    J (new int[][] { { 1, 1, 1 }, { 0, 0, 1 } }, R.color.tretromino_j, true), 
-    L (new int[][] { { 1, 1, 1 }, { 1, 0, 0 } }, R.color.tretromino_l, true), 
-    O (new int[][] { { 1, 1 }, { 1, 1 } }, R.color.tretromino_o, false), 
-    S (new int[][] { { 0, 1, 1 }, { 1, 1, 0 } }, R.color.tretromino_s, true), 
-    T (new int[][] { { 1, 1, 1 }, { 0, 1, 0 } }, R.color.tretromino_t, true), 
-    Z (new int[][] { { 1, 1, 0 }, { 0, 1, 1 } }, R.color.tretromino_z, true);
+    I(new int[][] { { R.color.red, R.color.red, R.color.red, R.color.red } }, true),
+    J(new int[][] { { R.color.gray, R.color.gray, R.color.gray }, { android.R.color.transparent, android.R.color.transparent, R.color.gray } }, true), 
+    L(new int[][] { { R.color.magenta, R.color.magenta, R.color.magenta }, { R.color.magenta, android.R.color.transparent, android.R.color.transparent } }, true), 
+    O(new int[][] { { R.color.blue, R.color.blue }, { R.color.blue, R.color.blue } }, false), 
+    S(new int[][] { { android.R.color.transparent, R.color.green, R.color.green }, { R.color.green, R.color.green, android.R.color.transparent } }, true), 
+    T(new int[][] { { R.color.brown, R.color.brown, R.color.brown }, { android.R.color.transparent, R.color.brown, android.R.color.transparent } }, true), 
+    Z(new int[][] { { R.color.cyan, R.color.cyan, android.R.color.transparent }, { android.R.color.transparent, R.color.cyan, R.color.cyan } }, true);
 
     private final int[][] shapeMatrix;
-    private final int colorId;
     private final boolean hasRotation;
 
     /**
      * Construye una de las figura por default.
      * 
-     * @param shapeMatrix la forma en una matriz de 0s y 1s.
-     * @param colorId el id del color de la figura.
+     * @param shapeMatrix la forma en una matriz de android.R.color.transparent
+     *        y R.color.id.
      * @param hasRotation si tiene o no rotación.
      */
-    DefaultShape(int[][] shapeMatrix, int colorId, boolean hasRotation) {
-	this.shapeMatrix = shapeMatrix;
-	this.colorId = colorId;
-	this.hasRotation = hasRotation;
+    DefaultShape(int[][] shapeMatrix, boolean hasRotation) {
+        this.shapeMatrix = shapeMatrix;
+        this.hasRotation = hasRotation;
     }
 
     /**
-     * @return una matriz de 0s y 1s con la forma de la figura.
+     * @return una matriz de android.R.color.transparent y R.color.ids con la
+     *         forma de la figura.
      */
     public int[][] getShapeMatrix() {
-	return shapeMatrix;
-    }
-
-    /**
-     * @return el id del color de la figura.
-     */
-    public int getColorId() {
-	return colorId;
+        return shapeMatrix;
     }
 
     /**

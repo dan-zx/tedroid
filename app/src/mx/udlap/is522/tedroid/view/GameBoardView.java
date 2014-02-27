@@ -22,7 +22,7 @@ import java.util.Random;
 /**
  * Tablero del juego donde los tetrominos se acumlan.
  * 
- * @author Daniel Pedraza-Arcega
+ * @author Daniel Pedraza-Arcega, Andrés Peña-Peralta, Wassim Lima Saad
  * @since 1.0
  */
 public class GameBoardView extends View {
@@ -47,7 +47,8 @@ public class GameBoardView extends View {
     private boolean isPaused;
     private GestureDetector gestureDetector;
     private MoveDownCurrentTetrominoTask moveDownCurrentTetrominoTask;
-    private Paint tetrominoHardcodedColor;
+    private Paint tetrominoBorder;
+    private Paint tetrominoForeground;
     private Paint background;
 
     /**
@@ -130,16 +131,26 @@ public class GameBoardView extends View {
 
         if (speed == 0) speed = DEFAULT_SPEED;
 
-        tetrominoHardcodedColor = new Paint();
-        tetrominoHardcodedColor.setStyle(Paint.Style.FILL_AND_STROKE);
-        tetrominoHardcodedColor.setColor(0xff000000);
-        boardMatrix = new int[rows][columns];
+        buildBoardMatrix();
         gestureDetector = new GestureDetector(getContext(), new GestureListener());
         isPaused = false;
+        tetrominoBorder = new Paint();
+        tetrominoBorder.setStyle(Paint.Style.STROKE);
+        tetrominoBorder.setColor(getContext().getResources().getColor(android.R.color.black));
+        tetrominoForeground = new Paint();
+        tetrominoForeground.setStyle(Paint.Style.FILL_AND_STROKE);
         background = new Paint();
         background.setStyle(Paint.Style.STROKE);
         background.setStrokeWidth(2);
         background.setColor(getContext().getResources().getColor(android.R.color.black));
+    }
+
+    /**
+     * Construye la matriz y la llena de color transparente.
+     */
+    private void buildBoardMatrix() {
+        boardMatrix = new int[rows][columns];
+        for (int[] row: boardMatrix) Arrays.fill(row, android.R.color.transparent);
     }
 
     /**
@@ -158,7 +169,7 @@ public class GameBoardView extends View {
         int[][] shapeMatrix = currentTetromino.getShapeMatrix();
         for (int row = 0; row < shapeMatrix.length; row++) {
             for (int column = 0; column < shapeMatrix[0].length; column++) {
-                if (shapeMatrix[row][column] != 0) {
+                if (shapeMatrix[row][column] != android.R.color.transparent) {
                     int boardMatrixRow = currentTetromino.getPositionOnBoard().getY() + row;
                     int boardMatrixColumn = currentTetromino.getPositionOnBoard().getX() + column;
                     boardMatrix[boardMatrixRow][boardMatrixColumn] = shapeMatrix[row][column];
@@ -175,12 +186,14 @@ public class GameBoardView extends View {
     protected void drawBoardMatrix(Canvas canvas) {
         for (int row = 0; row < boardMatrix.length; row++) {
             for (int column = 0; column < boardMatrix[0].length; column++) {
-                if (boardMatrix[row][column] != 0) {
+                if (boardMatrix[row][column] != android.R.color.transparent) {
                     float x0 = column * width;
                     float y0 = row * height;
                     float x1 = (column + 1) * width;
                     float y1 = (row + 1) * height;
-                    canvas.drawRect(x0, y0, x1, y1, tetrominoHardcodedColor);
+                    tetrominoForeground.setColor(getContext().getResources().getColor(boardMatrix[row][column]));
+                    canvas.drawRect(x0, y0, x1, y1, tetrominoForeground);
+                    canvas.drawRect(x0, y0, x1, y1, tetrominoBorder);
                 }
             }
         }
@@ -197,7 +210,7 @@ public class GameBoardView extends View {
         for (int row = 0; row < boardMatrix.length; row++) {
             boolean isComplete = true;
             for (int column = 0; column < boardMatrix[0].length; column++) {
-                if (boardMatrix[row][column] == 0) {
+                if (boardMatrix[row][column] == android.R.color.transparent) {
                     isComplete = false;
                     break;
                 }
@@ -219,7 +232,7 @@ public class GameBoardView extends View {
         for (int rowToClear : rowsToClear) {
             for (int row = rowToClear; row >= 0; row--) {
                 boardMatrix[row] = new int[boardMatrix[row].length];
-                if (row == 0) Arrays.fill(boardMatrix[0], 0);
+                if (row == 0) Arrays.fill(boardMatrix[0], android.R.color.transparent);
                 else System.arraycopy(boardMatrix[row - 1], 0, boardMatrix[row], 0, boardMatrix[row].length);
             }
         }
@@ -259,7 +272,7 @@ public class GameBoardView extends View {
      */
     public void restartGame() {
         stopDropingTaskIfNeeded();
-        boardMatrix = new int[rows][columns];
+        buildBoardMatrix();
         startDropingTetrominos = false;
         isPaused = false;
         invalidate();
@@ -335,9 +348,9 @@ public class GameBoardView extends View {
      * @param columns cuantas columnas.
      */
     public void setCustomDimensions(int rows, int columns) {
-        boardMatrix = new int[rows][columns];
         this.rows = rows;
         this.columns = columns;
+        buildBoardMatrix();
     }
 
     /**

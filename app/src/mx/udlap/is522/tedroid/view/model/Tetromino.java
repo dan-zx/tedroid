@@ -35,7 +35,6 @@ public class Tetromino {
         border = new Paint();
         foreground = new Paint();
         foreground.setStyle(Paint.Style.FILL_AND_STROKE);
-        foreground.setColor(builder.color);
         border.setStyle(Paint.Style.STROKE);
         border.setColor(gameBoardView.getContext().getResources().getColor(android.R.color.black));
     }
@@ -48,7 +47,8 @@ public class Tetromino {
     public void drawOnParentGameBoardView(Canvas canvas) {
         for (int row = 0; row < shapeMatrix.length; row++) {
             for (int column = 0; column < shapeMatrix[0].length; column++) {
-                if (shapeMatrix[row][column] == 1) {
+                if (shapeMatrix[row][column] != android.R.color.transparent) {
+                    foreground.setColor(gameBoardView.getContext().getResources().getColor(shapeMatrix[row][column]));
                     canvas.drawRect((column + positionOnBoard.getX()) * gameBoardView.getBoardWidth(), (row + positionOnBoard.getY()) * gameBoardView.getBoardHeight(), (column + 1 + positionOnBoard.getX()) * gameBoardView.getBoardWidth(), (row + 1 + positionOnBoard.getY()) * gameBoardView.getBoardHeight(), foreground);
                     canvas.drawRect((column + positionOnBoard.getX()) * gameBoardView.getBoardWidth(), (row + positionOnBoard.getY()) * gameBoardView.getBoardHeight(), (column + 1 + positionOnBoard.getX()) * gameBoardView.getBoardWidth(), (row + 1 + positionOnBoard.getY()) * gameBoardView.getBoardHeight(), border);
                 }
@@ -188,7 +188,8 @@ public class Tetromino {
             for (int column = 0; column < rotatedShape[0].length; column++) {
                 int boardMatrixRow = getPositionOnBoard().getY() + row;
                 int boardMatrixColumn = getPositionOnBoard().getX() + column;
-                if (isRowOutOfBoundsOfBoard(boardMatrixRow) || isColumnOutOfBoundsOfBoard(boardMatrixColumn) || (boardMatrix[boardMatrixRow][boardMatrixColumn] == 1 && rotatedShape[row][column] == 1)) {
+                if (isRowOutOfBoundsOfBoard(boardMatrixRow) || isColumnOutOfBoundsOfBoard(boardMatrixColumn) || 
+                        (boardMatrix[boardMatrixRow][boardMatrixColumn] != android.R.color.transparent && rotatedShape[row][column] != android.R.color.transparent)) {
                     return false;
                 }
             }
@@ -219,7 +220,8 @@ public class Tetromino {
                     case RIGHT: boardMatrixColumn++; break;
                     default: break;
                 }
-                if (isRowOutOfBoundsOfBoard(boardMatrixRow) || isColumnOutOfBoundsOfBoard(boardMatrixColumn) || (boardMatrix[boardMatrixRow][boardMatrixColumn] == 1 && shape[row][column] == 1)) {
+                if (isRowOutOfBoundsOfBoard(boardMatrixRow) || isColumnOutOfBoundsOfBoard(boardMatrixColumn) 
+                        || (boardMatrix[boardMatrixRow][boardMatrixColumn] != android.R.color.transparent && shape[row][column] != android.R.color.transparent)) {
                     return false;
                 }
             }
@@ -365,13 +367,11 @@ public class Tetromino {
      */
     public static class Builder {
 
-        public static final int DEFAULT_COLOR = 0xffe6e6e6; // Gris
         public static final boolean DEFAULT_HAS_ROATATION = false;
-        public static final int[][] DEFAULT_SHAPE = { { 1 } };
+        public static final int[][] DEFAULT_SHAPE = { { android.R.color.black } };
 
         private int[][] shapeMatrix;
         private boolean hasRotation;
-        private int color;
         private GameBoardView gameBoardView;
 
         /**
@@ -381,8 +381,8 @@ public class Tetromino {
          */
         public Builder(GameBoardView gameBoardView) {
             hasRotation = DEFAULT_HAS_ROATATION;
-            color = DEFAULT_COLOR;
-            shapeMatrix = DEFAULT_SHAPE;
+            shapeMatrix = new int[DEFAULT_SHAPE.length][];
+            System.arraycopy(DEFAULT_SHAPE, 0, shapeMatrix, 0, DEFAULT_SHAPE.length);
             this.gameBoardView = gameBoardView;
         }
 
@@ -395,7 +395,6 @@ public class Tetromino {
         public Builder use(DefaultShape shape) {
             shapeMatrix = new int[shape.getShapeMatrix().length][];
             System.arraycopy(shape.getShapeMatrix(), 0, shapeMatrix, 0, shape.getShapeMatrix().length);
-            color = gameBoardView.getContext().getResources().getColor(shape.getColorId());
             hasRotation = shape.hasRotation();
             return this;
         }
@@ -409,28 +408,6 @@ public class Tetromino {
         public Builder setShape(int[][] shapeMatrix) {
             this.shapeMatrix = new int[shapeMatrix.length][];
             System.arraycopy(shapeMatrix, 0, this.shapeMatrix, 0, shapeMatrix.length);
-            return this;
-        }
-
-        /**
-         * Construira un nuevo tetromino con un color hexadecimal.
-         * 
-         * @param hexColor un color hexadecimal.
-         * @return este Builder.
-         */
-        public Builder setHexColor(int hexColor) {
-            color = hexColor;
-            return this;
-        }
-
-        /**
-         * Construira un nuevo tetromino con un color definido en R.color.
-         * 
-         * @param colorId un color R.color.
-         * @return este Builder.
-         */
-        public Builder setColorResId(int colorId) {
-            color = gameBoardView.getContext().getResources().getColor(colorId);
             return this;
         }
 

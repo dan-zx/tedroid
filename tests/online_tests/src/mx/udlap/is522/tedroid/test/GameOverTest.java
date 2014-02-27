@@ -30,7 +30,7 @@ public class GameOverTest extends ActivityInstrumentationTestCase2<MockGameActiv
         solo.finishOpenedActivities();
     }
     
-    public void testGameOver() throws Exception {
+    public void testRun() throws Exception {
         Log.d(TAG, "Waiting for activity...");
         solo.waitForActivity(MockGameActivity.class);
         
