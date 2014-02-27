@@ -342,6 +342,13 @@ public class GameBoardView extends View {
     }
 
     /**
+     * @return el tetromino en juego.
+     */
+    public Tetromino getCurrentTetromino() {
+        return currentTetromino;
+    }
+
+    /**
      * Inicializa las dimensiones del tablero de juego.
      * 
      * @param rows cuantas filas.
@@ -437,16 +444,18 @@ public class GameBoardView extends View {
          */
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            if (distanceX < -MOVE_SENSITIVITY) {
-                Log.d(TAG, "Move tetromino to the right");
-                currentTetromino.moveTo(Direction.RIGHT);
-                invalidate();
-                return true;
-            } else if (distanceX > MOVE_SENSITIVITY) {
-                Log.d(TAG, "Move tetromino to the left");
-                currentTetromino.moveTo(Direction.LEFT);
-                invalidate();
-                return true;
+            if (!isPaused) {
+                if (distanceX < -MOVE_SENSITIVITY) {
+                    Log.d(TAG, "Move tetromino to the right");
+                    currentTetromino.moveTo(Direction.RIGHT);
+                    invalidate();
+                    return true;
+                } else if (distanceX > MOVE_SENSITIVITY) {
+                    Log.d(TAG, "Move tetromino to the left");
+                    currentTetromino.moveTo(Direction.LEFT);
+                    invalidate();
+                    return true;
+                }
             }
             return false;
         }
@@ -456,10 +465,13 @@ public class GameBoardView extends View {
          */
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
-            Log.d(TAG, "Rotate tetromino");
-            currentTetromino.rotate();
-            invalidate();
-            return true;
+            if (!isPaused) {
+                Log.d(TAG, "Rotate tetromino");
+                currentTetromino.rotate();
+                invalidate();
+                return true;
+            }
+            return false;
         }
     }
 }
