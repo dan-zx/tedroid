@@ -48,19 +48,21 @@ public class GameActivity extends ActionBarActivity {
                 nextTetrominoView.setTetromino(nextTetromino);
             }
         });
-        gameBoardView.setOnScoreChangeListener(new GameBoardView.OnScoreChangeListener() {
+        gameBoardView.setOnPointsGainedListener(new GameBoardView.OnPointsGainedListener() {
 
             private int totalLines;
             
             @Override
-            public void onScoreChange(int score) {
-                scoreTextView.setText(String.valueOf(score));
+            public void onTetrominoOnFloor(Tetromino tetrominoOnFloor) {
+                // TODO: calcular el valor de la pieza en el suelo.
+                // TODO: actulizar puntaje
             }
             
             @Override
             public void onClearedLines(int linesCleared) {
                 totalLines += linesCleared;
                 linesTextView.setText(String.valueOf(totalLines));
+                // TODO: actulizar puntaje
             }
         });
         restartDialog = new AlertDialog.Builder(this)

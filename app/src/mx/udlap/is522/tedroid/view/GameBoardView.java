@@ -52,7 +52,7 @@ public class GameBoardView extends View {
     private Paint tetrominoForeground;
     private Paint background;
     private OnCommingNextTetrominoListener onCommingNextTetrominoListener;
-    private OnScoreChangeListener onScoreChangeListener;
+    private OnPointsGainedListener onPointsGainedListener;
     private OnGameOverListener onGameOverListener;
 
     /**
@@ -365,11 +365,11 @@ public class GameBoardView extends View {
     }
 
     /**
-     * @param onScoreChangeListener listener que escuchará cuando cambie el
-     *        puntaje y las lineas completas.
+     * @param onPointsGainedListener listener que escuchará cuando caiga un
+     *        tetromino y cuando haya lineas completas.
      */
-    public void setOnScoreChangeListener(OnScoreChangeListener onScoreChangeListener) {
-        this.onScoreChangeListener = onScoreChangeListener;
+    public void setOnPointsGainedListener(OnPointsGainedListener onPointsGainedListener) {
+        this.onPointsGainedListener = onPointsGainedListener;
     }
 
     /**
@@ -397,19 +397,20 @@ public class GameBoardView extends View {
     }
 
     /**
-     * Listener que escuchará cuando cambie el puntaje y las lineas completas.
+     * Listener que escuchará cuando caiga un tetromino y cuando haya 
+     * lineas completas.
      * 
      * @author Daniel Pedraza-Arcega
      * @since versión 1.0
      */
-    public static interface OnScoreChangeListener {
+    public static interface OnPointsGainedListener {
 
         /**
-         * Ejecuta este método cuando el puntaje cambia.
+         * Ejecuta este método cuando un tetromino cae al suelo.
          * 
-         * @param score el nuevo puntaje.
+         * @param tetrominoOnFloor el tetromino que callo.
          */
-        void onScoreChange(int score);
+        void onTetrominoOnFloor(Tetromino tetrominoOnFloor);
 
         /**
          * Ejecuta este método cuando hay lineas que se completaron.
@@ -490,16 +491,13 @@ public class GameBoardView extends View {
                         isGameOver = true;
                         if (onGameOverListener != null) onGameOverListener.onGameOver();
                     } else {
+                        if (onPointsGainedListener != null) onPointsGainedListener.onTetrominoOnFloor(currentTetromino);
                         tetrominoDownMoves = 0;
                         updateBoardMatrix();
                         List<Integer> rowsToClear = checkForCompletedLines();
                         if (!rowsToClear.isEmpty()) {
                             clearCompletedLines(rowsToClear);
-                            if (onScoreChangeListener != null) {
-                                // TODO: calcular puntaje
-                                onScoreChangeListener.onScoreChange(0);
-                                onScoreChangeListener.onClearedLines(rowsToClear.size());
-                            }
+                            if (onPointsGainedListener != null) onPointsGainedListener.onClearedLines(rowsToClear.size());
                         }
                         currentTetromino = nextTetromino;
                         nextTetromino = getNextTetromino();
