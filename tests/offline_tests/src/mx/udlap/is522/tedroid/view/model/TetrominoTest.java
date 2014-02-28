@@ -187,6 +187,4 @@ public class TetrominoTest {
         assertTrue("Tetromino wasn't moved correctly", tetrominoL.moveTo(Direction.DOWN));
         assertFalse("Tetromino shouldn't have have rotated", tetrominoL.rotate());
     }
-    
-    // TODO: Probar caso cuando se dibuja en la pantalla
 }
