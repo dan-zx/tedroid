@@ -29,27 +29,24 @@ public class MockGameBoardView extends GameBoardView {
     protected void setUp() {
         super.setUp();
         expectedTetrominos = new LinkedList<Tetromino>();
-        setCustomDimensions(8, 10);
+        setCustomDimensions(10, 5);
         expectedTetrominos.add(new Tetromino.Builder(this)
-            .use(DefaultShape.I)
+            .use(DefaultShape.Z)
             .build());
         expectedTetrominos.add(new Tetromino.Builder(this)
             .use(DefaultShape.J)
             .build());
         expectedTetrominos.add(new Tetromino.Builder(this)
-            .use(DefaultShape.O)
-            .build());
-        expectedTetrominos.add(new Tetromino.Builder(this)
-            .use(DefaultShape.S)
-            .build());
-        expectedTetrominos.add(new Tetromino.Builder(this)
-            .use(DefaultShape.Z)
-            .build());
-        expectedTetrominos.add(new Tetromino.Builder(this)
             .use(DefaultShape.T)
             .build());
         expectedTetrominos.add(new Tetromino.Builder(this)
-            .use(DefaultShape.L)
+            .use(DefaultShape.O)
+            .build());
+        expectedTetrominos.add(new Tetromino.Builder(this)
+            .use(DefaultShape.O)
+            .build());
+        expectedTetrominos.add(new Tetromino.Builder(this)
+            .use(DefaultShape.O)
             .build());
     }
     
