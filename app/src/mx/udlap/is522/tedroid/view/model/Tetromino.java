@@ -34,7 +34,7 @@ public class Tetromino {
         positionOnBoard = new Position();
         border = new Paint();
         foreground = new Paint();
-        foreground.setStyle(Paint.Style.FILL_AND_STROKE);
+        foreground.setStyle(Paint.Style.FILL);
         border.setStyle(Paint.Style.STROKE);
         border.setColor(gameBoardView.getContext().getResources().getColor(android.R.color.black));
     }

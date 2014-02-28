@@ -145,7 +145,7 @@ public class GameBoardView extends View {
         tetrominoBorder.setStyle(Paint.Style.STROKE);
         tetrominoBorder.setColor(getContext().getResources().getColor(android.R.color.black));
         tetrominoForeground = new Paint();
-        tetrominoForeground.setStyle(Paint.Style.FILL_AND_STROKE);
+        tetrominoForeground.setStyle(Paint.Style.FILL);
         background = new Paint();
         background.setStyle(Paint.Style.STROKE);
         background.setStrokeWidth(2);
