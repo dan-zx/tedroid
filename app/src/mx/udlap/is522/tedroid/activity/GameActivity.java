@@ -22,6 +22,7 @@ import mx.udlap.is522.tedroid.view.model.Tetromino;
  */
 public class GameActivity extends ActionBarActivity {
 
+    private int totalLines;
     private NextTetrominoView nextTetrominoView;
     private GameBoardView gameBoardView;
     private TextView scoreTextView;
@@ -49,8 +50,6 @@ public class GameActivity extends ActionBarActivity {
             }
         });
         gameBoardView.setOnPointsGainedListener(new GameBoardView.OnPointsGainedListener() {
-
-            private int totalLines;
             
             @Override
             public void onTetrominoOnFloor(Tetromino tetrominoOnFloor) {
@@ -72,6 +71,8 @@ public class GameActivity extends ActionBarActivity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    totalLines = 0;
+                    linesTextView.setText(String.valueOf(totalLines));
                     gameBoardView.restartGame();
                 }
             })
