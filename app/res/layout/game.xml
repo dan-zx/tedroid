@@ -5,6 +5,28 @@
     android:orientation="horizontal"
     android:weightSum="6" >
 
+    <TextView
+        android:id="@+id/pause_text"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:gravity="center"
+        android:text="@string/pause_text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/game_over_text"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:gravity="center"
+        android:text="@string/game_over_text"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
     <mx.udlap.is522.tedroid.view.GameBoardView
         android:id="@+id/game_board"
         android:layout_width="0dp"
@@ -24,6 +46,7 @@
             android:layout_alignParentTop="true"
             android:layout_margin="8dp"
             android:text="@string/score_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -34,6 +57,29 @@
             android:layout_below="@id/score_text"
             android:layout_margin="8dp"
             android:text="@string/init_score"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/level_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/score"
+            android:layout_margin="8dp"
+            android:text="@string/level_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/levels"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/level_text"
+            android:layout_margin="8dp"
+            android:text="@string/init_levels"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -41,9 +87,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/score"
+            android:layout_below="@id/levels"
             android:layout_margin="8dp"
             android:text="@string/lines_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -54,6 +101,7 @@
             android:layout_below="@id/lines_text"
             android:layout_margin="8dp"
             android:text="@string/init_lines"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
 
         <TextView
@@ -64,6 +112,7 @@
             android:layout_below="@id/lines"
             android:layout_margin="8dp"
             android:text="@string/next_tetromino_text"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
 
         <mx.udlap.is522.tedroid.view.NextTetrominoView

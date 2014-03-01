@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import mx.udlap.is522.tedroid.R;
@@ -23,9 +24,14 @@ import mx.udlap.is522.tedroid.view.model.Tetromino;
 public class GameActivity extends ActionBarActivity {
 
     private int totalLines;
+    private int score;
+    private int level;
     private NextTetrominoView nextTetrominoView;
     private GameBoardView gameBoardView;
+    private TextView pauseTextView;
+    private TextView gameOverTextView;
     private TextView scoreTextView;
+    private TextView levelTextView;
     private TextView linesTextView;
     private MediaPlayer mediaPlayer;
     private Menu menu;
@@ -38,7 +44,11 @@ public class GameActivity extends ActionBarActivity {
         setContentView(R.layout.game);
         mediaPlayer = MediaPlayer.create(this, R.raw.tetris_theme);
         mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+        pauseTextView = (TextView) findViewById(R.id.pause_text);
+        gameOverTextView = (TextView) findViewById(R.id.game_over_text);
         scoreTextView = (TextView) findViewById(R.id.score);
+        levelTextView = (TextView) findViewById(R.id.levels);
         linesTextView = (TextView) findViewById(R.id.lines);
         nextTetrominoView = (NextTetrominoView) findViewById(R.id.next_tetromino);
         gameBoardView = (GameBoardView) findViewById(R.id.game_board);
@@ -50,18 +60,36 @@ public class GameActivity extends ActionBarActivity {
             }
         });
         gameBoardView.setOnPointsGainedListener(new GameBoardView.OnPointsGainedListener() {
-            
-            @Override
-            public void onTetrominoOnFloor(Tetromino tetrominoOnFloor) {
-                // TODO: calcular el valor de la pieza en el suelo.
-                // TODO: actulizar puntaje
-            }
-            
+
             @Override
             public void onClearedLines(int linesCleared) {
+                boolean mayLevelUp = totalLines % 10 >= 6;
                 totalLines += linesCleared;
+                if (mayLevelUp && totalLines % 10 <= 3) {
+                    levelTextView.setText(String.valueOf(++level));
+                    gameBoardView.levelUp();
+                }
+                int factor;
+                switch (linesCleared) {
+                    case 1: factor = 40; break;
+                    case 2: factor = 100; break;
+                    case 3: factor = 300; break;
+                    case 4: factor = 1200; break;
+                    default: factor = 1; break;
+                }
+                score += factor * (level + 1);
                 linesTextView.setText(String.valueOf(totalLines));
-                // TODO: actulizar puntaje
+                scoreTextView.setText(String.valueOf(score));
+                
+            }
+        });
+        gameBoardView.setOnGameOverListener(new GameBoardView.OnGameOverListener() {
+            
+            @Override
+            public void onGameOver() {
+                mediaPlayer.pause();
+                gameBoardView.setVisibility(View.GONE);
+                gameOverTextView.setVisibility(View.VISIBLE);
             }
         });
         restartDialog = new AlertDialog.Builder(this)
@@ -71,9 +99,19 @@ public class GameActivity extends ActionBarActivity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    score = 0;
+                    level = 0;
                     totalLines = 0;
+                    scoreTextView.setText(String.valueOf(score));
+                    levelTextView.setText(String.valueOf(level));
                     linesTextView.setText(String.valueOf(totalLines));
+                    pauseTextView.setVisibility(View.GONE);
+                    gameOverTextView.setVisibility(View.GONE);
+                    gameBoardView.setVisibility(View.VISIBLE);
                     gameBoardView.restartGame();
+                    MenuItem pauseResumeItem = menu.findItem(R.id.action_pause_resume);
+                    pauseResumeItem.setIcon(R.drawable.ic_action_pause);
+                    if (!mediaPlayer.isPlaying()) mediaPlayer.start();
                 }
             })
             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -81,7 +119,11 @@ public class GameActivity extends ActionBarActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    gameBoardView.resumeGame();
+                    if (pauseTextView.getVisibility() == View.GONE && 
+                            !gameBoardView.isGameOver()) {
+                        gameBoardView.resumeGame();
+                        if (!mediaPlayer.isPlaying()) mediaPlayer.start();
+                    }
                 }
             })
             .create();
@@ -101,7 +143,11 @@ public class GameActivity extends ActionBarActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                    gameBoardView.resumeGame();
+                    if (pauseTextView.getVisibility() == View.GONE &&
+                            !gameBoardView.isGameOver()) {
+                        gameBoardView.resumeGame();
+                        if (!mediaPlayer.isPlaying()) mediaPlayer.start();
+                    }
                 }
             })
             .create();
@@ -111,16 +157,13 @@ public class GameActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         if (gameBoardView.isPaused()) {
-            if (menu != null) {
-                MenuItem pauseResumeItem = menu.findItem(R.id.action_pause_resume);
-                if (pauseResumeItem.getIcon().getConstantState().equals
-                        (getResources().getDrawable(R.drawable.ic_action_pause).getConstantState())) {
-                    gameBoardView.resumeGame();
-                }
+            if (pauseTextView.getVisibility() == View.GONE && 
+                    !exitDialog.isShowing() &&
+                    !restartDialog.isShowing()) {
+                gameBoardView.resumeGame();
+                if (!mediaPlayer.isPlaying()) mediaPlayer.start();
             }
         }
-        
-        if (!mediaPlayer.isPlaying()) mediaPlayer.start(); 
     }
 
     @Override
@@ -134,16 +177,25 @@ public class GameActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_pause_resume:
-                if (gameBoardView.isPaused()) {
-                    gameBoardView.resumeGame();
-                    item.setIcon(R.drawable.ic_action_pause);
-                } else {
-                    gameBoardView.pauseGame();
-                    item.setIcon(R.drawable.ic_action_play);
+                if (!gameBoardView.isGameOver()) {
+                    if (gameBoardView.isPaused()) {
+                        pauseTextView.setVisibility(View.GONE);
+                        gameBoardView.setVisibility(View.VISIBLE);
+                        gameBoardView.resumeGame();
+                        if (!mediaPlayer.isPlaying()) mediaPlayer.start();
+                        item.setIcon(R.drawable.ic_action_pause);
+                    } else {
+                        gameBoardView.setVisibility(View.GONE);
+                        pauseTextView.setVisibility(View.VISIBLE);
+                        gameBoardView.pauseGame();
+                        mediaPlayer.pause();
+                        item.setIcon(R.drawable.ic_action_play);
+                    }
                 }
                 return true;
             case R.id.action_restart:
                 gameBoardView.pauseGame();
+                mediaPlayer.pause();
                 restartDialog.show();
                 return true;
             default: return super.onOptionsItemSelected(item);
@@ -161,6 +213,7 @@ public class GameActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
         gameBoardView.pauseGame();
+        mediaPlayer.pause();
         exitDialog.show();
     }
 

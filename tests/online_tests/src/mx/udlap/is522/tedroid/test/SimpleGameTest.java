@@ -8,7 +8,6 @@ import com.robotium.solo.Solo;
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.activity.MockGameActivity;
 import mx.udlap.is522.tedroid.view.GameBoardView;
-import mx.udlap.is522.tedroid.view.model.Tetromino;
 
 import java.util.Arrays;
 
@@ -36,10 +35,7 @@ public class SimpleGameTest extends ActivityInstrumentationTestCase2<MockGameAct
         solo.waitForActivity(MockGameActivity.class);
         GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.mock_game_board);
         gameBoardView.setOnPointsGainedListener(new GameBoardView.OnPointsGainedListener() {
-            
-            @Override
-            public void onTetrominoOnFloor(Tetromino tetrominoOnFloor) { }
-            
+
             @Override
             public void onClearedLines(int linesCleared) {
                 Log.d(TAG, "Lines cleared: " + linesCleared);

@@ -28,7 +28,7 @@ import java.util.Random;
 public class GameBoardView extends View {
 
     private static final float MOVE_SENSITIVITY = 3.5f;
-    private static final long DEFAULT_SPEED = 500l;
+    private static final long DEFAULT_SPEED = 850l;
     private static final int DROPDOWN_FACTOR = 10;
     private static final int DEFAULT_COLUMNS = 10;
     private static final int DEFAULT_ROWS = 20;
@@ -213,7 +213,7 @@ public class GameBoardView extends View {
      *         vacia.
      */
     protected List<Integer> checkForCompletedLines() {
-        ArrayList<Integer> rowsToClear = new ArrayList<Integer>(boardMatrix.length);
+        ArrayList<Integer> rowsToClear = new ArrayList<Integer>(4);
         for (int row = 0; row < boardMatrix.length; row++) {
             boolean isComplete = true;
             for (int column = 0; column < boardMatrix[0].length; column++) {
@@ -406,13 +406,6 @@ public class GameBoardView extends View {
     public static interface OnPointsGainedListener {
 
         /**
-         * Ejecuta este método cuando un tetromino cae al suelo.
-         * 
-         * @param tetrominoOnFloor el tetromino que callo.
-         */
-        void onTetrominoOnFloor(Tetromino tetrominoOnFloor);
-
-        /**
          * Ejecuta este método cuando hay lineas que se completaron.
          * 
          * @param linesCleared el numero de lineas completas.
@@ -455,6 +448,13 @@ public class GameBoardView extends View {
     }
 
     /**
+     * Le velocidad del nivel aumentará.
+     */
+    public void levelUp() {
+        speed *= 0.85;
+    }
+
+    /**
      * Tarea que lleva la cuenta de la velocidad de caida del tetromino en
      * juego.
      * 
@@ -491,7 +491,6 @@ public class GameBoardView extends View {
                         isGameOver = true;
                         if (onGameOverListener != null) onGameOverListener.onGameOver();
                     } else {
-                        if (onPointsGainedListener != null) onPointsGainedListener.onTetrominoOnFloor(currentTetromino);
                         tetrominoDownMoves = 0;
                         updateBoardMatrix();
                         List<Integer> rowsToClear = checkForCompletedLines();

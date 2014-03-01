@@ -10,9 +10,13 @@
     <!-- GAME LAYOUT -->
     <string name="score_text">Puntage:</string>
     <string name="init_score">0</string>
+    <string name="level_text">Nivel:</string>
+    <string name="init_levels">0</string>
     <string name="lines_text">Lineas:</string>
     <string name="init_lines">0</string>
     <string name="next_tetromino_text">Siguiente:</string>
+    <string name="pause_text">Pausa</string>
+    <string name="game_over_text">Game Over</string>
     
     <!-- MENU -->
     <string name="action_pause">Pausa</string>
