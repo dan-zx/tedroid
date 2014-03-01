@@ -28,7 +28,7 @@ import java.util.Random;
 public class GameBoardView extends View {
 
     private static final float MOVE_SENSITIVITY = 3.5f;
-    private static final long DEFAULT_SPEED = 850l;
+    private static final long DEFAULT_SPEED = 800l;
     private static final int DROPDOWN_FACTOR = 10;
     private static final int DEFAULT_COLUMNS = 10;
     private static final int DEFAULT_ROWS = 20;
