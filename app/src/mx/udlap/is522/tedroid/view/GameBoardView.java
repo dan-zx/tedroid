@@ -54,6 +54,7 @@ public class GameBoardView extends View {
     private OnCommingNextTetrominoListener onCommingNextTetrominoListener;
     private OnPointsGainedListener onPointsGainedListener;
     private OnGameOverListener onGameOverListener;
+    private int i=0;
 
     /**
      * Construye un tablero de juego.
@@ -95,7 +96,15 @@ public class GameBoardView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
+        if(currentTetromino == nextTetromino){
+        	i=i++;
+        }
+        else{i=0;
+        }
+        if(i>3){
+        	nextTetromino =getNextTetromino();
+        	i=0;
+        }
         if (!startDropingTetrominos) {
             startDropingTetrominos = true;
             stopDropingTaskIfNeeded();
@@ -103,7 +112,11 @@ public class GameBoardView extends View {
             nextTetromino = getNextTetromino();
             if (onCommingNextTetrominoListener != null) onCommingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
             startDropingTask(speed);
+       
         }
+        
+            
+        
 
         currentTetromino.drawOnParentGameBoardView(canvas);
         drawBoardMatrix(canvas);
