@@ -1,7 +1,6 @@
 package mx.udlap.is522.tedroid.view;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
@@ -48,22 +47,22 @@ public class GameBoardViewTest {
         doCallRealMethod().when(gameBoardViewMock).setUpCurrentAndNextTetrominos();
 
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
-        assertFalse("It is the first and should return false", gameBoardViewMock.shouldGetAnotherRandomTetromino());
+        assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isFalse();
         
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
-        assertTrue("Three Os in a row", gameBoardViewMock.shouldGetAnotherRandomTetromino());
+        assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isTrue();
         
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
-        assertTrue("Four Os in a row", gameBoardViewMock.shouldGetAnotherRandomTetromino());
+        assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isTrue();
         
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
-        assertFalse("Should reset counter and return false", gameBoardViewMock.shouldGetAnotherRandomTetromino());
+        assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isFalse();
         
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
-        assertFalse("Should still return false", gameBoardViewMock.shouldGetAnotherRandomTetromino());
+        assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isFalse();
         
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
-        assertTrue("Three Ts in a row", gameBoardViewMock.shouldGetAnotherRandomTetromino());
+        assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isTrue();
     }
     
     private Queue<Tetromino> buildTestTetrominos(GameBoardView gameBoardView) {
