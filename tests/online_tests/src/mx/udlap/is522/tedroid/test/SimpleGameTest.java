@@ -56,15 +56,16 @@ public class SimpleGameTest extends ActivityInstrumentationTestCase2<MockGameAct
         
         int previousY = gameBoardView.getCurrentTetromino().getPositionOnBoard().getY();
         Log.d(TAG, "Droping tetromino...");
-        solo.drag(5, 5, 200, 700, 4);
-        assertTrue("Tetromino should be in the middle of the screen", gameBoardView.getCurrentTetromino().getPositionOnBoard().getY() >= previousY+3);
+        solo.drag(5, -480, 374, 374, 40);
+        solo.drag(5, 5, 200, 700, 1);
+        assertTrue("Tetromino should be at the middle of the screen", gameBoardView.getCurrentTetromino().getPositionOnBoard().getY() >= previousY+3);
         
         Thread.sleep(800l);
         
         int previousX = gameBoardView.getCurrentTetromino().getPositionOnBoard().getX();
         Log.d(TAG, "Moving tetromino L to the right...");
         solo.drag(5, 480, 374, 374, 40);
-        assertTrue("Tetromino should be moved to the right at least one space", gameBoardView.getCurrentTetromino().getPositionOnBoard().getX() >= previousX+2);
+        assertTrue("Tetromino should be moved to the right at least one space", gameBoardView.getCurrentTetromino().getPositionOnBoard().getX() >= previousX+1);
         
         Thread.sleep(2500l);
 

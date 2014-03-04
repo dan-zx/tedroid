@@ -242,10 +242,8 @@ public class Tetromino {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + foreground.getColor();
-        result = prime * result + positionOnBoard.hashCode();
         result = prime * result + (hasRotation ? 1231 : 1237);
-        result = prime * result + Arrays.hashCode(shapeMatrix);
+        result = prime * result + Arrays.deepHashCode(shapeMatrix);
         return result;
     }
 
@@ -254,21 +252,12 @@ public class Tetromino {
      */
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
         Tetromino other = (Tetromino) obj;
-        if (foreground.getColor() != other.foreground.getColor())
-            return false;
-        if (hasRotation != other.hasRotation)
-            return false;
-        if (positionOnBoard != other.positionOnBoard)
-            return false;
-        if (!Arrays.deepEquals(shapeMatrix, other.shapeMatrix))
-            return false;
+        if (hasRotation != other.hasRotation) return false;
+        if (!Arrays.deepEquals(shapeMatrix, other.shapeMatrix)) return false;
         return true;
     }
 

@@ -40,6 +40,7 @@ public class GameBoardView extends View {
     private int rows;
     private int columns;
     private int tetrominoDownMoves;
+    private int repeatedTetromino;
     private long speed;
     private float boardColumnWidth;
     private float boardRowHeight;
@@ -99,9 +100,9 @@ public class GameBoardView extends View {
         if (!startDropingTetrominos) {
             startDropingTetrominos = true;
             stopDropingTaskIfNeeded();
-            currentTetromino = getNextTetromino();
+            setUpCurrentAndNextTetrominos();
+            setAnotherRandomTetrominoIfNeeded();
             centerTetromino(currentTetromino);
-            nextTetromino = getNextTetromino();
             if (onCommingNextTetrominoListener != null) onCommingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
             startDropingTask(speed);
         }
@@ -140,6 +141,23 @@ public class GameBoardView extends View {
         background.setStyle(Paint.Style.STROKE);
         background.setStrokeWidth(2);
         background.setColor(getContext().getResources().getColor(android.R.color.black));
+    }
+
+    protected void setUpCurrentAndNextTetrominos() {
+        if (nextTetromino == null) currentTetromino = getRandomTetromino();
+        else currentTetromino = nextTetromino;
+        nextTetromino = getRandomTetromino();
+    }
+
+    /**
+     * Saca otro tetromino al azar para el siguiente en caer si es que se repite
+     * más de 2 veces seguidas.
+     */
+    private void setAnotherRandomTetrominoIfNeeded() {
+        while (shouldGetAnotherRandomTetromino()) {
+            Log.w(TAG, "Should get another random tetromino because Java randoms are dumb");
+            nextTetromino = getRandomTetromino();
+        }
     }
 
     /**
@@ -233,6 +251,7 @@ public class GameBoardView extends View {
             tetromino.moveTo(Direction.RIGHT);
         }
     }
+
     /**
      * Limpia las lineas completas y baja las lineas arriba de las lineas
      * completas.
@@ -270,12 +289,28 @@ public class GameBoardView extends View {
     /**
      * @return tetromino escogiendo al azar una de las figuras predefinadas.
      */
-    protected Tetromino getNextTetromino() {
+    protected Tetromino getRandomTetromino() {
         int randomIndex = new Random().nextInt(DefaultShape.values().length);
         DefaultShape randomShape = DefaultShape.values()[randomIndex];
         return new Tetromino.Builder(this)
             .use(randomShape)
             .build();
+    }
+
+    /**
+     * Revisa que no haya más de 3 tetrominos repetidos uno tras otro.
+     * 
+     * @return si ya se repitio 3 veces o más. 
+     */
+    protected boolean shouldGetAnotherRandomTetromino() {
+        if (currentTetromino.equals(nextTetromino)) {
+            if (repeatedTetromino == 0) repeatedTetromino = 2;
+            else repeatedTetromino++;
+        } else {
+            repeatedTetromino = 0;
+        }
+
+        return repeatedTetromino >= 3;
     }
 
     /**
@@ -358,6 +393,13 @@ public class GameBoardView extends View {
      */
     public Tetromino getCurrentTetromino() {
         return currentTetromino;
+    }
+
+    /**
+     * @return el siguiente tetromino en caer.
+     */
+    public Tetromino getNextTetromino() {
+        return nextTetromino;
     }
 
     /**
@@ -483,9 +525,9 @@ public class GameBoardView extends View {
                     clearCompletedLines(rowsToClear);
                     if (onPointsGainedListener != null) onPointsGainedListener.onClearedLines(rowsToClear.size());
                 }
-                currentTetromino = nextTetromino;
+                setUpCurrentAndNextTetrominos();
+                setAnotherRandomTetrominoIfNeeded();
                 centerTetromino(currentTetromino);
-                nextTetromino = getNextTetromino();
                 if (onCommingNextTetrominoListener != null) onCommingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
                 invalidate();
             }

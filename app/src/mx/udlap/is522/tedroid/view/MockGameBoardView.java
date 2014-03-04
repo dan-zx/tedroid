@@ -75,13 +75,19 @@ public class MockGameBoardView extends GameBoardView {
         expectedTetrominos.add(new Tetromino.Builder(this)
             .use(DefaultShape.O)
             .build());
+        expectedTetrominos.add(new Tetromino.Builder(this)
+            .use(DefaultShape.L)
+            .build());
+        expectedTetrominos.add(new Tetromino.Builder(this)
+            .use(DefaultShape.J)
+            .build());
     }
 
     /**
      * @return saca uno de los tetrominos definidos no aleatorios.
      */
     @Override
-    protected Tetromino getNextTetromino() {
+    protected Tetromino getRandomTetromino() {
         return expectedTetrominos.poll();
     }
 }
