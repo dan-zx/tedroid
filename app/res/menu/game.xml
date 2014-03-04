@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto" >
+      xmlns:tedroid="http://schemas.android.com/apk/res-auto" >
 
     <item
         android:id="@+id/action_pause_resume"
         android:icon="@drawable/ic_action_pause"
         android:title="@string/action_pause"
-        app:showAsAction="always"/>
+        tedroid:showAsAction="always"/>
     <item
         android:id="@+id/action_restart"
         android:icon="@drawable/ic_action_restart"
         android:title="@string/action_restart"
-        app:showAsAction="always"/>
+        tedroid:showAsAction="always"/>
 
 </menu>

@@ -40,17 +40,18 @@ public class Tetromino {
     }
 
     /**
-     * Dibuja este tetromino en el tablero.
+     * Dibuja este tetromino en un canvas con las dimensiones de su tablero de
+     * juego asosiado.
      * 
      * @param canvas el objeto donde dibujar.
      */
-    public void drawOnParentGameBoardView(Canvas canvas) {
+    public void drawOn(Canvas canvas) {
         for (int row = 0; row < shapeMatrix.length; row++) {
             for (int column = 0; column < shapeMatrix[0].length; column++) {
                 if (shapeMatrix[row][column] != android.R.color.transparent) {
                     foreground.setColor(gameBoardView.getContext().getResources().getColor(shapeMatrix[row][column]));
-                    canvas.drawRect((column + positionOnBoard.getX()) * gameBoardView.getBoardWidth(), (row + positionOnBoard.getY()) * gameBoardView.getBoardHeight(), (column + 1 + positionOnBoard.getX()) * gameBoardView.getBoardWidth(), (row + 1 + positionOnBoard.getY()) * gameBoardView.getBoardHeight(), foreground);
-                    canvas.drawRect((column + positionOnBoard.getX()) * gameBoardView.getBoardWidth(), (row + positionOnBoard.getY()) * gameBoardView.getBoardHeight(), (column + 1 + positionOnBoard.getX()) * gameBoardView.getBoardWidth(), (row + 1 + positionOnBoard.getY()) * gameBoardView.getBoardHeight(), border);
+                    canvas.drawRect((column + positionOnBoard.getX()) * gameBoardView.getBoardColumnWidth(), (row + positionOnBoard.getY()) * gameBoardView.getBoardRowHeight(), (column + 1 + positionOnBoard.getX()) * gameBoardView.getBoardColumnWidth(), (row + 1 + positionOnBoard.getY()) * gameBoardView.getBoardRowHeight(), foreground);
+                    canvas.drawRect((column + positionOnBoard.getX()) * gameBoardView.getBoardColumnWidth(), (row + positionOnBoard.getY()) * gameBoardView.getBoardRowHeight(), (column + 1 + positionOnBoard.getX()) * gameBoardView.getBoardColumnWidth(), (row + 1 + positionOnBoard.getY()) * gameBoardView.getBoardRowHeight(), border);
                 }
             }
         }
@@ -97,13 +98,6 @@ public class Tetromino {
     }
 
     /**
-     * @return el tablero asociado a este tetromino
-     */
-    public GameBoardView getGameBoardView() {
-        return gameBoardView;
-    }
-
-    /**
      * @return una matriz de 0s y 1s con la forma de este tetromino.
      */
     public int[][] getShapeMatrix() {
@@ -115,13 +109,6 @@ public class Tetromino {
      */
     public boolean hasRotation() {
         return hasRotation;
-    }
-
-    /**
-     * @return el color hexadecimal de este tetromino.
-     */
-    public int getForegroundColor() {
-        return foreground.getColor();
     }
 
     /**

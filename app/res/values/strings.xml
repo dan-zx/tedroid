@@ -8,7 +8,7 @@
     <string name="restart_message">¿De verdad quieres reiniciar el juego?</string>
     
     <!-- GAME LAYOUT -->
-    <string name="score_text">Puntage:</string>
+    <string name="score_text">Puntaje:</string>
     <string name="init_score">0</string>
     <string name="level_text">Nivel:</string>
     <string name="init_levels">0</string>

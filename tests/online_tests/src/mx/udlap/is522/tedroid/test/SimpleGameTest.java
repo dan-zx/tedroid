@@ -56,7 +56,7 @@ public class SimpleGameTest extends ActivityInstrumentationTestCase2<MockGameAct
         
         int previousY = gameBoardView.getCurrentTetromino().getPositionOnBoard().getY();
         Log.d(TAG, "Droping tetromino...");
-        solo.clickLongOnView(gameBoardView, 1000);
+        solo.drag(5, 5, 200, 700, 4);
         assertTrue("Tetromino should be in the middle of the screen", gameBoardView.getCurrentTetromino().getPositionOnBoard().getY() >= previousY+3);
         
         Thread.sleep(800l);

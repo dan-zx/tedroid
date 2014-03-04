@@ -63,24 +63,11 @@ public class GameActivity extends ActionBarActivity {
 
             @Override
             public void onClearedLines(int linesCleared) {
-                boolean mayLevelUp = totalLines % 10 >= 6;
-                totalLines += linesCleared;
-                if (mayLevelUp && totalLines % 10 <= 3) {
-                    levelTextView.setText(String.valueOf(++level));
-                    gameBoardView.levelUp();
-                }
-                int factor;
-                switch (linesCleared) {
-                    case 1: factor = 40; break;
-                    case 2: factor = 100; break;
-                    case 3: factor = 300; break;
-                    case 4: factor = 1200; break;
-                    default: factor = 1; break;
-                }
-                score += factor * (level + 1);
+                if (updateLevelIfNeeded(linesCleared)) gameBoardView.levelUp();
+                updateScore(linesCleared);
                 linesTextView.setText(String.valueOf(totalLines));
                 scoreTextView.setText(String.valueOf(score));
-                
+                levelTextView.setText(String.valueOf(level));
             }
         });
         gameBoardView.setOnGameOverListener(new GameBoardView.OnGameOverListener() {
@@ -99,15 +86,14 @@ public class GameActivity extends ActionBarActivity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    score = 0;
-                    level = 0;
-                    totalLines = 0;
+                    resetCounters();
                     scoreTextView.setText(String.valueOf(score));
                     levelTextView.setText(String.valueOf(level));
                     linesTextView.setText(String.valueOf(totalLines));
                     pauseTextView.setVisibility(View.GONE);
                     gameOverTextView.setVisibility(View.GONE);
                     gameBoardView.setVisibility(View.VISIBLE);
+                    gameBoardView.resetLevel();
                     gameBoardView.restartGame();
                     MenuItem pauseResumeItem = menu.findItem(R.id.action_pause_resume);
                     pauseResumeItem.setIcon(R.drawable.ic_action_pause);
@@ -224,6 +210,49 @@ public class GameActivity extends ActionBarActivity {
         mediaPlayer.stop();
         mediaPlayer.release();
         mediaPlayer = null;
+    }
+
+    /**
+     * Actualiza el puntaje del juego.
+     * 
+     * @param linesCleared las lineas borradas.
+     */
+    private void updateScore(int linesCleared) {
+        int factor;
+        switch (linesCleared) {
+            case 1: factor = 40; break;
+            case 2: factor = 100; break;
+            case 3: factor = 300; break;
+            case 4: factor = 1200; break;
+            default: factor = 1; break;
+        }
+        score += factor * (level + 1);
+    }
+
+    /**
+     * Actualiza el nivel del juego al checar las lineas borradas.
+     * 
+     * @param linesCleared las lineas borradas.
+     * @param si se subio de nivel o no.
+     */
+    private boolean updateLevelIfNeeded(int linesCleared) {
+        boolean mayLevelUp = totalLines % 10 >= 6;
+        totalLines += linesCleared;
+        if (mayLevelUp && totalLines % 10 <= 3) {
+            level++;
+            return true;
+        }
+        
+        return false;
+    }
+
+    /**
+     * Resetea todos los contadores.
+     */
+    private void resetCounters() {
+        score = 0;
+        level = 0;
+        totalLines = 0;
     }
 
     /**

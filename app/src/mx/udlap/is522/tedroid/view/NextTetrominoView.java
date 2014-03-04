@@ -7,18 +7,39 @@ import android.view.View;
 
 import mx.udlap.is522.tedroid.view.model.Tetromino;
 
+/**
+ * Vista que muestra el siguiente tetromino en caer.
+ * 
+ * @author Daniel Pedraza-Arcega
+ * @since 1.0
+ */
 public class NextTetrominoView extends View {
 
     private Tetromino tetromino;
 
+    /**
+     * Construye la vista mediante un context.
+     * 
+     * @see android.view.View#View(Context)
+     */
     public NextTetrominoView(Context context) {
         super(context);
     }
 
+    /**
+     * Construye la vista mediante XML
+     * 
+     * @see android.view.View#View(Context, AttributeSet)
+     */
     public NextTetrominoView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+    /**
+     * Construye la vista mediante XML y aplicando un estilo.
+     * 
+     * @see android.view.View#View(Context, AttributeSet, int)
+     */
     public NextTetrominoView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
@@ -27,9 +48,12 @@ public class NextTetrominoView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         
-        if (tetromino != null) tetromino.drawOnParentGameBoardView(canvas);
+        if (tetromino != null) tetromino.drawOn(canvas);
     }
 
+    /**
+     * @param tetromino el tetromino a dibujar.
+     */
     public void setTetromino(Tetromino tetromino) {
         this.tetromino = tetromino;
         invalidate();
