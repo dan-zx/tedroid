@@ -100,6 +100,7 @@ public class GameBoardView extends View {
             startDropingTetrominos = true;
             stopDropingTaskIfNeeded();
             currentTetromino = getNextTetromino();
+            centerTetromino(currentTetromino);
             nextTetromino = getNextTetromino();
             if (onCommingNextTetrominoListener != null) onCommingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
             startDropingTask(speed);
@@ -218,6 +219,20 @@ public class GameBoardView extends View {
         return rowsToClear;
     }
 
+    /**
+     * Centra el tetromino en tablero de juego.
+     * 
+     * @param tetromino el tetromino a centrar.
+     */
+    private void centerTetromino(Tetromino tetromino) {
+        int boardCenterX = boardMatrix[0].length / 2;
+        int shapeCenterX = tetromino.getShapeMatrix()[0].length / 2;
+        int xMoves = boardCenterX - shapeCenterX;
+
+        for (int x = 0; x < xMoves; x++) {
+            tetromino.moveTo(Direction.RIGHT);
+        }
+    }
     /**
      * Limpia las lineas completas y baja las lineas arriba de las lineas
      * completas.
@@ -469,6 +484,7 @@ public class GameBoardView extends View {
                     if (onPointsGainedListener != null) onPointsGainedListener.onClearedLines(rowsToClear.size());
                 }
                 currentTetromino = nextTetromino;
+                centerTetromino(currentTetromino);
                 nextTetromino = getNextTetromino();
                 if (onCommingNextTetrominoListener != null) onCommingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
                 invalidate();
