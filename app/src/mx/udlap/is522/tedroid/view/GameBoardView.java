@@ -96,15 +96,7 @@ public class GameBoardView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(currentTetromino == nextTetromino){
-        	i=i++;
-        }
-        else{i=0;
-        }
-        if(i>3){
-        	nextTetromino =getNextTetromino();
-        	i=0;
-        }
+       
         if (!startDropingTetrominos) {
             startDropingTetrominos = true;
             stopDropingTaskIfNeeded();
@@ -112,6 +104,16 @@ public class GameBoardView extends View {
             nextTetromino = getNextTetromino();
             if (onCommingNextTetrominoListener != null) onCommingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
             startDropingTask(speed);
+            
+            if(currentTetromino.equals(nextTetromino)){
+            	i=i++;
+            }
+            else{
+            	i=0;
+            }
+            while(i>3){
+            	nextTetromino = getNextTetromino();
+                    }
        
         }
         
