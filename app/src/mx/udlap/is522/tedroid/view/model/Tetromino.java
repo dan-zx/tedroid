@@ -74,6 +74,17 @@ public class Tetromino {
     }
 
     /**
+     * Centra este tetromino en el tablero padre.
+     */
+    public void centerOnGameBoardView() {
+        int[][] boardMatrix = gameBoardView.getBoardMatrix();
+        int boardCenterX = boardMatrix[0].length / 2;
+        int shapeCenterX = shapeMatrix[0].length / 2;
+        int xMoves = boardCenterX - shapeCenterX;
+        positionOnBoard.setX(xMoves);
+    }
+
+    /**
      * Rota este tetromino 90° en sentido de las agujas del reloj en el tablero.
      * 
      * @return si se pudo mover o no.

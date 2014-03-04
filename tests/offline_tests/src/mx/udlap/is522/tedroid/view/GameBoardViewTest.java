@@ -2,7 +2,7 @@ package mx.udlap.is522.tedroid.view;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -30,8 +30,8 @@ public class GameBoardViewTest {
     
     @Test
     public void shouldNotRepeatMoreThan2EqualTetrominos() {
-        GameBoardView gameBoardViewMock = mock(GameBoardView.class);
-        
+        GameBoardView gameBoardViewMock = mock(GameBoardView.class, CALLS_REAL_METHODS);
+        gameBoardViewMock.setCustomDimensions(4, 4);
         final Activity dummyActivity = Robolectric.buildActivity(Activity.class).create().get();
         when(gameBoardViewMock.getContext()).thenReturn(dummyActivity);
         
@@ -42,9 +42,6 @@ public class GameBoardViewTest {
                 return expectedTetrominos.poll();
             }
         });
-
-        when(gameBoardViewMock.shouldGetAnotherRandomTetromino()).thenCallRealMethod();
-        doCallRealMethod().when(gameBoardViewMock).setUpCurrentAndNextTetrominos();
 
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
         assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isFalse();

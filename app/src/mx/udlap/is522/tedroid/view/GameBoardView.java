@@ -102,7 +102,6 @@ public class GameBoardView extends View {
             stopDropingTaskIfNeeded();
             setUpCurrentAndNextTetrominos();
             setAnotherRandomTetrominoIfNeeded();
-            centerTetromino(currentTetromino);
             if (onCommingNextTetrominoListener != null) onCommingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
             startDropingTask(speed);
         }
@@ -147,6 +146,7 @@ public class GameBoardView extends View {
         if (nextTetromino == null) currentTetromino = getRandomTetromino();
         else currentTetromino = nextTetromino;
         nextTetromino = getRandomTetromino();
+        currentTetromino.centerOnGameBoardView();
     }
 
     /**
@@ -235,21 +235,6 @@ public class GameBoardView extends View {
         }
 
         return rowsToClear;
-    }
-
-    /**
-     * Centra el tetromino en tablero de juego.
-     * 
-     * @param tetromino el tetromino a centrar.
-     */
-    private void centerTetromino(Tetromino tetromino) {
-        int boardCenterX = boardMatrix[0].length / 2;
-        int shapeCenterX = tetromino.getShapeMatrix()[0].length / 2;
-        int xMoves = boardCenterX - shapeCenterX;
-
-        for (int x = 0; x < xMoves; x++) {
-            tetromino.moveTo(Direction.RIGHT);
-        }
     }
 
     /**
@@ -527,7 +512,6 @@ public class GameBoardView extends View {
                 }
                 setUpCurrentAndNextTetrominos();
                 setAnotherRandomTetrominoIfNeeded();
-                centerTetromino(currentTetromino);
                 if (onCommingNextTetrominoListener != null) onCommingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
                 invalidate();
             }
