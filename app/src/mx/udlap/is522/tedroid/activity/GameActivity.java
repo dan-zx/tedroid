@@ -93,7 +93,7 @@ public class GameActivity extends ActionBarActivity {
                     pauseTextView.setVisibility(View.GONE);
                     gameOverTextView.setVisibility(View.GONE);
                     gameBoardView.setVisibility(View.VISIBLE);
-                    gameBoardView.resetLevel();
+                    gameBoardView.setLevel(GameBoardView.DEFAULT_LEVEL); // TODO: resetear el nivel seleccionado
                     gameBoardView.restartGame();
                     MenuItem pauseResumeItem = menu.findItem(R.id.action_pause_resume);
                     pauseResumeItem.setIcon(R.drawable.ic_action_pause);

@@ -54,29 +54,29 @@ public class SimpleGameTest extends ActivityInstrumentationTestCase2<MockGameAct
 
         assertTrue("Tetromino Z should be rotated", Arrays.deepEquals(rotated, gameBoardView.getCurrentTetromino().getShapeMatrix()));
         
-        int previousY = gameBoardView.getCurrentTetromino().getPositionOnBoard().getY();
+        int previousRow = gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixRow();
         Log.d(TAG, "Droping tetromino...");
         solo.drag(5, -480, 374, 374, 40);
         solo.drag(5, 5, 200, 700, 1);
-        assertTrue("Tetromino should be at the middle of the screen", gameBoardView.getCurrentTetromino().getPositionOnBoard().getY() >= previousY+3);
+        assertTrue("Tetromino should be at the middle of the screen", gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixRow() >= previousRow+3);
         
         Thread.sleep(800l);
         
-        int previousX = gameBoardView.getCurrentTetromino().getPositionOnBoard().getX();
+        int previousColumn = gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixColumn();
         Log.d(TAG, "Moving tetromino L to the right...");
         solo.drag(5, 480, 374, 374, 40);
-        assertTrue("Tetromino should be moved to the right at least one space", gameBoardView.getCurrentTetromino().getPositionOnBoard().getX() >= previousX+1);
+        assertTrue("Tetromino should be moved to the right at least one space", gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixColumn() >= previousColumn+1);
         
         Thread.sleep(2500l);
 
         Log.d(TAG, "Moving tetromino to the right...");
         solo.drag(5, 480, 374, 374, 40);
         Thread.sleep(500l);
-        previousY = gameBoardView.getCurrentTetromino().getPositionOnBoard().getX();
+        previousColumn = gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixColumn();
         Log.d(TAG, "Moving tetromino to the left...");
         solo.drag(5, -480, 374, 374, 40);
 
-        assertTrue("Tetromino should be moved to the right at least one space", gameBoardView.getCurrentTetromino().getPositionOnBoard().getX() <= 0);
+        assertTrue("Tetromino should be moved to the right at least one space", gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixColumn() <= previousColumn-1);
         Thread.sleep(800l);
     }
 }

@@ -17,7 +17,7 @@ public class Tetromino {
 
     private GameBoardView gameBoardView;
     private int[][] shapeMatrix;
-    private Position positionOnBoard;
+    private Position position;
     private boolean hasRotation;
     private Paint foreground;
     private Paint border;
@@ -31,7 +31,7 @@ public class Tetromino {
         gameBoardView = builder.gameBoardView;
         shapeMatrix = builder.shapeMatrix;
         hasRotation = builder.hasRotation;
-        positionOnBoard = new Position();
+        position = new Position();
         border = new Paint();
         foreground = new Paint();
         foreground.setStyle(Paint.Style.FILL);
@@ -50,8 +50,12 @@ public class Tetromino {
             for (int column = 0; column < shapeMatrix[0].length; column++) {
                 if (shapeMatrix[row][column] != android.R.color.transparent) {
                     foreground.setColor(gameBoardView.getContext().getResources().getColor(shapeMatrix[row][column]));
-                    canvas.drawRect((column + positionOnBoard.getX()) * gameBoardView.getBoardColumnWidth(), (row + positionOnBoard.getY()) * gameBoardView.getBoardRowHeight(), (column + 1 + positionOnBoard.getX()) * gameBoardView.getBoardColumnWidth(), (row + 1 + positionOnBoard.getY()) * gameBoardView.getBoardRowHeight(), foreground);
-                    canvas.drawRect((column + positionOnBoard.getX()) * gameBoardView.getBoardColumnWidth(), (row + positionOnBoard.getY()) * gameBoardView.getBoardRowHeight(), (column + 1 + positionOnBoard.getX()) * gameBoardView.getBoardColumnWidth(), (row + 1 + positionOnBoard.getY()) * gameBoardView.getBoardRowHeight(), border);
+                    float x0 = (column + position.boardMatrixColumn) * gameBoardView.getBoardColumnWidth();
+                    float y0 = (row + position.boardMatrixRow) * gameBoardView.getBoardRowHeight();
+                    float x1 = (column + 1 + position.boardMatrixColumn) * gameBoardView.getBoardColumnWidth();
+                    float y1 = (row + 1 + position.boardMatrixRow) * gameBoardView.getBoardRowHeight();
+                    canvas.drawRect(x0, y0, x1, y1, foreground);
+                    canvas.drawRect(x0, y0, x1, y1, border);
                 }
             }
         }
@@ -81,7 +85,7 @@ public class Tetromino {
         int boardCenterX = boardMatrix[0].length / 2;
         int shapeCenterX = shapeMatrix[0].length / 2;
         int xMoves = boardCenterX - shapeCenterX;
-        positionOnBoard.setX(xMoves);
+        position.boardMatrixColumn = xMoves;
     }
 
     /**
@@ -126,8 +130,8 @@ public class Tetromino {
      * @return la posición en el tablero donde se encuentra la esquina superior
      *         izquierda de la matriz de este tetromino
      */
-    public Position getPositionOnBoard() {
-        return positionOnBoard;
+    public Position getPosition() {
+        return position;
     }
 
     /**
@@ -137,7 +141,7 @@ public class Tetromino {
      */
     private boolean moveRight() {
         if (canFit(Direction.RIGHT)) {
-            positionOnBoard.setX(positionOnBoard.getX() + 1);
+            position.boardMatrixColumn++;
             return true;
         }
 
@@ -151,7 +155,7 @@ public class Tetromino {
      */
     private boolean moveLeft() {
         if (canFit(Direction.LEFT)) {
-            positionOnBoard.setX(positionOnBoard.getX() - 1);
+            position.boardMatrixColumn--;
             return true;
         }
 
@@ -165,7 +169,7 @@ public class Tetromino {
      */
     private boolean moveDown() {
         if (canFit(Direction.DOWN)) {
-            positionOnBoard.setY(positionOnBoard.getY() + 1);
+            position.boardMatrixRow++;
             return true;
         }
 
@@ -184,8 +188,8 @@ public class Tetromino {
 
         for (int row = 0; row < rotatedShape.length; row++) {
             for (int column = 0; column < rotatedShape[0].length; column++) {
-                int boardMatrixRow = getPositionOnBoard().getY() + row;
-                int boardMatrixColumn = getPositionOnBoard().getX() + column;
+                int boardMatrixRow = position.boardMatrixRow + row;
+                int boardMatrixColumn = position.boardMatrixColumn + column;
                 if (isRowOutOfBoundsOfBoard(boardMatrixRow) || isColumnOutOfBoundsOfBoard(boardMatrixColumn) || 
                         (boardMatrix[boardMatrixRow][boardMatrixColumn] != android.R.color.transparent && rotatedShape[row][column] != android.R.color.transparent)) {
                     return false;
@@ -210,8 +214,8 @@ public class Tetromino {
 
         for (int row = 0; row < shape.length; row++) {
             for (int column = 0; column < shape[0].length; column++) {
-                int boardMatrixRow = getPositionOnBoard().getY() + row;
-                int boardMatrixColumn = getPositionOnBoard().getX() + column;
+                int boardMatrixRow = position.boardMatrixRow + row;
+                int boardMatrixColumn = position.boardMatrixColumn + column;
                 switch (direction) {
                     case DOWN: boardMatrixRow++; break;
                     case LEFT: boardMatrixColumn--; break;
@@ -273,15 +277,15 @@ public class Tetromino {
     }
 
     /**
-     * Contiene las coordenadas X y Y de un tetromino en su tablero.
+     * Contiene las coordenadas de un tetromino en su tablero.
      * 
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
     public static class Position {
 
-        private int x;
-        private int y;
+        private int boardMatrixColumn;
+        private int boardMatrixRow;
 
         /**
          * {@inheritDoc}
@@ -290,8 +294,8 @@ public class Tetromino {
         public int hashCode() {
             final int prime = 31;
             int result = 1;
-            result = prime * result + x;
-            result = prime * result + y;
+            result = prime * result + boardMatrixColumn;
+            result = prime * result + boardMatrixRow;
             return result;
         }
 
@@ -307,43 +311,27 @@ public class Tetromino {
             if (getClass() != obj.getClass())
                 return false;
             Position other = (Position) obj;
-            if (x != other.x)
+            if (boardMatrixColumn != other.boardMatrixColumn)
                 return false;
-            if (y != other.y)
+            if (boardMatrixRow != other.boardMatrixRow)
                 return false;
             return true;
         }
 
         /**
-         * @return la posición en el eje X del tablero donde se encuentra la
-         *         esquina superior izquierda de la matriz de este tetromino.
+         * @return la columna donde se encuentra la esquina superior izquierda 
+         *         de la matriz de este tetromino.
          */
-        public int getX() {
-            return x;
+        public int getBoardMatrixColumn() {
+            return boardMatrixColumn;
         }
 
         /**
-         * @param x la posición en el eje X del tablero donde se encuentra la
-         *        esquina superior izquierda de la matriz de este tetromino.
+         * @return la fila donde se encuentra la esquina superior izquierda de
+         *         la matriz de este tetromino.
          */
-        public void setX(int x) {
-            this.x = x;
-        }
-
-        /**
-         * @return la posición en el eje Y del tablero donde se encuentra la
-         *         esquina superior izquierda de la matriz de este tetromino.
-         */
-        public int getY() {
-            return y;
-        }
-
-        /**
-         * @param y la posición en el eje Y del tablero donde se encuentra la
-         *        esquina superior izquierda de la matriz de este tetromino.
-         */
-        public void setY(int y) {
-            this.y = y;
+        public int getBoardMatrixRow() {
+            return boardMatrixRow;
         }
     }
 

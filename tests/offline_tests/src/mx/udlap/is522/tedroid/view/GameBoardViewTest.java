@@ -31,9 +31,10 @@ public class GameBoardViewTest {
     @Test
     public void shouldNotRepeatMoreThan2EqualTetrominos() {
         GameBoardView gameBoardViewMock = mock(GameBoardView.class, CALLS_REAL_METHODS);
-        gameBoardViewMock.setCustomDimensions(4, 4);
         final Activity dummyActivity = Robolectric.buildActivity(Activity.class).create().get();
         when(gameBoardViewMock.getContext()).thenReturn(dummyActivity);
+        gameBoardViewMock.setUp();
+        gameBoardViewMock.setCustomDimensions(4, 4);
         
         final Queue<Tetromino> expectedTetrominos = buildTestTetrominos(gameBoardViewMock);
         when(gameBoardViewMock.getRandomTetromino()).thenAnswer(new Answer<Tetromino>(){

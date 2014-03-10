@@ -35,10 +35,8 @@ public class TetrominoTest {
             .build();
 
         assertThat(tetrominoZ).isNotNull();
-        assertThat(tetrominoZ.getShapeMatrix()).isNotNull();
-        assertThat(tetrominoZ.getShapeMatrix()).isEqualTo(DefaultShape.Z.getShapeMatrix());
-        assertThat(tetrominoZ.hasRotation()).isNotEqualTo(Tetromino.Builder.DEFAULT_HAS_ROATATION);
-        assertThat(tetrominoZ.hasRotation()).isEqualTo(DefaultShape.Z.hasRotation());
+        assertThat(tetrominoZ.getShapeMatrix()).isNotNull().isEqualTo(DefaultShape.Z.getShapeMatrix());
+        assertThat(tetrominoZ.hasRotation()).isNotEqualTo(Tetromino.Builder.DEFAULT_HAS_ROATATION).isEqualTo(DefaultShape.Z.hasRotation());
     }
 
     @Test
@@ -54,10 +52,8 @@ public class TetrominoTest {
             .build();
 
         assertThat(newTetromino).isNotNull();
-        assertThat(newTetromino.getShapeMatrix()).isNotNull();
-        assertThat(newTetromino.getShapeMatrix()).isEqualTo(shape);
-        assertThat(newTetromino.hasRotation()).isNotEqualTo(Tetromino.Builder.DEFAULT_HAS_ROATATION);
-        assertThat(newTetromino.hasRotation()).isTrue();
+        assertThat(newTetromino.getShapeMatrix()).isNotNull().isEqualTo(shape);
+        assertThat(newTetromino.hasRotation()).isNotEqualTo(Tetromino.Builder.DEFAULT_HAS_ROATATION).isTrue();
     }
 
     @Test
@@ -97,17 +93,15 @@ public class TetrominoTest {
             .use(DefaultShape.O)
             .build();
 
-        Tetromino.Position expectedPosition = new Tetromino.Position();
-        expectedPosition.setX(1);
-        expectedPosition.setY(3);
-
         assertThat(tetrominoO.moveTo(Direction.RIGHT)).isTrue();
         assertThat(tetrominoO.moveTo(Direction.RIGHT)).isTrue();
         assertThat(tetrominoO.moveTo(Direction.LEFT)).isTrue();
         assertThat(tetrominoO.moveTo(Direction.DOWN)).isTrue();
         assertThat(tetrominoO.moveTo(Direction.DOWN)).isTrue();
         assertThat(tetrominoO.moveTo(Direction.DOWN)).isTrue();
-        assertThat(tetrominoO.getPositionOnBoard()).isEqualTo(expectedPosition);
+        assertThat(tetrominoO.getPosition()).isNotNull();
+        assertThat(tetrominoO.getPosition().getBoardMatrixColumn()).isEqualTo(1);
+        assertThat(tetrominoO.getPosition().getBoardMatrixRow()).isEqualTo(3);
     }
 
     @Test

@@ -27,9 +27,9 @@ import java.util.Random;
  */
 public class GameBoardView extends View {
 
-    private static final float MOVE_SIDEWAYS_SENSITIVITY = 3f;
-    private static final float MOVE_DOWN_SENSITIVITY = 5f;
-    private static final long DEFAULT_SPEED = 800l;
+    public static final int DEFAULT_LEVEL = 0;
+
+    private static final long DEFAULT_SPEED = 1000l;
     private static final int DEFAULT_COLUMNS = 10;
     private static final int DEFAULT_ROWS = 20;
     private static final String TAG = GameBoardView.class.getSimpleName();
@@ -39,14 +39,16 @@ public class GameBoardView extends View {
     private int[][] boardMatrix;
     private int rows;
     private int columns;
+    private int level;
     private int tetrominoDownMoves;
     private int repeatedTetromino;
-    private long speed;
+    private long currentSpeed;
     private float boardColumnWidth;
     private float boardRowHeight;
     private boolean startDropingTetrominos;
     private boolean isPaused;
     private boolean isGameOver;
+    private GestureListener gestureListener;
     private GestureDetector gestureDetector;
     private MoveDownCurrentTetrominoTask moveDownCurrentTetrominoTask;
     private Paint tetrominoBorder;
@@ -55,6 +57,7 @@ public class GameBoardView extends View {
     private OnCommingNextTetrominoListener onCommingNextTetrominoListener;
     private OnPointsGainedListener onPointsGainedListener;
     private OnGameOverListener onGameOverListener;
+    private Random random;
 
     /**
      * Construye un tablero de juego mediante un context.
@@ -103,12 +106,12 @@ public class GameBoardView extends View {
             setUpCurrentAndNextTetrominos();
             setAnotherRandomTetrominoIfNeeded();
             if (onCommingNextTetrominoListener != null) onCommingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
-            startDropingTask(speed);
+            startDropingTask(currentSpeed);
         }
 
+        drawBackground(canvas);
         currentTetromino.drawOn(canvas);
         drawBoardMatrix(canvas);
-        drawBackground(canvas);
     }
 
     @Override
@@ -125,10 +128,12 @@ public class GameBoardView extends View {
             columns = DEFAULT_COLUMNS;
         }
 
-        if (speed == 0) speed = DEFAULT_SPEED;
-
         buildBoardMatrix();
-        gestureDetector = new GestureDetector(getContext(), new GestureListener());
+        setLevel(DEFAULT_LEVEL);
+        random = new Random(System.nanoTime());
+        gestureListener = new GestureListener();
+        gestureDetector = new GestureDetector(getContext(), gestureListener);
+        gestureDetector.setIsLongpressEnabled(false);
         isPaused = false;
         isGameOver = false;
         tetrominoBorder = new Paint();
@@ -185,8 +190,8 @@ public class GameBoardView extends View {
         for (int row = 0; row < shapeMatrix.length; row++) {
             for (int column = 0; column < shapeMatrix[0].length; column++) {
                 if (shapeMatrix[row][column] != android.R.color.transparent) {
-                    int boardMatrixRow = currentTetromino.getPositionOnBoard().getY() + row;
-                    int boardMatrixColumn = currentTetromino.getPositionOnBoard().getX() + column;
+                    int boardMatrixRow = currentTetromino.getPosition().getBoardMatrixRow() + row;
+                    int boardMatrixColumn = currentTetromino.getPosition().getBoardMatrixColumn() + column;
                     boardMatrix[boardMatrixRow][boardMatrixColumn] = shapeMatrix[row][column];
                 }
             }
@@ -220,12 +225,12 @@ public class GameBoardView extends View {
      * @return la lista con los indicies de las filas completas o una lista
      *         vacia.
      */
-    private List<Integer> checkForCompletedLines() {
+    private List<Integer> lookForCompletedLines() {
         ArrayList<Integer> rowsToClear = new ArrayList<Integer>(4);
         for (int row = 0; row < boardMatrix.length; row++) {
             boolean isComplete = true;
-            for (int column = 0; column < boardMatrix[0].length; column++) {
-                if (boardMatrix[row][column] == android.R.color.transparent) {
+            for (int color : boardMatrix[row]) {
+                if (color == android.R.color.transparent) {
                     isComplete = false;
                     break;
                 }
@@ -275,7 +280,7 @@ public class GameBoardView extends View {
      * @return tetromino escogiendo al azar una de las figuras predefinadas.
      */
     protected Tetromino getRandomTetromino() {
-        int randomIndex = new Random().nextInt(DefaultShape.values().length);
+        int randomIndex = random.nextInt(DefaultShape.values().length);
         DefaultShape randomShape = DefaultShape.values()[randomIndex];
         return new Tetromino.Builder(this)
             .use(randomShape)
@@ -400,26 +405,20 @@ public class GameBoardView extends View {
     }
 
     /**
-     * Inicializa la velocidad del juego
+     * Cambia el nivel del juego.
      * 
-     * @param speed velociadad en milisegundos.
+     * @param level 0+.
      */
-    public void setSpeed(long speed) {
-        this.speed = speed;
+    public void setLevel(int level) {
+        this.level = level < DEFAULT_LEVEL ? DEFAULT_LEVEL : level;
+        currentSpeed = DEFAULT_SPEED / (this.level + 1);
     }
 
     /**
-     * Resetea el nivel a 0.
-     */
-    public void resetLevel() {
-        speed = DEFAULT_SPEED;
-    }
-
-    /**
-     * Le velocidad del nivel aumentará.
+     * Aumenta la velocidad y el nivel de juego.
      */
     public void levelUp() {
-        speed *= 0.85;
+        currentSpeed = DEFAULT_SPEED / (++level + 1);
     }
 
     /**
@@ -497,7 +496,8 @@ public class GameBoardView extends View {
      */
     private void handleTetrominoDown() {
         if (!currentTetromino.moveTo(Direction.DOWN)) {
-            if (tetrominoDownMoves == 0) {
+            gestureListener.shouldStopScrollEvent = true;
+            if (tetrominoDownMoves == 0) { // TODO: esta mal esta condición para el Game over
                 Log.i(TAG, "Game over");
                 stopGame();
                 isGameOver = true;
@@ -505,7 +505,7 @@ public class GameBoardView extends View {
             } else {
                 tetrominoDownMoves = 0;
                 updateBoardMatrix();
-                List<Integer> rowsToClear = checkForCompletedLines();
+                List<Integer> rowsToClear = lookForCompletedLines();
                 if (!rowsToClear.isEmpty()) {
                     clearCompletedLines(rowsToClear);
                     if (onPointsGainedListener != null) onPointsGainedListener.onClearedLines(rowsToClear.size());
@@ -565,26 +565,44 @@ public class GameBoardView extends View {
      */
     private class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
+        private boolean shouldStopScrollEvent;
+        private float totalDistanceX;
+        private float totalDistanceY;
+
         /**
          * {@inheritDoc}
          */
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            if (!isPaused && !isGameOver) {
-                float dX = Math.abs(e1.getX() - e2.getX());
-                float dY = Math.abs(e1.getY() - e2.getY());
-                if (dX > dY) {
-                    if (distanceX < -MOVE_SIDEWAYS_SENSITIVITY && currentTetromino.moveTo(Direction.RIGHT)) {
-                        Log.d(TAG, "Move tetromino to the right");
-                        invalidate();
-                    } else if (distanceX > MOVE_SIDEWAYS_SENSITIVITY && currentTetromino.moveTo(Direction.LEFT)) {
-                        Log.d(TAG, "Move tetromino to the left");
-                        invalidate();
+            if (!isPaused && !isGameOver && !shouldStopScrollEvent) {
+                if (Math.abs(distanceX) > Math.abs(distanceY)) { // Scroll a los lados pero se pudo haber ido chueco
+                    totalDistanceX += distanceX;
+                    if (distanceX < 0) { // Derecha
+                        if (Math.abs(totalDistanceX) >= boardColumnWidth) {
+                            totalDistanceX = 0;
+                            if (currentTetromino.moveTo(Direction.RIGHT)) {
+                                Log.d(TAG, "Move tetromino to the right");
+                                invalidate();
+                            }
+                        }
+                    } else { // Izquierda
+                        if (Math.abs(totalDistanceX) >= boardColumnWidth) {
+                            totalDistanceX = 0;
+                            if (currentTetromino.moveTo(Direction.LEFT)) {
+                                Log.d(TAG, "Move tetromino to the left");
+                                invalidate();
+                            }
+                        }
                     }
-                } else if (dX < dY && distanceY < -MOVE_DOWN_SENSITIVITY) {
-                    handleTetrominoDown();
+                } else if (distanceY < 0) { // Scroll hacia abajo pero se pudo haber ido chueco
+                    totalDistanceY += distanceY;
+                    if (Math.abs(totalDistanceY) >= boardRowHeight) {
+                        totalDistanceY = 0;
+                        handleTetrominoDown();
+                    }
                 }
             }
+
             return true;
         }
 
@@ -607,6 +625,7 @@ public class GameBoardView extends View {
          */
         @Override
         public boolean onDown(MotionEvent e) {
+            shouldStopScrollEvent = false;
             return true;
         }
     }

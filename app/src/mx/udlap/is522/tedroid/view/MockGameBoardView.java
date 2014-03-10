@@ -55,7 +55,7 @@ public class MockGameBoardView extends GameBoardView {
     protected void setUp() {
         super.setUp();
         setCustomDimensions(10, 5);
-        setSpeed(500l);
+        setLevel(1);
         expectedTetrominos = new LinkedList<Tetromino>();
         expectedTetrominos.add(new Tetromino.Builder(this)
             .use(DefaultShape.Z)
