@@ -419,6 +419,8 @@ public class GameBoardView extends View {
      */
     public void levelUp() {
         currentSpeed = DEFAULT_SPEED / (++level + 1);
+        stopDropingTaskIfNeeded();
+        startDropingTask(currentSpeed);
     }
 
     /**
