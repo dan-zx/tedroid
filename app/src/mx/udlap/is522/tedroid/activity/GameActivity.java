@@ -53,7 +53,7 @@ public class GameActivity extends ActionBarActivity {
         nextTetrominoView = (NextTetrominoView) findViewById(R.id.next_tetromino);
         gameBoardView = (GameBoardView) findViewById(R.id.game_board);
         gameBoardView.setOnCommingNextTetrominoListener(new GameBoardView.OnCommingNextTetrominoListener() {
-            
+
             @Override
             public void onCommingNextTetromino(Tetromino nextTetromino) {
                 nextTetrominoView.setTetromino(nextTetromino);
@@ -71,7 +71,7 @@ public class GameActivity extends ActionBarActivity {
             }
         });
         gameBoardView.setOnGameOverListener(new GameBoardView.OnGameOverListener() {
-            
+
             @Override
             public void onGameOver() {
                 mediaPlayer.pause();
@@ -113,7 +113,7 @@ public class GameActivity extends ActionBarActivity {
                 }
             })
             .create();
-        
+
         exitDialog = new AlertDialog.Builder(this)
             .setMessage(R.string.exit_message)
             .setCancelable(false)
@@ -242,7 +242,7 @@ public class GameActivity extends ActionBarActivity {
             level++;
             return true;
         }
-        
+
         return false;
     }
 
@@ -258,7 +258,7 @@ public class GameActivity extends ActionBarActivity {
     /**
      * Solo se usa para pruebas.
      * 
-     * @return el menu de esta actividad. 
+     * @return el menu de esta actividad.
      */
     public Menu getMenu() {
         return menu;

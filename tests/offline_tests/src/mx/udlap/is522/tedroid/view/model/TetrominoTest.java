@@ -81,7 +81,7 @@ public class TetrominoTest {
         assertThat(tetrominoT.rotate()).isTrue();
         assertThat(tetrominoT.getShapeMatrix()).isEqualTo(rotatedShape3);
         assertThat(tetrominoT.rotate()).isTrue();
-        assertThat(tetrominoT.getShapeMatrix()).isEqualTo(DefaultShape.T.getShapeMatrix());;
+        assertThat(tetrominoT.getShapeMatrix()).isEqualTo(DefaultShape.T.getShapeMatrix());
         assertThat(tetrominoT.rotate()).isTrue();
         assertThat(tetrominoT.getShapeMatrix()).isEqualTo(rotatedShape1);
     }
@@ -113,15 +113,15 @@ public class TetrominoTest {
                                      {android.R.color.transparent, android.R.color.transparent} };
             }
         };
-        
+
         Tetromino tetrominoO = new Tetromino.Builder(gameBoardView)
             .use(DefaultShape.O)
             .build();
-        
+
         assertThat(tetrominoO.moveTo(Direction.RIGHT)).isFalse();
         assertThat(tetrominoO.moveTo(Direction.LEFT)).isFalse();
         assertThat(tetrominoO.moveTo(Direction.DOWN)).isFalse();
-        
+
         gameBoardView = new GameBoardView(dummyActivity) {
             @Override
             public int[][] getBoardMatrix() {
@@ -131,11 +131,11 @@ public class TetrominoTest {
                                      {android.R.color.black,       android.R.color.black,       android.R.color.transparent, android.R.color.transparent, android.R.color.black} };
             }
         };
-        
+
         tetrominoO = new Tetromino.Builder(gameBoardView)
             .use(DefaultShape.O)
             .build();
-        
+
         assertThat(tetrominoO.moveTo(Direction.RIGHT)).isTrue();
         assertThat(tetrominoO.moveTo(Direction.RIGHT)).isTrue();
         assertThat(tetrominoO.moveTo(Direction.RIGHT)).isTrue();
@@ -143,7 +143,7 @@ public class TetrominoTest {
         assertThat(tetrominoO.moveTo(Direction.LEFT)).isFalse();
         assertThat(tetrominoO.moveTo(Direction.DOWN)).isFalse();
     }
-    
+
     @Test
     public void shouldNotRotate() throws Exception {
         GameBoardView gameBoardView = new GameBoardView(dummyActivity) {
@@ -155,13 +155,13 @@ public class TetrominoTest {
                                      {android.R.color.black,       android.R.color.transparent, android.R.color.black} };
             }
         };
-        
+
         Tetromino tetrominoL = new Tetromino.Builder(gameBoardView)
             .use(DefaultShape.L)
             .build();
-        
+
         assertThat(tetrominoL.rotate()).isFalse();
-        
+
         gameBoardView = new GameBoardView(dummyActivity) {
             @Override
             public int[][] getBoardMatrix() {
@@ -170,11 +170,11 @@ public class TetrominoTest {
                                      {android.R.color.transparent, android.R.color.transparent, android.R.color.transparent}, };
             }
         };
-        
+
         tetrominoL = new Tetromino.Builder(gameBoardView)
             .use(DefaultShape.L)
             .build();
-        
+
         assertThat(tetrominoL.moveTo(Direction.DOWN)).isTrue();
         assertThat(tetrominoL.rotate()).isFalse();
     }

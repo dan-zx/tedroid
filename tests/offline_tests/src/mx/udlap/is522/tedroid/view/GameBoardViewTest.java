@@ -27,7 +27,7 @@ import java.util.Queue;
 @RunWith(RobolectricTestRunner.class)
 @Config(manifest = "../../app/AndroidManifest.xml")
 public class GameBoardViewTest {
-    
+
     @Test
     public void shouldNotRepeatMoreThan2EqualTetrominos() {
         GameBoardView gameBoardViewMock = mock(GameBoardView.class, CALLS_REAL_METHODS);
@@ -35,9 +35,9 @@ public class GameBoardViewTest {
         when(gameBoardViewMock.getContext()).thenReturn(dummyActivity);
         gameBoardViewMock.setUp();
         gameBoardViewMock.setCustomDimensions(4, 4);
-        
+
         final Queue<Tetromino> expectedTetrominos = buildTestTetrominos(gameBoardViewMock);
-        when(gameBoardViewMock.getRandomTetromino()).thenAnswer(new Answer<Tetromino>(){
+        when(gameBoardViewMock.getRandomTetromino()).thenAnswer(new Answer<Tetromino>() {
             @Override
             public Tetromino answer(InvocationOnMock invocation) {
                 return expectedTetrominos.poll();
@@ -46,23 +46,23 @@ public class GameBoardViewTest {
 
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
         assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isFalse();
-        
+
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
         assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isTrue();
-        
+
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
         assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isTrue();
-        
+
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
         assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isFalse();
-        
+
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
         assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isFalse();
-        
+
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
         assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isTrue();
     }
-    
+
     private Queue<Tetromino> buildTestTetrominos(GameBoardView gameBoardView) {
         Queue<Tetromino> tetrominos = new LinkedList<Tetromino>();
         tetrominos.add(new Tetromino.Builder(gameBoardView)

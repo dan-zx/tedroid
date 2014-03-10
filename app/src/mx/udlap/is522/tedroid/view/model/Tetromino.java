@@ -304,22 +304,17 @@ public class Tetromino {
          */
         @Override
         public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
+            if (this == obj) return true;
+            if (obj == null) return false;
+            if (getClass() != obj.getClass()) return false;
             Position other = (Position) obj;
-            if (boardMatrixColumn != other.boardMatrixColumn)
-                return false;
-            if (boardMatrixRow != other.boardMatrixRow)
-                return false;
+            if (boardMatrixColumn != other.boardMatrixColumn) return false;
+            if (boardMatrixRow != other.boardMatrixRow) return false;
             return true;
         }
 
         /**
-         * @return la columna donde se encuentra la esquina superior izquierda 
+         * @return la columna donde se encuentra la esquina superior izquierda
          *         de la matriz de este tetromino.
          */
         public int getBoardMatrixColumn() {

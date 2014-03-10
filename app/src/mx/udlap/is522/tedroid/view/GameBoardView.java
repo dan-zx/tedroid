@@ -290,7 +290,7 @@ public class GameBoardView extends View {
     /**
      * Revisa que no haya más de 3 tetrominos repetidos uno tras otro.
      * 
-     * @return si ya se repitio 3 veces o más. 
+     * @return si ya se repitio 3 veces o más.
      */
     protected boolean shouldGetAnotherRandomTetromino() {
         if (currentTetromino.equals(nextTetromino)) {
@@ -482,6 +482,7 @@ public class GameBoardView extends View {
 
     /**
      * Listener que escuchará cuando se acabe el juego.
+     * 
      * @author Daniel Pedraza-Arcega
      * @since versión 1.0
      */

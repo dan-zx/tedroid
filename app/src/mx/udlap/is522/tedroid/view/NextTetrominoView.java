@@ -47,7 +47,7 @@ public class NextTetrominoView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        
+
         if (tetromino != null) tetromino.drawOn(canvas);
     }
 

@@ -11,16 +11,16 @@ import mx.udlap.is522.tedroid.view.GameBoardView;
 
 import java.util.Arrays;
 
-public class SimpleGameTest extends ActivityInstrumentationTestCase2<MockGameActivity>{
+public class SimpleGameTest extends ActivityInstrumentationTestCase2<MockGameActivity> {
 
     private static final String TAG = GameOverTest.class.getSimpleName();
-    
+
     private Solo solo;
-    
+
     public SimpleGameTest() {
         super(MockGameActivity.class);
     }
-    
+
     @Override
     public void setUp() throws Exception {
         solo = new Solo(getInstrumentation(), getActivity());
@@ -30,7 +30,7 @@ public class SimpleGameTest extends ActivityInstrumentationTestCase2<MockGameAct
     public void tearDown() throws Exception {
         solo.finishOpenedActivities();
     }
-    
+
     public void testRun() throws Exception {
         solo.waitForActivity(MockGameActivity.class);
         GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.mock_game_board);
@@ -42,31 +42,31 @@ public class SimpleGameTest extends ActivityInstrumentationTestCase2<MockGameAct
                 assertEquals("Only one line should be cleared", 1, linesCleared);
             }
         });
-        
+
         Thread.sleep(800l);
-        
+
         Log.d(TAG, "Rotating tetromino...");
         solo.clickOnView(gameBoardView, true);
-        
+
         final int rotated[][] = { { android.R.color.transparent, R.color.cyan },
                                   { R.color.cyan, R.color.cyan },
                                   { R.color.cyan, android.R.color.transparent } };
 
         assertTrue("Tetromino Z should be rotated", Arrays.deepEquals(rotated, gameBoardView.getCurrentTetromino().getShapeMatrix()));
-        
+
         int previousRow = gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixRow();
         Log.d(TAG, "Droping tetromino...");
         solo.drag(5, -480, 374, 374, 40);
         solo.drag(5, 5, 200, 700, 1);
-        assertTrue("Tetromino should be at the middle of the screen", gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixRow() >= previousRow+3);
-        
+        assertTrue("Tetromino should be at the middle of the screen", gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixRow() >= previousRow + 3);
+
         Thread.sleep(800l);
-        
+
         int previousColumn = gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixColumn();
         Log.d(TAG, "Moving tetromino L to the right...");
         solo.drag(5, 480, 374, 374, 40);
-        assertTrue("Tetromino should be moved to the right at least one space", gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixColumn() >= previousColumn+1);
-        
+        assertTrue("Tetromino should be moved to the right at least one space", gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixColumn() >= previousColumn + 1);
+
         Thread.sleep(2500l);
 
         Log.d(TAG, "Moving tetromino to the right...");
@@ -76,7 +76,7 @@ public class SimpleGameTest extends ActivityInstrumentationTestCase2<MockGameAct
         Log.d(TAG, "Moving tetromino to the left...");
         solo.drag(5, -480, 374, 374, 40);
 
-        assertTrue("Tetromino should be moved to the right at least one space", gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixColumn() <= previousColumn-1);
+        assertTrue("Tetromino should be moved to the right at least one space", gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixColumn() <= previousColumn - 1);
         Thread.sleep(800l);
     }
 }
