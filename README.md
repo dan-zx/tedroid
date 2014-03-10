@@ -12,7 +12,7 @@ La documentación del proyecto puede ser consultada en [Google Drive](http://ow.
 
 La información sobre descarga, instalación, construcción y depuración del proyecto se encuentra en la [wiki](https://github.com/dan-zx/tedroid/wiki).
 
-Las versiones de la aplicación se pueden descargar [aquí](http://ow.ly/u6wJ5).
+Las versiones de la aplicación se pueden descargar [aquí](https://github.com/dan-zx/tedroid/releases).
 
 ### Autores:
 * Daniel Pedraza Arcega [@dan-zx](https://github.com/dan-zx)
