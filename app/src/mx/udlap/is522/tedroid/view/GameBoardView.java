@@ -40,7 +40,6 @@ public class GameBoardView extends View {
     private int rows;
     private int columns;
     private int level;
-    private int tetrominoDownMoves;
     private int repeatedTetromino;
     private long currentSpeed;
     private float boardColumnWidth;
@@ -148,18 +147,19 @@ public class GameBoardView extends View {
     }
 
     protected void setUpCurrentAndNextTetrominos() {
-         if (nextTetromino == null) currentTetromino = getRandomTetromino();
-         else currentTetromino = nextTetromino;
-         nextTetromino = getRandomTetromino();
-         //Si no puede colocar el tetromino en el centro del tablero
-         // es que el juego ya no puede continuar
-         if (!currentTetromino.centerOnGameBoardView()){
-         	Log.i(TAG, "Game over");
-             stopGame();
-             isGameOver = true;
-             if (onGameOverListener != null) onGameOverListener.onGameOver();
-         	}
-         }
+        if (nextTetromino == null) currentTetromino = getRandomTetromino();
+        else currentTetromino = nextTetromino;
+        nextTetromino = getRandomTetromino();
+        
+        // Si no puede colocar el tetromino en el centro del tablero
+        // es que el juego ya no puede continuar
+        if (!currentTetromino.centerOnGameBoardView()) {
+            Log.i(TAG, "Game over");
+            stopGame();
+            isGameOver = true;
+            if (onGameOverListener != null) onGameOverListener.onGameOver();
+        }
+    }
          
 
     /**
@@ -508,7 +508,6 @@ public class GameBoardView extends View {
     private void handleTetrominoDown() {
         if (!currentTetromino.moveTo(Direction.DOWN)) {
             gestureListener.shouldStopScrollEvent = true;
-            tetrominoDownMoves = 0;
             updateBoardMatrix();
             List<Integer> rowsToClear = lookForCompletedLines();
             if (!rowsToClear.isEmpty()) {
@@ -521,7 +520,6 @@ public class GameBoardView extends View {
             invalidate();
             
         } else {
-            tetrominoDownMoves++;
             Log.d(TAG, "Move down tetromino");
             invalidate();
         }
