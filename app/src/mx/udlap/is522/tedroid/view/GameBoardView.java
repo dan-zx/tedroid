@@ -148,11 +148,19 @@ public class GameBoardView extends View {
     }
 
     protected void setUpCurrentAndNextTetrominos() {
-        if (nextTetromino == null) currentTetromino = getRandomTetromino();
-        else currentTetromino = nextTetromino;
-        nextTetromino = getRandomTetromino();
-        currentTetromino.centerOnGameBoardView();
-    }
+         if (nextTetromino == null) currentTetromino = getRandomTetromino();
+         else currentTetromino = nextTetromino;
+         nextTetromino = getRandomTetromino();
+         //Si no puede colocar el tetromino en el centro del tablero
+         // es que el juego ya no puede continuar
+         if (!currentTetromino.centerOnGameBoardView()){
+         	Log.i(TAG, "Game over");
+             stopGame();
+             isGameOver = true;
+             if (onGameOverListener != null) onGameOverListener.onGameOver();
+         	}
+         }
+         
 
     /**
      * Saca otro tetromino al azar para el siguiente en caer si es que se repite
@@ -500,24 +508,18 @@ public class GameBoardView extends View {
     private void handleTetrominoDown() {
         if (!currentTetromino.moveTo(Direction.DOWN)) {
             gestureListener.shouldStopScrollEvent = true;
-            if (tetrominoDownMoves == 0) { // TODO: esta mal esta condición para el Game over
-                Log.i(TAG, "Game over");
-                stopGame();
-                isGameOver = true;
-                if (onGameOverListener != null) onGameOverListener.onGameOver();
-            } else {
-                tetrominoDownMoves = 0;
-                updateBoardMatrix();
-                List<Integer> rowsToClear = lookForCompletedLines();
-                if (!rowsToClear.isEmpty()) {
-                    clearCompletedLines(rowsToClear);
-                    if (onPointsGainedListener != null) onPointsGainedListener.onClearedLines(rowsToClear.size());
-                }
-                setUpCurrentAndNextTetrominos();
-                setAnotherRandomTetrominoIfNeeded();
-                if (onCommingNextTetrominoListener != null) onCommingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
-                invalidate();
+            tetrominoDownMoves = 0;
+            updateBoardMatrix();
+            List<Integer> rowsToClear = lookForCompletedLines();
+            if (!rowsToClear.isEmpty()) {
+            	clearCompletedLines(rowsToClear);
+                if (onPointsGainedListener != null) onPointsGainedListener.onClearedLines(rowsToClear.size());
             }
+            setUpCurrentAndNextTetrominos();
+            setAnotherRandomTetrominoIfNeeded();
+            if (onCommingNextTetrominoListener != null) onCommingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
+            invalidate();
+            
         } else {
             tetrominoDownMoves++;
             Log.d(TAG, "Move down tetromino");
