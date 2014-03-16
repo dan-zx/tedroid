@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mx.udlap.is522.tedroid"
-    android:versionCode="1"
-    android:versionName="1.0-SNAPSHOT" >
+    android:versionCode="0"
+    android:versionName="0.1.1" >
 
     <uses-sdk
         android:minSdkVersion="7"
