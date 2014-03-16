@@ -80,12 +80,14 @@ public class Tetromino {
     /**
      * Centra este tetromino en el tablero padre.
      */
-    public void centerOnGameBoardView() {
+    public boolean centerOnGameBoardView() {
+               
         int[][] boardMatrix = gameBoardView.getBoardMatrix();
         int boardCenterX = boardMatrix[0].length / 2;
         int shapeCenterX = shapeMatrix[0].length / 2;
         int xMoves = boardCenterX - shapeCenterX;
         position.boardMatrixColumn = xMoves;
+        return (canFit(getShapeMatrix()));
     }
 
     /**
