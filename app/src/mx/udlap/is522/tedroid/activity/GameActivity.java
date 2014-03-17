@@ -62,9 +62,16 @@ public class GameActivity extends ActionBarActivity {
         gameBoardView.setOnPointsGainedListener(new GameBoardView.OnPointsGainedListener() {
 
             @Override
+            public void onDrop(int typeOfDrop) {
+                updateScore(0,typeOfDrop);
+                linesTextView.setText(String.valueOf(totalLines));
+                scoreTextView.setText(String.valueOf(score));
+                levelTextView.setText(String.valueOf(level));                
+            }
+            
             public void onClearedLines(int linesCleared) {
                 if (updateLevelIfNeeded(linesCleared)) gameBoardView.levelUp();
-                updateScore(linesCleared);
+                updateScore(linesCleared,0);
                 linesTextView.setText(String.valueOf(totalLines));
                 scoreTextView.setText(String.valueOf(score));
                 levelTextView.setText(String.valueOf(level));
@@ -217,16 +224,17 @@ public class GameActivity extends ActionBarActivity {
      * 
      * @param linesCleared las lineas borradas.
      */
-    private void updateScore(int linesCleared) {
+    private void updateScore(int linesCleared, int typeOfDrop) {
         int factor;
         switch (linesCleared) {
-            case 1: factor = 40; break;
+        	case 0:	factor = 0; break;
+        	case 1: factor = 40; break;
             case 2: factor = 100; break;
             case 3: factor = 300; break;
             case 4: factor = 1200; break;
             default: factor = 1; break;
         }
-        score += factor * (level + 1);
+        score += factor * (level + 1) + typeOfDrop*4;
     }
 
     /**
