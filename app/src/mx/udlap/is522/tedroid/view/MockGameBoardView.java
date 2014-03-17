@@ -81,6 +81,9 @@ public class MockGameBoardView extends GameBoardView {
         expectedTetrominos.add(new Tetromino.Builder(this)
             .use(DefaultShape.J)
             .build());
+        expectedTetrominos.add(new Tetromino.Builder(this)
+            .use(DefaultShape.I)
+            .build());
     }
 
     /**

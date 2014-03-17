@@ -79,6 +79,8 @@ public class Tetromino {
 
     /**
      * Centra este tetromino en el tablero padre.
+     * 
+     * @return si se traslapa con otras piezas o no.
      */
     public boolean centerOnGameBoardView() {
         int[][] boardMatrix = gameBoardView.getBoardMatrix();

@@ -59,19 +59,23 @@ public class GameActivity extends ActionBarActivity {
                 nextTetrominoView.setTetromino(nextTetromino);
             }
         });
-        gameBoardView.setOnPointsGainedListener(new GameBoardView.OnPointsGainedListener() {
+        gameBoardView.setOnPointsAwardedListener(new GameBoardView.OnPointsAwardedListener() {
 
             @Override
-            public void onDrop(int typeOfDrop) {
-                updateScore(0,typeOfDrop);
-                linesTextView.setText(String.valueOf(totalLines));
+            public void onHardDropped(int gridSpaces) {
+                score += gridSpaces * 2;
                 scoreTextView.setText(String.valueOf(score));
-                levelTextView.setText(String.valueOf(level));                
+            }
+            
+            @Override
+            public void onSoftDropped(int gridSpaces) {
+                score += gridSpaces;
+                scoreTextView.setText(String.valueOf(score));
             }
             
             public void onClearedLines(int linesCleared) {
                 if (updateLevelIfNeeded(linesCleared)) gameBoardView.levelUp();
-                updateScore(linesCleared,0);
+                updateScoreWhenClearLines(linesCleared);
                 linesTextView.setText(String.valueOf(totalLines));
                 scoreTextView.setText(String.valueOf(score));
                 levelTextView.setText(String.valueOf(level));
@@ -220,21 +224,21 @@ public class GameActivity extends ActionBarActivity {
     }
 
     /**
-     * Actualiza el puntaje del juego.
+     * Actualiza el puntaje del juego cuando hay lineas borradas.
      * 
      * @param linesCleared las lineas borradas.
      */
-    private void updateScore(int linesCleared, int typeOfDrop) {
+    private void updateScoreWhenClearLines(int linesCleared) {
         int factor;
         switch (linesCleared) {
-        	case 0:	factor = 0; break;
-        	case 1: factor = 40; break;
+            case 1: factor = 40; break;
             case 2: factor = 100; break;
             case 3: factor = 300; break;
             case 4: factor = 1200; break;
             default: factor = 1; break;
         }
-        score += factor * (level + 1) + typeOfDrop*4;
+        
+        score += factor * (level + 1);
     }
 
     /**
