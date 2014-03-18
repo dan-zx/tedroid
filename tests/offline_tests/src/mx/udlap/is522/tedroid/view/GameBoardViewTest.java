@@ -19,13 +19,11 @@ import org.mockito.stubbing.Answer;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.Config;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = "../../app/AndroidManifest.xml")
 public class GameBoardViewTest {
 
     @Test
