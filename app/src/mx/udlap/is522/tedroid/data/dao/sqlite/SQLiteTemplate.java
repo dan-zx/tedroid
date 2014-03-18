@@ -283,5 +283,9 @@ public class SQLiteTemplate {
                 sqliteTemplate = new SQLiteTemplate(databaseHelper);
             }
         }
+
+        protected String getSqlString(int resId) {
+            return context.getString(resId).replaceAll("\\\\'", "'");
+        }
     }
 }

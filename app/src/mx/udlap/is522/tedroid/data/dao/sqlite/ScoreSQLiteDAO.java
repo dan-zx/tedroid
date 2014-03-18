@@ -26,7 +26,7 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
     @Override
     public List<Score> readAllOrderedByPointsDesc() {
         return getSQLiteTemplate().queryForList(
-                getContext().getString(R.string.score_readAllOrderedByPointsDesc_sql),
+                getSqlString(R.string.score_readAllOrderedByPointsDesc_sql), 
                 new ScoreMapper());
     }
 
@@ -36,7 +36,7 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
     @Override
     public void save(Score score) {
         getSQLiteTemplate().execute(
-                getContext().getString(R.string.score_insert_sql),
+                getSqlString(R.string.score_insert_sql), 
                 new ScoreInsertBinder(score));
     }
 
@@ -46,7 +46,7 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
     @Override
     public void deleteAll() {
         getSQLiteTemplate().execute(
-                getContext().getString(R.string.score_deleteAll_sql));
+                getSqlString(R.string.score_deleteAll_sql));
     }
 
     /**
