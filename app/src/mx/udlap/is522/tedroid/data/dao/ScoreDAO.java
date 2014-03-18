@@ -13,9 +13,10 @@ import java.util.List;
 public interface ScoreDAO {
 
     /**
-     * @return todos los objetos Score de fuente datos.
+     * @return todos los objetos Score de fuente datos ordenados puntos en orden
+     *         descendente.
      */
-    List<Score> readAll();
+    List<Score> readAllOrderedByPointsDesc();
 
     /**
      * Guarda el objeto Score proporcionado en la fuente datos.
@@ -23,7 +24,6 @@ public interface ScoreDAO {
      * @param score el objeto a guardar.
      */
     void save(Score score);
-
 
     /**
      * Borra todos los objetos Score de la fuente datos.

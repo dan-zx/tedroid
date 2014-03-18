@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <string name="score_readAll_sql">SELECT _id, level, lines, points FROM score</string>
+    <string name="score_readAllOrderedByPointsDesc_sql">SELECT _id, strftime('%s', obtained_at) as obtained_at_unix, level, lines, points FROM score ORDER BY points DESC</string>
     <string name="score_insert_sql">INSERT INTO score (level, lines, points) VALUES (?, ?, ?)</string>
     <string name="score_deleteAll_sql">DELETE FROM score</string>
 

@@ -3,12 +3,12 @@ package mx.udlap.is522.tedroid.data.dao.sqlite;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 
-import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
-
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.Score;
+import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
 import mx.udlap.is522.tedroid.util.Cursors;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,9 +24,9 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
      * {@inheritDoc}
      */
     @Override
-    public List<Score> readAll() {
+    public List<Score> readAllOrderedByPointsDesc() {
         return getSQLiteTemplate().queryForList(
-                getContext().getString(R.string.score_readAll_sql),
+                getContext().getString(R.string.score_readAllOrderedByPointsDesc_sql),
                 new ScoreMapper());
     }
 
@@ -63,7 +63,8 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
         @Override
         public Score mapRow(Cursor cursor, int rowNum) {
             Score score = new Score();
-            score.setId(Cursors.getLong(cursor, "_id"));
+            score.setId(Cursors.getInteger(cursor, "_id"));
+            score.setObtainedAt(new Date(Cursors.getLong(cursor, "obtained_at_unix")));
             score.setLevel(Cursors.getInteger(cursor, "level"));
             score.setLines(Cursors.getInteger(cursor, "lines"));
             score.setPoints(Cursors.getInteger(cursor, "points"));
