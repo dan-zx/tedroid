@@ -64,7 +64,7 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
         public Score mapRow(Cursor cursor, int rowNum) {
             Score score = new Score();
             score.setId(Cursors.getInteger(cursor, "_id"));
-            score.setObtainedAt(new Date(Cursors.getLong(cursor, "obtained_at_unix")));
+            score.setObtainedAt(new Date(Cursors.getLong(cursor, "obtained_at_unix") * 1000l));
             score.setLevel(Cursors.getInteger(cursor, "level"));
             score.setLines(Cursors.getInteger(cursor, "lines"));
             score.setPoints(Cursors.getInteger(cursor, "points"));
