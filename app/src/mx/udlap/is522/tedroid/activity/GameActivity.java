@@ -1,8 +1,10 @@
 package mx.udlap.is522.tedroid.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -11,6 +13,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import mx.udlap.is522.tedroid.R;
+import mx.udlap.is522.tedroid.data.Score;
+import mx.udlap.is522.tedroid.data.dao.DAOFactory;
+import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
 import mx.udlap.is522.tedroid.view.GameBoardView;
 import mx.udlap.is522.tedroid.view.NextTetrominoView;
 import mx.udlap.is522.tedroid.view.model.Tetromino;
@@ -88,6 +93,11 @@ public class GameActivity extends ActionBarActivity {
                 mediaPlayer.pause();
                 gameBoardView.setVisibility(View.GONE);
                 gameOverTextView.setVisibility(View.VISIBLE);
+                Score newScore = new Score();
+                newScore.setLevel(level);
+                newScore.setLines(totalLines);
+                newScore.setPoints(score);
+                new ScoreSaver(GameActivity.this).execute(newScore);
             }
         });
         restartDialog = new AlertDialog.Builder(this)
@@ -148,6 +158,9 @@ public class GameActivity extends ActionBarActivity {
                 }
             })
             .create();
+        scoreTextView.setText(String.valueOf(score));
+        levelTextView.setText(String.valueOf(level));
+        linesTextView.setText(String.valueOf(totalLines));
     }
 
     @Override
@@ -274,5 +287,32 @@ public class GameActivity extends ActionBarActivity {
      */
     public Menu getMenu() {
         return menu;
+    }
+
+    /**
+     * Tarea asíncrona para guardar puntajes. 
+     * (TODO: debe estar en otro lado esta clase)
+     *  
+     * @author Daniel Pedraza-Arcega
+     * @since 1.0
+     */
+    private static class ScoreSaver extends AsyncTask<Score, Void, Void> {
+
+        private ScoreDAO scoreDAO;
+
+        /**
+         * Crea una nueva tarea asíncrona.
+         * 
+         * @param context el contexto de la aplicación.
+         */
+        public ScoreSaver(Context context) {
+            scoreDAO = new DAOFactory(context.getApplicationContext()).get(ScoreDAO.class);
+        }
+
+        @Override
+        protected Void doInBackground(Score... params) {
+            for (Score score : params) scoreDAO.save(score);
+            return null;
+        }
     }
 }
