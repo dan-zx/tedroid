@@ -3,17 +3,19 @@
 
     <string name="app_name">Tedroid</string>
 
+    <!-- ACTIVITY TITLES -->
+    <string name="settings_activity_title">Configuración</string>
+    <string name="scores_activity_title">Puntajes</string>
+
     <!-- DIALOGS -->
     <string name="exit_message">¿De verdad quieres salir del juego?</string>
     <string name="restart_message">¿De verdad quieres reiniciar el juego?</string>
+    <string name="no_scores_message">No tienes puntajes todavía</string>
 
     <!-- GAME LAYOUT -->
     <string name="score_text">Puntaje:</string>
-    <string name="init_score">0</string>
     <string name="level_text">Nivel:</string>
-    <string name="init_levels">0</string>
     <string name="lines_text">Lineas:</string>
-    <string name="init_lines">0</string>
     <string name="next_tetromino_text">Siguiente:</string>
     <string name="pause_text">Pausa</string>
     <string name="game_over_text">Game Over</string>
