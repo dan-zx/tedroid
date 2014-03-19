@@ -1,8 +1,10 @@
 package mx.udlap.is522.tedroid.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -11,6 +13,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import mx.udlap.is522.tedroid.R;
+import mx.udlap.is522.tedroid.data.Score;
+import mx.udlap.is522.tedroid.data.dao.DAOFactory;
+import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
 import mx.udlap.is522.tedroid.view.GameBoardView;
 import mx.udlap.is522.tedroid.view.NextTetrominoView;
 import mx.udlap.is522.tedroid.view.model.Tetromino;
@@ -53,43 +58,46 @@ public class GameActivity extends ActionBarActivity {
         nextTetrominoView = (NextTetrominoView) findViewById(R.id.next_tetromino);
         gameBoardView = (GameBoardView) findViewById(R.id.game_board);
         gameBoardView.setOnCommingNextTetrominoListener(new GameBoardView.OnCommingNextTetrominoListener() {
-            
+
             @Override
             public void onCommingNextTetromino(Tetromino nextTetromino) {
                 nextTetrominoView.setTetromino(nextTetromino);
             }
         });
-        gameBoardView.setOnPointsGainedListener(new GameBoardView.OnPointsGainedListener() {
+        gameBoardView.setOnPointsAwardedListener(new GameBoardView.OnPointsAwardedListener() {
 
             @Override
+            public void onHardDropped(int gridSpaces) {
+                score += gridSpaces * 2;
+                scoreTextView.setText(String.valueOf(score));
+            }
+            
+            @Override
+            public void onSoftDropped(int gridSpaces) {
+                score += gridSpaces;
+                scoreTextView.setText(String.valueOf(score));
+            }
+            
             public void onClearedLines(int linesCleared) {
-                boolean mayLevelUp = totalLines % 10 >= 6;
-                totalLines += linesCleared;
-                if (mayLevelUp && totalLines % 10 <= 3) {
-                    levelTextView.setText(String.valueOf(++level));
-                    gameBoardView.levelUp();
-                }
-                int factor;
-                switch (linesCleared) {
-                    case 1: factor = 40; break;
-                    case 2: factor = 100; break;
-                    case 3: factor = 300; break;
-                    case 4: factor = 1200; break;
-                    default: factor = 1; break;
-                }
-                score += factor * (level + 1);
+                if (updateLevelIfNeeded(linesCleared)) gameBoardView.levelUp();
+                updateScoreWhenClearLines(linesCleared);
                 linesTextView.setText(String.valueOf(totalLines));
                 scoreTextView.setText(String.valueOf(score));
-                
+                levelTextView.setText(String.valueOf(level));
             }
         });
         gameBoardView.setOnGameOverListener(new GameBoardView.OnGameOverListener() {
-            
+
             @Override
             public void onGameOver() {
                 mediaPlayer.pause();
                 gameBoardView.setVisibility(View.GONE);
                 gameOverTextView.setVisibility(View.VISIBLE);
+                Score newScore = new Score();
+                newScore.setLevel(level);
+                newScore.setLines(totalLines);
+                newScore.setPoints(score);
+                new ScoreSaver(GameActivity.this).execute(newScore);
             }
         });
         restartDialog = new AlertDialog.Builder(this)
@@ -99,15 +107,14 @@ public class GameActivity extends ActionBarActivity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    score = 0;
-                    level = 0;
-                    totalLines = 0;
+                    resetCounters();
                     scoreTextView.setText(String.valueOf(score));
                     levelTextView.setText(String.valueOf(level));
                     linesTextView.setText(String.valueOf(totalLines));
                     pauseTextView.setVisibility(View.GONE);
                     gameOverTextView.setVisibility(View.GONE);
                     gameBoardView.setVisibility(View.VISIBLE);
+                    gameBoardView.setLevel(GameBoardView.DEFAULT_LEVEL); // TODO: resetear el nivel seleccionado
                     gameBoardView.restartGame();
                     MenuItem pauseResumeItem = menu.findItem(R.id.action_pause_resume);
                     pauseResumeItem.setIcon(R.drawable.ic_action_pause);
@@ -127,7 +134,7 @@ public class GameActivity extends ActionBarActivity {
                 }
             })
             .create();
-        
+
         exitDialog = new AlertDialog.Builder(this)
             .setMessage(R.string.exit_message)
             .setCancelable(false)
@@ -151,6 +158,9 @@ public class GameActivity extends ActionBarActivity {
                 }
             })
             .create();
+        scoreTextView.setText(String.valueOf(score));
+        levelTextView.setText(String.valueOf(level));
+        linesTextView.setText(String.valueOf(totalLines));
     }
 
     @Override
@@ -227,11 +237,82 @@ public class GameActivity extends ActionBarActivity {
     }
 
     /**
+     * Actualiza el puntaje del juego cuando hay lineas borradas.
+     * 
+     * @param linesCleared las lineas borradas.
+     */
+    private void updateScoreWhenClearLines(int linesCleared) {
+        int factor;
+        switch (linesCleared) {
+            case 1: factor = 40; break;
+            case 2: factor = 100; break;
+            case 3: factor = 300; break;
+            case 4: factor = 1200; break;
+            default: factor = 1; break;
+        }
+        
+        score += factor * (level + 1);
+    }
+
+    /**
+     * Actualiza el nivel del juego al checar las lineas borradas.
+     * 
+     * @param linesCleared las lineas borradas.
+     * @param si se subio de nivel o no.
+     */
+    private boolean updateLevelIfNeeded(int linesCleared) {
+        boolean mayLevelUp = totalLines % 10 >= 6;
+        totalLines += linesCleared;
+        if (mayLevelUp && totalLines % 10 <= 3) {
+            level++;
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Resetea todos los contadores.
+     */
+    private void resetCounters() {
+        score = 0;
+        level = 0;
+        totalLines = 0;
+    }
+
+    /**
      * Solo se usa para pruebas.
      * 
-     * @return el menu de esta actividad. 
+     * @return el menu de esta actividad.
      */
     public Menu getMenu() {
         return menu;
+    }
+
+    /**
+     * Tarea asíncrona para guardar puntajes. 
+     * (TODO: debe estar en otro lado esta clase)
+     *  
+     * @author Daniel Pedraza-Arcega
+     * @since 1.0
+     */
+    private static class ScoreSaver extends AsyncTask<Score, Void, Void> {
+
+        private ScoreDAO scoreDAO;
+
+        /**
+         * Crea una nueva tarea asíncrona.
+         * 
+         * @param context el contexto de la aplicación.
+         */
+        public ScoreSaver(Context context) {
+            scoreDAO = new DAOFactory(context.getApplicationContext()).get(ScoreDAO.class);
+        }
+
+        @Override
+        protected Void doInBackground(Score... params) {
+            for (Score score : params) scoreDAO.save(score);
+            return null;
+        }
     }
 }

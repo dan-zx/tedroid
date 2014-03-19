@@ -28,35 +28,35 @@ public class StopGameTest extends ActivityInstrumentationTestCase2<GameActivity>
     public void tearDown() throws Exception {
         solo.finishOpenedActivities();
     }
-    
+
     public void testRun() throws Exception {
         Log.d(TAG, "Waiting for activity...");
         solo.waitForActivity(GameActivity.class);
-        
+
         Log.d(TAG, "Stopping game...");
         solo.goBack();
         solo.waitForDialogToOpen();
-        
+
         GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.game_board);
         assertNotNull("GameBoardView should not be null", gameBoardView);
         assertTrue("The game should be paused", gameBoardView.isPaused());
-        
+
         Log.d(TAG, "Ahh... better not");
         solo.clickOnButton(solo.getString(android.R.string.no));
         solo.waitForDialogToClose();
-        
+
         assertFalse("The game should be resumed", gameBoardView.isPaused());
-        
+
         Log.d(TAG, "Stopping game again...");
         solo.goBack();
         solo.waitForDialogToOpen();
-        
+
         assertTrue("The game should be paused", gameBoardView.isPaused());
-        
+
         Log.d(TAG, "Ok stop");
         solo.clickOnButton(solo.getString(android.R.string.yes));
         solo.waitForDialogToClose();
-        
+
         assertTrue("The game should be stopped", gameBoardView.isStopped());
         assertTrue("Activity should be finishing", solo.getCurrentActivity().isFinishing());
     }

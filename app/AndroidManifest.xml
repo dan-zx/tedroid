@@ -11,20 +11,34 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
         <activity
-            android:name="mx.udlap.is522.tedroid.activity.MockGameActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="mx.udlap.is522.tedroid.activity.GameActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
+            android:name=".activity.GameActivity"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.MockGameActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.ScoresActivity"
+            android:label="@string/scores_activity_title"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/settings_activity_title"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
