@@ -19,25 +19,26 @@ public class DAOFactory {
      * Crea una nueva fabrica.
      * 
      * @param context el contexto de la aplicación.
-     * @return un DAOFactory.
      */
-    public static DAOFactory build(Context context) {
-        return new DAOFactory(context);
-    }
-
-    /**
-     * Crea una nueva fabrica.
-     * 
-     * @param context el contexto de la aplicación.
-     */
-    private DAOFactory(Context context) {
+    public DAOFactory(Context context) {
         this.context = context;
     }
 
     /**
-     * @return un ScoreDAO.
+     * @param which que tipo de DAO (interfaz).
+     * @return un GenericDAO o {@code null} si no hay implementación de esa
+     *         interfaz.
      */
-    public ScoreDAO getScoreDAO() {
+    @SuppressWarnings("unchecked")
+    public <T extends GenericDAO<?, ?>> T get(Class<T> which) {
+        if (which == ScoreDAO.class) return (T) buildScoreDAO();
+        return null;
+    }
+
+    /**
+     * @return un ScoreSQLiteDAO.
+     */
+    private ScoreSQLiteDAO buildScoreDAO() {
         ScoreSQLiteDAO scoreSQLiteDAO = new ScoreSQLiteDAO();
         scoreSQLiteDAO.setContext(context);
         scoreSQLiteDAO.setSQLiteOpenHelper(new TedroidSQLiteOpenHelper(context));

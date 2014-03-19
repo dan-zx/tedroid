@@ -10,7 +10,7 @@ import java.util.List;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public interface ScoreDAO {
+public interface ScoreDAO extends GenericDAO<Integer, Score> {
 
     /**
      * @return todos los objetos Score de fuente datos ordenados puntos en orden

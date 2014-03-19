@@ -20,7 +20,7 @@ public class ScoreDAOTest {
     
     @Before
     public void setUp() throws Exception {
-        scoreDAO = DAOFactory.build(Robolectric.application).getScoreDAO();
+        scoreDAO = new DAOFactory(Robolectric.application).get(ScoreDAO.class);
         assertThat(scoreDAO).isNotNull();
     }
     
