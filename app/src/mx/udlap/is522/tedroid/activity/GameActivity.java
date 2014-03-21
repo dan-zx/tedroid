@@ -11,7 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
+import android.widget.TextView.BufferType;
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.Score;
 import mx.udlap.is522.tedroid.data.dao.DAOFactory;
@@ -42,6 +42,7 @@ public class GameActivity extends ActionBarActivity {
     private Menu menu;
     private AlertDialog restartDialog;
     private AlertDialog exitDialog;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,8 @@ public class GameActivity extends ActionBarActivity {
         gameBoardView = (GameBoardView) findViewById(R.id.game_board);
         gameBoardView.setOnCommingNextTetrominoListener(new GameBoardView.OnCommingNextTetrominoListener() {
 
+        	
+        	
             @Override
             public void onCommingNextTetromino(Tetromino nextTetromino) {
                 nextTetrominoView.setTetromino(nextTetromino);
@@ -105,6 +108,9 @@ public class GameActivity extends ActionBarActivity {
             .setCancelable(false)
             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
+            	
+            	
+            	
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     resetCounters();
