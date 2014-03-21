@@ -624,13 +624,15 @@ public class GameBoardView extends View {
                     }
                 } else if (distanceY < 0) { // Scroll hacia abajo pero se pudo haber ido chueco
                     totalDistanceY += distanceY;
-                    softDropGridSpaces = softDropGridSpaces +1;
                     if (Math.abs(totalDistanceY) >= boardRowHeight) {
                         totalDistanceY = 0;
                         //Si no puede continuar abajo significa que bajo en modo SoftDrop
                         if (!moveDownCurrentTetrominoIfPossible()){
-                        	  if (pointsAwardedListener != null) 
-                        		  pointsAwardedListener.onSoftDropped(softDropGridSpaces);
+                        	if (pointsAwardedListener != null) 
+                        		pointsAwardedListener.onSoftDropped(softDropGridSpaces);
+                        }
+                        else{
+                        	softDropGridSpaces = softDropGridSpaces +1;                        	                        	
                         }
                     }
                 }
