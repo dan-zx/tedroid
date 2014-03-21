@@ -5,6 +5,8 @@
     
     <!-- MENU PRINCIAL -->
     <string name="menu"> seleccion de pantalla </string>
+    <string name="game_start"> iniciar juego   </string>
+    
     
     <!-- ACTIVITY TITLES -->
     <string name="settings_activity_title">Configuración</string>
@@ -27,5 +29,6 @@
     <string name="action_pause">Pausa</string>
     <string name="action_resume">Resumir</string>
     <string name="action_restart">Reiniciar</string>
+    <string name="start_game">Start Game</string>
 
 </resources>
