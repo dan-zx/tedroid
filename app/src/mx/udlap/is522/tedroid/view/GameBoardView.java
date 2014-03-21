@@ -41,6 +41,7 @@ public class GameBoardView extends View {
     private int columns;
     private int level;
     private int repeatedTetromino;
+    private int softDropGridSpaces;
     private long currentSpeed;
     private float boardColumnWidth;
     private float boardRowHeight;
@@ -623,9 +624,14 @@ public class GameBoardView extends View {
                     }
                 } else if (distanceY < 0) { // Scroll hacia abajo pero se pudo haber ido chueco
                     totalDistanceY += distanceY;
+                    softDropGridSpaces = softDropGridSpaces +1;
                     if (Math.abs(totalDistanceY) >= boardRowHeight) {
                         totalDistanceY = 0;
-                        moveDownCurrentTetrominoIfPossible();
+                        //Si no puede continuar abajo significa que bajo en modo SoftDrop
+                        if (!moveDownCurrentTetrominoIfPossible()){
+                        	  if (pointsAwardedListener != null) 
+                        		  pointsAwardedListener.onSoftDropped(softDropGridSpaces);
+                        }
                     }
                 }
             }
@@ -664,7 +670,8 @@ public class GameBoardView extends View {
          */
         @Override
         public boolean onDown(MotionEvent e) {
-            shouldStopScrollEvent = false;
+        	shouldStopScrollEvent = false;
+        	softDropGridSpaces = 0;
             return true;
         }
     }
