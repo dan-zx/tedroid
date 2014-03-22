@@ -18,7 +18,7 @@ import java.util.Locale;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public class SQLiteUtils {
+public final class SQLiteUtils {
 
     /**
      * Formatos de tiempo de SQLite.
@@ -51,6 +51,13 @@ public class SQLiteUtils {
     public static final int COLUMN_NOT_FOUND = -1;
     
     private static final String TAG = SQLiteUtils.class.getSimpleName();
+
+    /**
+     * NO INVOCAR.
+     */
+    private SQLiteUtils() {
+        throw new IllegalAccessError("This class cannot be instantiated nor extended");
+    }
 
     /**
      * Termina la transacción en curso si es posible.
