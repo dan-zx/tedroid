@@ -35,10 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.SettingsActivity"
-            android:label="@string/settings_activity_title"
-            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
