@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -40,7 +41,7 @@ public class SQLiteTemplate {
      * @param sql la sentencia SQL a ejecutar.
      * @param rowMapper el objeto que mapeará el resultado de la consulta.
      * @return un objeto tipo T o {@code null} si no hubo resultado o hay más de
-     *         un resultado.
+     *         un resultado o hubo errores.
      */
     public <T> T queryForSingleResult(String sql, RowMapper<T> rowMapper) {
         return queryForSingleResult(sql, null, rowMapper);
@@ -54,17 +55,24 @@ public class SQLiteTemplate {
      * @param sql la sentencia SQL a ejecutar.
      * @param args los argumentos que reemplazarán los '?' de la consulta.
      * @param rowMapper el objeto que mapeará el resultado de la consulta.
-     * @return un objeto tipo T o {@code null} si no hubo resultadoa o hay más
-     *         de un resultado.
+     * @return un objeto tipo T o {@code null} si no hubo resultado, hay más
+     *         de un resultado o hubo errores.
      */
     public <T> T queryForSingleResult(String sql, String[] args, RowMapper<T> rowMapper) {
-        SQLiteDatabase database = databaseHelper.getReadableDatabase();
-        Log.d(TAG, "<-" + sql);
-        Cursor cursor = database.rawQuery(sql, args);
+        SQLiteDatabase database = null;
+        Cursor cursor = null;
         T object = null;
-        if (cursor.getCount() == 1 && cursor.moveToNext()) object = rowMapper.mapRow(cursor, 1);
-        cursor.close();
-        database.close();
+        try {
+            database = databaseHelper.getReadableDatabase();
+            Log.d(TAG, "<-- " + sql);
+            cursor = database.rawQuery(sql, args);
+            if (cursor.getCount() == 1 && cursor.moveToNext()) object = rowMapper.mapRow(cursor, 1);
+        } catch (Exception ex) {
+            Log.e(TAG, "Couldn't complete query [" + sql + "] with args [" + Arrays.deepToString(args) + "]");
+        } finally {
+            SQLiteUtils.close(cursor);
+            SQLiteUtils.close(database);
+        }
         return object;
     }
 
@@ -77,7 +85,7 @@ public class SQLiteTemplate {
      * @param rowMapper el objeto que mapeará cada fila del resultado de la
      *        consulta.
      * @return una lista con objetos tipo T o una lista vacia si no hubo
-     *         resultados.
+     *         resultados o {@code null} si hubo errores.
      */
     public <T> List<T> queryForList(String sql, RowMapper<T> rowMapper) {
         return queryForList(sql, null, rowMapper);
@@ -92,19 +100,26 @@ public class SQLiteTemplate {
      * @param args los argumentos que reemplazarán los '?' de la sentencia.
      * @param rowMapper el objeto que mapeará cada fila del resultado de la
      *        consulta.
-     * @return una lista con objetos tipo T o una lista vacia si no hubo
-     *         resultados.
+     * @return una lista con objetos tipo T, una lista vacia si no hubo
+     *         resultados o {@code null} si hubo errores.
      */
     public <T> List<T> queryForList(String sql, String[] args, RowMapper<T> rowMapper) {
-        SQLiteDatabase database = databaseHelper.getReadableDatabase();
-        Log.d(TAG, "<-" + sql);
-        Cursor cursor = database.rawQuery(sql, args);
-        ArrayList<T> list = new ArrayList<T>(cursor.getCount());
-        int rowNum = 0;
-        while (cursor.moveToNext())
-            list.add(rowMapper.mapRow(cursor, ++rowNum));
-        cursor.close();
-        database.close();
+        SQLiteDatabase database = null;
+        Cursor cursor = null;
+        List<T> list = null;
+        try {
+            database = databaseHelper.getReadableDatabase();
+            Log.d(TAG, "<-- " + sql);
+            cursor = database.rawQuery(sql, args);
+            list = new ArrayList<T>(cursor.getCount());
+            int rowNum = 0;
+            while (cursor.moveToNext()) list.add(rowMapper.mapRow(cursor, ++rowNum));
+        } catch (Exception ex) {
+            Log.e(TAG, "Couldn't complete query [" + sql + "] with args [" + Arrays.deepToString(args) + "]");
+        } finally {
+            SQLiteUtils.close(cursor);
+            SQLiteUtils.close(database);
+        }
         return list;
     }
 
@@ -115,15 +130,22 @@ public class SQLiteTemplate {
      * @param sql la sentencia SQL a ejecutar.
      */
     public void execute(String sql) {
-        SQLiteDatabase database = databaseHelper.getWritableDatabase();
-        database.beginTransaction();
-        Log.d(TAG, "->" + sql);
-        SQLiteStatement statement = database.compileStatement(sql);
-        statement.execute();
-        statement.close();
-        database.setTransactionSuccessful();
-        database.endTransaction();
-        database.close();
+        SQLiteDatabase database = null;
+        SQLiteStatement statement = null;
+        try {
+            database = databaseHelper.getWritableDatabase();
+            database.beginTransaction();
+            Log.d(TAG, "--> " + sql);
+            statement = database.compileStatement(sql);
+            statement.execute();
+            database.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Log.e(TAG, "Couldn't execute [" + sql + "]");
+        } finally {
+            SQLiteUtils.close(statement);
+            SQLiteUtils.endTransaction(database);
+            SQLiteUtils.close(database);
+        }
     }
 
     /**
@@ -135,16 +157,23 @@ public class SQLiteTemplate {
      *        sentencia.
      */
     public void execute(String sql, SQLiteStatementBinder statementBinder) {
-        SQLiteDatabase database = databaseHelper.getWritableDatabase();
-        database.beginTransaction();
-        Log.d(TAG, "->" + sql);
-        SQLiteStatement statement = database.compileStatement(sql);
-        statementBinder.bindValues(statement);
-        statement.execute();
-        statement.close();
-        database.setTransactionSuccessful();
-        database.endTransaction();
-        database.close();
+        SQLiteDatabase database = null;
+        SQLiteStatement statement = null;
+        try {
+            database = databaseHelper.getWritableDatabase();
+            database.beginTransaction();
+            Log.d(TAG, "--> " + sql);
+            statement = database.compileStatement(sql);
+            statementBinder.bindValues(statement);
+            statement.execute();
+            database.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Log.e(TAG, "Couldn't execute [" + sql + "] with args");
+        } finally {
+            SQLiteUtils.close(statement);
+            SQLiteUtils.endTransaction(database);
+            SQLiteUtils.close(database);
+        }
     }
 
     /**
@@ -154,17 +183,23 @@ public class SQLiteTemplate {
      * @param sqls las sentencias SQL a ejecutar.
      */
     public void batchExecute(String[] sqls) {
-        SQLiteDatabase database = databaseHelper.getWritableDatabase();
-        database.beginTransaction();
-        for (String sql : sqls) {
-            Log.d(TAG, "->" + sql);
-            SQLiteStatement statement = database.compileStatement(sql);
-            statement.execute();
-            statement.close();
+        SQLiteDatabase database = null;
+        try {
+            database = databaseHelper.getWritableDatabase();
+            database.beginTransaction();
+            for (String sql : sqls) {
+                Log.d(TAG, "--> " + sql);
+                SQLiteStatement statement = database.compileStatement(sql);
+                statement.execute();
+                statement.close();
+            }
+            database.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Log.e(TAG, "Couldn't execute batch " + Arrays.deepToString(sqls));
+        } finally {
+            SQLiteUtils.endTransaction(database);
+            SQLiteUtils.close(database);
         }
-        database.setTransactionSuccessful();
-        database.endTransaction();
-        database.close();
     }
 
     /**
@@ -176,19 +211,26 @@ public class SQLiteTemplate {
      *        varias veces.
      */
     public void batchExecute(String sql, BatchSQLiteStatementBinder statementBinder) {
-        SQLiteDatabase database = databaseHelper.getWritableDatabase();
-        database.beginTransaction();
-        Log.d(TAG, "->" + sql);
-        SQLiteStatement statement = database.compileStatement(sql);
-        for (int i = 0; i < statementBinder.getBatchSize(); i++) {
-            statement.clearBindings();
-            statementBinder.bindValues(statement, i);
-            statement.execute();
+        SQLiteDatabase database = null;
+        SQLiteStatement statement = null;
+        try {
+            database = databaseHelper.getWritableDatabase();
+            database.beginTransaction();
+            Log.d(TAG, "--> " + sql);
+            statement = database.compileStatement(sql);
+            for (int i = 0; i < statementBinder.getBatchSize(); i++) {
+                statement.clearBindings();
+                statementBinder.bindValues(statement, i);
+                statement.execute();
+            }
+            database.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Log.e(TAG, "Couldn't execute batch [" + sql + "]");
+        } finally {
+            SQLiteUtils.close(statement);
+            SQLiteUtils.endTransaction(database);
+            SQLiteUtils.close(database);
         }
-        statement.close();
-        database.setTransactionSuccessful();
-        database.endTransaction();
-        database.close();
     }
 
     /**

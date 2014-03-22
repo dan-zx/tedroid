@@ -27,7 +27,7 @@ public class ScoreDAOTest {
     @Test
     public void shouldPersist() throws Exception {
         List<Score> all = scoreDAO.readAllOrderedByPointsDesc();
-        assertThat(all).isEmpty();
+        assertThat(all).isNotNull().isEmpty();
         
         Score newScore = new Score();
         newScore.setId(1);
@@ -81,6 +81,6 @@ public class ScoreDAOTest {
         
         scoreDAO.deleteAll();
         all = scoreDAO.readAllOrderedByPointsDesc();
-        assertThat(all).isEmpty();
+        assertThat(all).isNotNull().isEmpty();
     }
 }
