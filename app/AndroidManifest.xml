@@ -16,6 +16,7 @@
         <activity
             android:name=".activity.menuActivity"
             android:label="@string/menu" >
+            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

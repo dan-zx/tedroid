@@ -6,7 +6,8 @@
     <!-- MENU PRINCIAL -->
     <string name="menu"> seleccion de pantalla </string>
     <string name="game_start"> iniciar juego   </string>
-    
+    <string name="game_setup"> pantalla configuracion   </string>
+    <string name="game_rankin"> pantalla rankin   </string>
     
     <!-- ACTIVITY TITLES -->
     <string name="settings_activity_title">Configuración</string>
