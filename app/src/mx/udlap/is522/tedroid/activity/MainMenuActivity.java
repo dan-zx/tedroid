@@ -31,7 +31,7 @@ public class MainMenuActivity extends BaseGameHelperActivity {
             
             @Override
             public void onClick(View v) {
-                getGameHelper().beginUserInitiatedSignIn();
+                beginUserInitiatedSignIn();
             }
         });
     }
@@ -47,12 +47,12 @@ public class MainMenuActivity extends BaseGameHelperActivity {
     }
 
     public void onLeaderboardsButtonClick(View view) {
-        Intent intent = Games.Leaderboards.getAllLeaderboardsIntent(getGameHelper().getApiClient());
+        Intent intent = Games.Leaderboards.getAllLeaderboardsIntent(getApiClient());
         startActivityForResult(intent, UNUSED_REQUEST_CODE);
     }
 
     public void onAchievementsButtonClick(View view) {
-        Intent intent = Games.Achievements.getAchievementsIntent(getGameHelper().getApiClient());
+        Intent intent = Games.Achievements.getAchievementsIntent(getApiClient());
         startActivityForResult(intent, UNUSED_REQUEST_CODE);
     }
 
