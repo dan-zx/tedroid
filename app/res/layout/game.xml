@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
-    android:weightSum="6" >
+    android:weightSum="6" 
+    android:background="@raw/photo">
 
     <TextView
         android:id="@+id/pause_text"
@@ -31,7 +32,8 @@
         android:id="@+id/game_board"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="4" />
+        android:layout_weight="4"
+        android:background="#9b9898" />
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -56,6 +58,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@id/score_text"
             android:layout_margin="8dp"
+            android:background="@color/gray"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
 
@@ -77,6 +80,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@id/level_text"
             android:layout_margin="8dp"
+            android:background="@color/gray"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
 
@@ -98,6 +102,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@id/lines_text"
             android:layout_margin="8dp"
+            android:background="@color/gray"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold" />
 
@@ -119,6 +124,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@id/next_tetromino_text"
             android:layout_margin="8dp" />
+
     </RelativeLayout>
 
 </LinearLayout>
