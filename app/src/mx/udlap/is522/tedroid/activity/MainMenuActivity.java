@@ -7,11 +7,10 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.common.SignInButton;
-
 import com.google.android.gms.games.Games;
 import mx.udlap.is522.tedroid.R;
 
-public class MainMenuActivity extends BaseGameActivity {
+public class MainMenuActivity extends BaseGameHelperActivity {
 
     private static final int UNUSED_REQUEST_CODE = 5471;
 
@@ -32,7 +31,7 @@ public class MainMenuActivity extends BaseGameActivity {
             
             @Override
             public void onClick(View v) {
-                beginUserInitiatedSignIn();
+                getGameHelper().beginUserInitiatedSignIn();
             }
         });
     }
@@ -48,12 +47,12 @@ public class MainMenuActivity extends BaseGameActivity {
     }
 
     public void onLeaderboardsButtonClick(View view) {
-        Intent intent = Games.Leaderboards.getAllLeaderboardsIntent(getApiClient());
+        Intent intent = Games.Leaderboards.getAllLeaderboardsIntent(getGameHelper().getApiClient());
         startActivityForResult(intent, UNUSED_REQUEST_CODE);
     }
 
     public void onAchievementsButtonClick(View view) {
-        Intent intent = Games.Achievements.getAchievementsIntent(getApiClient());
+        Intent intent = Games.Achievements.getAchievementsIntent(getGameHelper().getApiClient());
         startActivityForResult(intent, UNUSED_REQUEST_CODE);
     }
 
@@ -64,6 +63,7 @@ public class MainMenuActivity extends BaseGameActivity {
 
     @Override
     public void onSignInFailed() {
+        super.onSignInFailed();
         signInLayout.setVisibility(View.VISIBLE);
         leaderboardsButton.setVisibility(View.GONE);
         achievementsButton.setVisibility(View.GONE);
@@ -71,6 +71,7 @@ public class MainMenuActivity extends BaseGameActivity {
 
     @Override
     public void onSignInSucceeded() {
+        super.onSignInSucceeded();
         signInLayout.setVisibility(View.GONE);
         leaderboardsButton.setVisibility(View.VISIBLE);
         achievementsButton.setVisibility(View.VISIBLE);

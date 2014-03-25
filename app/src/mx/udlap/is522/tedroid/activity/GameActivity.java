@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +25,7 @@ import mx.udlap.is522.tedroid.view.model.Tetromino;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public class GameActivity extends ActionBarActivity {
+public class GameActivity extends BaseGameHelperActivity {
 
     private int totalLines;
     private int score;

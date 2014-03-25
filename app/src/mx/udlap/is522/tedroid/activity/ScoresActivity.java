@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.ActionBarActivity;
 import android.text.format.DateFormat;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -26,7 +25,7 @@ import java.util.List;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public class ScoresActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<List<Score>> {
+public class ScoresActivity extends BaseGameHelperActivity implements LoaderManager.LoaderCallbacks<List<Score>> {
 
     private TableRow.LayoutParams layoutParams;
     private TableLayout scoreTable;
