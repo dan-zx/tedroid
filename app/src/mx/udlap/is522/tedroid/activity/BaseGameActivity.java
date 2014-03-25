@@ -18,11 +18,9 @@ package mx.udlap.is522.tedroid.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-
 import mx.udlap.is522.tedroid.gms.GameHelper;
 
 /**
@@ -42,7 +40,7 @@ import mx.udlap.is522.tedroid.gms.GameHelper;
  *
  * @author Bruno Oliveira (Google)
  */
-public abstract class BaseGameActivity extends FragmentActivity implements
+public abstract class BaseGameActivity extends ActionBarActivity implements
         GameHelper.GameHelperListener {
 
     // The game helper object. This class is mainly a wrapper around this object.
@@ -58,7 +56,6 @@ public abstract class BaseGameActivity extends FragmentActivity implements
     // Requested clients. By default, that's just the games client.
     protected int mRequestedClients = CLIENT_GAMES;
 
-    private final static String TAG = "BaseGameActivity";
     protected boolean mDebugLog = false;
 
     /** Constructs a BaseGameActivity with default client (GamesClient). */
@@ -154,13 +151,6 @@ public abstract class BaseGameActivity extends FragmentActivity implements
         if (mHelper != null) {
             mHelper.enableDebugLog(enabled);
         }
-    }
-
-    @Deprecated
-    protected void enableDebugLog(boolean enabled, String tag) {
-        Log.w(TAG, "BaseGameActivity.enabledDebugLog(bool,String) is " +
-                "deprecated. Use enableDebugLog(boolean)");
-        enableDebugLog(enabled);
     }
 
     protected String getInvitationId() {

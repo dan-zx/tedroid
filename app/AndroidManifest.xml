@@ -13,8 +13,15 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
+        <meta-data
+            android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/gms_games_app_id" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
         <activity
-            android:name=".activity.GameActivity"
+            android:name=".activity.MainMenuActivity"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,19 +29,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.GameActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MockGameActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.ScoresActivity"
             android:label="@string/scores_activity_title"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/settings_activity_title"

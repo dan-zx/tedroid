@@ -6,6 +6,14 @@
     <!-- ACTIVITY TITLES -->
     <string name="settings_activity_title">Configuración</string>
     <string name="scores_activity_title">Puntajes</string>
+    
+    <!-- MAIN ACTIVITY -->
+    <string name="play_button_label">Jugar</string>
+    <string name="scores_button_label">Puntajes</string>
+    <string name="leaderboards_button_label">Marcadores</string>
+    <string name="achievements_button_label">Logros</string>
+    <string name="settings_button_label">Configuración</string>
+    <string name="sign_in_why">Inicia sesión en Google para poder compartir tus puntajes y logros</string>
 
     <!-- DIALOGS -->
     <string name="exit_message">¿De verdad quieres salir del juego?</string>
