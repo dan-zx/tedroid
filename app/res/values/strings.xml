@@ -9,7 +9,7 @@
     
     <!-- MAIN ACTIVITY -->
     <string name="play_button_label">Jugar</string>
-    <string name="scores_button_label">Puntajes</string>
+    <string name="scores_button_label">Puntajes locales</string>
     <string name="leaderboards_button_label">Marcadores</string>
     <string name="achievements_button_label">Logros</string>
     <string name="settings_button_label">Configuración</string>

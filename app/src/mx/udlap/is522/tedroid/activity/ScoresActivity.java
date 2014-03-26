@@ -25,7 +25,7 @@ import java.util.List;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public class ScoresActivity extends BaseGameHelperActivity implements LoaderManager.LoaderCallbacks<List<Score>> {
+public class ScoresActivity extends BaseGameActivity implements LoaderManager.LoaderCallbacks<List<Score>> {
 
     private TableRow.LayoutParams layoutParams;
     private TableLayout scoreTable;

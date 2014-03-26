@@ -25,7 +25,7 @@ import mx.udlap.is522.tedroid.view.model.Tetromino;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public class GameActivity extends BaseGameHelperActivity {
+public class GameActivity extends BaseGameActivity {
 
     private int totalLines;
     private int score;

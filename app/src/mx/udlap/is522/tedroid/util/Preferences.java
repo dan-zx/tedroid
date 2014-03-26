@@ -30,7 +30,7 @@ public final class Preferences {
      * @return el objeto SharedPreferences que contiene todos las
      *         configuraciones de esta aplicación.
      */
-    public static SharedPreferences getDefaultPreferences(Context context) {
+    public static SharedPreferences defaultPrefs(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 

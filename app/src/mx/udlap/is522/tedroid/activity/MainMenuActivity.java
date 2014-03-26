@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.Player;
+
 import mx.udlap.is522.tedroid.R;
 
-public class MainMenuActivity extends BaseGameHelperActivity {
+public class MainMenuActivity extends BaseGameActivity {
 
     private static final int UNUSED_REQUEST_CODE = 5471;
 
@@ -18,6 +21,7 @@ public class MainMenuActivity extends BaseGameHelperActivity {
     private Button leaderboardsButton;
     private Button achievementsButton;
     private SignInButton signInButton;
+    private TextView signedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,7 @@ public class MainMenuActivity extends BaseGameHelperActivity {
         signInLayout = (LinearLayout) findViewById(R.id.sign_in_layout);
         leaderboardsButton = (Button) findViewById(R.id.leaderboards_button);
         achievementsButton = (Button) findViewById(R.id.achievements_button);
+        signedUser = (TextView) findViewById(R.id.signed_user);
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(new View.OnClickListener() {
             
@@ -75,5 +80,7 @@ public class MainMenuActivity extends BaseGameHelperActivity {
         signInLayout.setVisibility(View.GONE);
         leaderboardsButton.setVisibility(View.VISIBLE);
         achievementsButton.setVisibility(View.VISIBLE);
+        Player currentPlayer = Games.Players.getCurrentPlayer(getApiClient());
+        signedUser.setText(currentPlayer.getDisplayName());
     }
 }

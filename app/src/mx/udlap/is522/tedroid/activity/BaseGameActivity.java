@@ -11,15 +11,16 @@ import mx.udlap.is522.tedroid.gms.GameHelper;
 import mx.udlap.is522.tedroid.util.Preferences;
 
 /**
- * Base para actividades que usan GamesClient. En esta clase se manejan la
- * incialización y los ciclos de vida de GamesClient.
+ * Base para actividades que usan GoogleApiClient. En esta clase se manejan la
+ * incialización y los ciclos de vida de GoogleApiClient. Esta basado en la
+ * clase del mismo nombre creada por Bruno Oliveira (Google).
  * 
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public abstract class BaseGameHelperActivity extends ActionBarActivity implements GameHelper.GameHelperListener {
+public abstract class BaseGameActivity extends ActionBarActivity implements GameHelper.GameHelperListener {
 
-    private static final String TAG = BaseGameHelperActivity.class.getSimpleName();
+    private static final String TAG = BaseGameActivity.class.getSimpleName();
 
     private GameHelper gameHelper;
 
@@ -64,7 +65,7 @@ public abstract class BaseGameHelperActivity extends ActionBarActivity implement
     public void onSignInFailed() {
         Log.d(TAG, "Sign In Failed");
         if (wasSignIn()) {
-            Preferences.getDefaultPreferences(getApplicationContext()).edit()
+            Preferences.defaultPrefs(getApplicationContext()).edit()
                 .putBoolean(Preferences.Keys.WAS_USER_SIGNED_IN_GAMES, false)
                 .commit();
         }
@@ -74,7 +75,7 @@ public abstract class BaseGameHelperActivity extends ActionBarActivity implement
     public void onSignInSucceeded() {
         Log.d(TAG, "Sign In Succeeded");
         if (!wasSignIn()) {
-            Preferences.getDefaultPreferences(getApplicationContext()).edit()
+            Preferences.defaultPrefs(getApplicationContext()).edit()
                 .putBoolean(Preferences.Keys.WAS_USER_SIGNED_IN_GAMES, true)
                 .commit();
         }
@@ -84,7 +85,7 @@ public abstract class BaseGameHelperActivity extends ActionBarActivity implement
      * @return si ya había completado el proceso de inciar sesión o no.
      */
     protected boolean wasSignIn() {
-        return Preferences.getDefaultPreferences(getApplicationContext())
+        return Preferences.defaultPrefs(getApplicationContext())
                 .getBoolean(Preferences.Keys.WAS_USER_SIGNED_IN_GAMES, false);
     }
 
@@ -109,5 +110,15 @@ public abstract class BaseGameHelperActivity extends ActionBarActivity implement
      */
     protected void beginUserInitiatedSignIn() {
         gameHelper.beginUserInitiatedSignIn();
+    }
+
+    /**
+     * Inicia el proceso de cerrar sesión.
+     */
+    protected void signOut() {
+        gameHelper.signOut();
+        Preferences.defaultPrefs(getApplicationContext()).edit()
+            .putBoolean(Preferences.Keys.WAS_USER_SIGNED_IN_GAMES, false)
+            .commit();
     }
 }

@@ -3,21 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center|center_vertical"
     tools:context=".activity.MainMenuActivity" >
+
+    <TextView
+        android:id="@+id/signed_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="8dp"
+        android:gravity="right"
+        android:paddingRight="18dp"
+        android:textStyle="bold|italic" />
 
     <LinearLayout
         android:id="@+id/menu_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/signed_user"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:orientation="vertical" >
 
         <Button
             android:id="@+id/play_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:onClick="onPlayButtonClick"
             android:text="@string/play_button_label" />
 
@@ -25,7 +42,9 @@
             android:id="@+id/scores_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:onClick="onScoresButtonClick"
             android:text="@string/scores_button_label" />
 
@@ -33,7 +52,9 @@
             android:id="@+id/leaderboards_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:onClick="onLeaderboardsButtonClick"
             android:text="@string/leaderboards_button_label" />
 
@@ -41,7 +62,9 @@
             android:id="@+id/achievements_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:onClick="onAchievementsButtonClick"
             android:text="@string/achievements_button_label" />
 
@@ -49,7 +72,9 @@
             android:id="@+id/settings_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:onClick="onSettingsButtonClick"
             android:text="@string/settings_button_label" />
     </LinearLayout>
@@ -59,7 +84,9 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_below="@id/menu_layout"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:padding="10dp" >
