@@ -33,10 +33,20 @@
     <string name="action_resume">Resumir</string>
     <string name="action_restart">Reiniciar</string>
     
+    <!-- PENDING ACHIEVEMENTS -->
+    <string name="pending_epic_win_achievement_unlocked">Epic win: Desbloquear todos los logros</string>
+    <string name="pending_like_a_boss_achievement_unlocked">Like a Boss: Borra 9999 líneas o más en un solo juego</string>
+    <string name="pending_believe_it_or_not_achievement_unlocked">Believe it or not: Puntúa 999,999 o más en un solo juego</string>
+    <string name="pending_in_a_row_achievement_unlocked">In a row: Borrar 4 líneas a la vez</string>
+    <string name="pending_boooooring_achievement_unlocked">Boooooring: Acumula 9,999 puntos o más en tus puntajes</string>
+    <string name="pending_nothing_to_do_win_achievement_unlocked">Nothing to do: Acumula 9,999 líneas borradas o más en tus puntajes</string>
+    <string name="pending_tenacious_achievement_unlocked">Tenacious: Acumula 999,999 puntos o más en tus puntajes</string>
+    <string name="pending_get_a_life_achievement_unlocked">Get a life: Acumula 999,999 líneas borradas o más en tus puntajes</string>
+    
     <!-- GMS -->
-    <string name="gamehelper_sign_in_failed">Failed to sign in. Please check your network connection and try again.</string>
-    <string name="gamehelper_app_misconfigured">The application is incorrectly configured. Check that the package name and signing certificate match the client ID created in Developer Console. Also, if the application is not yet published, check that the account you are trying to sign in with is listed as a tester account. See logs for more information.</string>
-    <string name="gamehelper_license_failed">License check failed.</string>
-    <string name="gamehelper_unknown_error">Unknown error.</string>
+    <string name="gamehelper_sign_in_failed">No se pudo iniciar sesión. Por favor revise la conexión a internet y vuelva a intentarlo</string>
+    <string name="gamehelper_app_misconfigured">La aplicación no esta configurada correctamente. Compruebe que el nombre del paquete y el certificado coinciden con el ID de cliente creado en la Consola de Google Play para desarrolladores. Además, si la aplicación aún no se publica, compruebe que la cuenta con la que está intentando iniciar sesión con aparece como una cuenta de tester. Consulte los registros para obtener más información</string>
+    <string name="gamehelper_license_failed">Revisión de licencia falló</string>
+    <string name="gamehelper_unknown_error">Error desconocido</string>
 
 </resources>

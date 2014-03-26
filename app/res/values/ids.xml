@@ -3,4 +3,17 @@
 
     <string name="gms_games_app_id">60162916341</string>
 
+    <!-- ACHIEVEMENTS -->
+    <string name="epic_win_achievement_id">CgkI9f_0j-ABEAIQBw</string>
+    <string name="like_a_boss_achievement_id">CgkI9f_0j-ABEAIQCA</string>
+    <string name="believe_it_or_not_achievement_id">CgkI9f_0j-ABEAIQCQ</string>
+    <string name="in_a_row_achievement_id">CgkI9f_0j-ABEAIQAg</string>
+    <string name="boooooring_achievement_id">CgkI9f_0j-ABEAIQAw</string>
+    <string name="nothing_to_do_achievement_id">CgkI9f_0j-ABEAIQBA</string>
+    <string name="tenacious_achievement_id">CgkI9f_0j-ABEAIQBQ</string>
+    <string name="get_a_life_achievement_id">CgkI9f_0j-ABEAIQBg</string>
+
+    <!-- LEADERBOARDS -->
+    <string name="top_scores_leaderboard_id">CgkI9f_0j-ABEAIQAQ</string>
+
 </resources>
