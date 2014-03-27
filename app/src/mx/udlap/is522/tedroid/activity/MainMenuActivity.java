@@ -8,12 +8,12 @@ import android.view.View.OnClickListener;
 
 import mx.udlap.is522.tedroid.R;
 
-public class menuActivity extends Activity implements OnClickListener {
+public class MainMenuActivity extends Activity implements OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.menu);
+        setContentView(R.layout.activity_mainmenu);
         View game_start = findViewById(R.id.game_start);
         game_start.setOnClickListener((OnClickListener) this);
 

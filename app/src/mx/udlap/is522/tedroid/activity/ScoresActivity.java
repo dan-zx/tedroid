@@ -34,7 +34,7 @@ public class ScoresActivity extends ActionBarActivity implements LoaderManager.L
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.scores);
+        setContentView(R.layout.activity_scores);
         scoreTable = (TableLayout) findViewById(R.id.score_table);
         layoutParams = new TableRow.LayoutParams();
         layoutParams.rightMargin = dpToPixel(10);

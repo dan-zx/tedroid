@@ -12,6 +12,7 @@ import java.io.InputStream;
 
 /**
  * Crea/maneja la base datos usada por Tedroid y provee acceso a ella.
+ * TODO: encriptar esta base de datos.
  * 
  * @author Daniel Pedraza-Arcega
  * @since 1.0
