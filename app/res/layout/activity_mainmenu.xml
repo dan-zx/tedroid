@@ -5,7 +5,7 @@
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
     android:layout_alignParentRight="true"
-    android:background="@raw/photo"
+    android:background="@drawable/photo"
     android:orientation="vertical" >
 
     <TextView
