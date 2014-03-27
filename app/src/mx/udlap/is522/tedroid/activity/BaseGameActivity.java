@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import mx.udlap.is522.tedroid.gms.AchievementHelper;
 import mx.udlap.is522.tedroid.gms.GameHelper;
 import mx.udlap.is522.tedroid.util.Preferences;
 
@@ -23,11 +24,13 @@ public abstract class BaseGameActivity extends ActionBarActivity implements Game
     private static final String TAG = BaseGameActivity.class.getSimpleName();
 
     private GameHelper gameHelper;
+    private AchievementHelper achievementHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initGameHelper();
+        achievementHelper = AchievementHelper.getInstance(getApplicationContext());
     }
 
     @Override
@@ -120,5 +123,14 @@ public abstract class BaseGameActivity extends ActionBarActivity implements Game
         Preferences.defaultPrefs(getApplicationContext()).edit()
             .putBoolean(Preferences.Keys.WAS_USER_SIGNED_IN_GAMES, false)
             .commit();
+    }
+
+    /**
+     * Desbloquea el logro con el id dado.
+     * 
+     * @param id el id del logro a desbloquear.
+     */
+    protected void unlockAchievement(int id) {
+        achievementHelper.unlockAchievement(id, getApiClient());
     }
 }

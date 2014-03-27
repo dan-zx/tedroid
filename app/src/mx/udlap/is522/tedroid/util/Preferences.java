@@ -4,8 +4,20 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+/**
+ * Metodos y constantes para salvar y accesar a configuraciones de la aplicación.
+ *  
+ * @author Daniel Pedraza-Arcega
+ * @since 1.0
+ */
 public final class Preferences {
 
+    /**
+     * Constantes que representan las llaves de cada configuración. 
+     * 
+     * @author Daniel Pedraza-Arcega
+     * @since 1.0
+     */
     public static final class Keys {
 
         public static final String WAS_USER_SIGNED_IN_GAMES = "wasSignedIn";

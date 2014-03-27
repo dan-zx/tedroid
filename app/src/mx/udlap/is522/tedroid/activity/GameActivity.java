@@ -246,7 +246,10 @@ public class GameActivity extends BaseGameActivity {
             case 1: factor = 40; break;
             case 2: factor = 100; break;
             case 3: factor = 300; break;
-            case 4: factor = 1200; break;
+            case 4: 
+                factor = 1200;
+                unlockAchievement(R.string.in_a_row_achievement_id);
+                break;
             default: factor = 1; break;
         }
         
