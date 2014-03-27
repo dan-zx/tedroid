@@ -14,8 +14,8 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
         <activity
-            android:name=".activity.InterfazActivity"
-            android:label="@string/titulo" >
+            android:name=".activity.menuActivity"
+            android:label="@string/menu" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
