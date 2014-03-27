@@ -3,14 +3,14 @@
 
     <string name="app_name">Tedroid</string>
 
+    <!-- ACTIVITY TITLES -->
+    <string name="settings_activity_title">Configuración</string>
+    <string name="scores_activity_title">Puntajes</string>
+
     <!-- MAIN ACTIVITY -->
     <string name="play_button_label">JUGAR</string>
     <string name="scores_button_label">PUNTAJES</string>
     <string name="settings_button_label">CONFIGURACIÓN</string>
-
-    <!-- ACTIVITY TITLES -->
-    <string name="settings_activity_title">Configuración</string>
-    <string name="scores_activity_title">Puntajes</string>
 
     <!-- DIALOGS -->
     <string name="exit_message">¿De verdad quieres salir del juego?</string>
