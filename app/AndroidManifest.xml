@@ -14,13 +14,17 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
         <activity
-            android:name=".activity.GameActivity"
-            android:screenOrientation="portrait" >
+            android:name=".activity.InterfazActivity"
+            android:label="@string/titulo" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.GameActivity"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".activity.MockGameActivity"
@@ -28,13 +32,7 @@
         <activity
             android:name=".activity.ScoresActivity"
             android:label="@string/scores_activity_title"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/settings_activity_title"

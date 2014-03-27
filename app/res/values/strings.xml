@@ -3,6 +3,10 @@
 
     <string name="app_name">Tedroid</string>
 
+    <!-- MENU PRINCIPAL -->
+     <string name="interfaz1">Menu de pantalla</string>
+    <string name="titulo">Titulo de la interfaz</string>
+
     <!-- ACTIVITY TITLES -->
     <string name="settings_activity_title">Configuración</string>
     <string name="scores_activity_title">Puntajes</string>
