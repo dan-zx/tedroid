@@ -3,21 +3,16 @@
 
     <string name="app_name">Tedroid</string>
 
-    <!-- MAIN ACTIVITY -->
-    <string name="play_button_label">JUGAR</string>
-    <string name="scores_button_label">PUNTAJES</string>
-    <string name="settings_button_label">CONFIGURACIÓN</string>
-
     <!-- ACTIVITY TITLES -->
     <string name="settings_activity_title">Configuración</string>
     <string name="scores_activity_title">Puntajes</string>
     
     <!-- MAIN ACTIVITY -->
-    <string name="play_button_label">Jugar</string>
-    <string name="scores_button_label">Puntajes locales</string>
-    <string name="leaderboards_button_label">Marcadores</string>
-    <string name="achievements_button_label">Logros</string>
-    <string name="settings_button_label">Configuración</string>
+    <string name="play_button_label">JUGAR</string>
+    <string name="scores_button_label">PUNTAJES</string>
+    <string name="leaderboards_button_label">MARCADORES</string>
+    <string name="achievements_button_label">LOGROS</string>
+    <string name="settings_button_label">CONFIGURACIÓN</string>
     <string name="sign_in_why">Inicia sesión en Google para poder compartir tus puntajes y logros</string>
 
     <!-- DIALOGS -->
