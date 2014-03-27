@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/photo"
     android:gravity="center|center_vertical"
     tools:context=".activity.MainMenuActivity" >
 
@@ -11,28 +12,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="25dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:gravity="right"
         android:paddingRight="18dp"
+        android:textColor="@android:color/white"
         android:textStyle="bold|italic" />
+
+    <View
+        android:id="@+id/app_title"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@id/signed_user"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/ted" />
 
     <LinearLayout
         android:id="@+id/menu_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/signed_user"
+        android:layout_below="@id/app_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:orientation="vertical" >
 
         <Button
             android:id="@+id/play_button"
+            style="@style/TedroidButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="15dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:onClick="onPlayButtonClick"
@@ -40,9 +53,10 @@
 
         <Button
             android:id="@+id/scores_button"
+            style="@style/TedroidButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="15dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:onClick="onScoresButtonClick"
@@ -50,9 +64,10 @@
 
         <Button
             android:id="@+id/leaderboards_button"
+            style="@style/TedroidButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="15dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:onClick="onLeaderboardsButtonClick"
@@ -60,9 +75,10 @@
 
         <Button
             android:id="@+id/achievements_button"
+            style="@style/TedroidButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="15dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:onClick="onAchievementsButtonClick"
@@ -70,9 +86,9 @@
 
         <Button
             android:id="@+id/settings_button"
+            style="@style/TedroidButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:onClick="onSettingsButtonClick"
@@ -84,7 +100,6 @@
         android:layout_width="match_parent"
         android:layout_height="120dp"
         android:layout_below="@id/menu_layout"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:gravity="center"
@@ -103,7 +118,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="@string/sign_in_why"
-            android:textColor="#808080" />
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </RelativeLayout>
