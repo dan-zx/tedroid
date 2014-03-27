@@ -1,53 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentRight="true"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@drawable/photo"
-    android:orientation="vertical" >
+    android:gravity="center|center_vertical"
+    tools:context=".activity.MainMenuActivity" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="47dp"
-        android:background="@drawable/ted" />
+    <LinearLayout
+        android:id="@+id/menu_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/game_start"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/play"
-        android:text="START GAME"
-        android:textSize="25sp"
-        android:textStyle="bold" >
-    </Button>
+        <View
+            android:id="@+id/app_title"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/ted" />
 
-    <Button
-        android:id="@+id/game_setup"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/play"
-        android:text="SETTINGS"
-        android:textSize="25sp"
-        android:textStyle="bold" >
-    </Button>
+        <Button
+            android:id="@+id/play_button"
+            style="@style/TedroidButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:onClick="onPlayButtonClick"
+            android:text="@string/play_button_label" />
 
-    <Button
-        android:id="@+id/game_rankin"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/play"
-        android:text="RANKIN"
-        android:textSize="25sp"
-        android:textStyle="bold" >
-    </Button>
+        <Button
+            android:id="@+id/scores_button"
+            style="@style/TedroidButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:onClick="onScoresButtonClick"
+            android:text="@string/scores_button_label" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/settings_button"
+            style="@style/TedroidButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:onClick="onSettingsButtonClick"
+            android:text="@string/settings_button_label" />
+    </LinearLayout>
+
+</RelativeLayout>

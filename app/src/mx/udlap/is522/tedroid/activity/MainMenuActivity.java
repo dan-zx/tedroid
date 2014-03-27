@@ -4,29 +4,29 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 
 import mx.udlap.is522.tedroid.R;
 
-public class MainMenuActivity extends Activity implements OnClickListener {
+public class MainMenuActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainmenu);
-        View game_start = findViewById(R.id.game_start);
-        game_start.setOnClickListener((OnClickListener) this);
-
+    }
+    
+    public void onPlayButtonClick(View view) {
+        Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
     }
 
-    @Override
-    public void onClick(View vista) {
-        // TODO Auto-generated method stub
-        if (vista.getId() == findViewById(R.id.game_start).getId()) {
+    public void onScoresButtonClick(View view) {
+        Intent intent = new Intent(this, ScoresActivity.class);
+        startActivity(intent);
+    }
 
-            Intent j = new Intent(this, GameActivity.class);
-            startActivity(j);
-        }
-
+    public void onSettingsButtonClick(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 }

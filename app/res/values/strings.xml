@@ -3,11 +3,10 @@
 
     <string name="app_name">Tedroid</string>
 
-    <!-- MENU PRINCIAL -->
-    <string name="menu"> seleccion de pantalla </string>
-    <string name="game_start"> iniciar juego   </string>
-    <string name="game_setup"> pantalla configuracion   </string>
-    <string name="game_rankin"> pantalla rankin   </string>
+    <!-- MAIN ACTIVITY -->
+    <string name="play_button_label">JUGAR</string>
+    <string name="scores_button_label">PUNTAJES</string>
+    <string name="settings_button_label">CONFIGURACIÓN</string>
 
     <!-- ACTIVITY TITLES -->
     <string name="settings_activity_title">Configuración</string>
