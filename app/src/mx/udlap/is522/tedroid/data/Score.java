@@ -11,13 +11,16 @@ import java.util.Date;
  */
 public class Score implements Serializable {
 
+    public static final int UNASSIGNED_ID = -1;
+
     private static final long serialVersionUID = -6306589594223400629L;
 
-    private int id;
+    private int id = UNASSIGNED_ID;
     private Date obtainedAt;
     private int level;
     private int lines;
     private int points;
+    private boolean isUploadedToGooglePlay;
 
     public int getId() {
         return id;
@@ -59,6 +62,14 @@ public class Score implements Serializable {
         this.points = points;
     }
 
+    public boolean isUploadedToGooglePlay() {
+        return isUploadedToGooglePlay;
+    }
+    
+    public void setUploadedToGooglePlay(boolean isUploadedToGooglePlay) {
+        this.isUploadedToGooglePlay = isUploadedToGooglePlay;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -67,6 +78,7 @@ public class Score implements Serializable {
         final int prime = 31;
         int result = 1;
         result = prime * result + id;
+        result = prime * result + (isUploadedToGooglePlay ? 1231 : 1237);
         result = prime * result + level;
         result = prime * result + lines;
         result = prime * result + ((obtainedAt == null) ? 0 : obtainedAt.hashCode());
@@ -84,6 +96,7 @@ public class Score implements Serializable {
         if (getClass() != obj.getClass()) return false;
         Score other = (Score) obj;
         if (id != other.id) return false;
+        if (isUploadedToGooglePlay != other.isUploadedToGooglePlay) return false;
         if (level != other.level) return false;
         if (lines != other.lines) return false;
         if (obtainedAt == null) {
@@ -103,7 +116,8 @@ public class Score implements Serializable {
                 .append("obtainedAt: ").append(obtainedAt).append(", ")
                 .append("level: ").append(level).append(", ")
                 .append("lines: ").append(lines).append(", ")
-                .append("points: ").append(points)
+                .append("points: ").append(points).append(", ")
+                .append("isUploadedToGooglePlay: ").append(isUploadedToGooglePlay)
                 .append('}')
                 .toString();
     }

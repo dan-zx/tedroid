@@ -177,6 +177,35 @@ public class SQLiteTemplate {
     }
 
     /**
+     * Ejecuta una sentencia SQL (INSERT, UPDATE, DELETE, etc.) en la base de
+     * datos.
+     * 
+     * @param sql la sentencia SQL a ejecutar.
+     * @param args el arreglo de String para enlazar valores.
+     */
+    public void execute(String sql, String[] args) {
+        SQLiteDatabase database = null;
+        SQLiteStatement statement = null;
+        try {
+            database = databaseHelper.getWritableDatabase();
+            database.beginTransaction();
+            Log.d(TAG, "--> " + sql);
+            statement = database.compileStatement(sql);
+            for (int index = args.length; index != 0; index--) {
+                statement.bindString(index, args[index-1]);
+            }
+            statement.execute();
+            database.setTransactionSuccessful();
+        } catch (Exception ex) {
+            Log.e(TAG, "Couldn't execute [" + sql + "] with args");
+        } finally {
+            SQLiteUtils.close(statement);
+            SQLiteUtils.endTransaction(database);
+            SQLiteUtils.close(database);
+        }
+    }
+
+    /**
      * Ejecuta varias sentencias SQL (INSERT, UPDATE, DELETE, etc.) en la base
      * de datos usando una misma transacción.
      * 

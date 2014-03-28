@@ -47,6 +47,13 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
                 getSqlString(R.string.score_deleteAll_sql));
     }
 
+    @Override
+    public void setUploadedToGooglePlay(int id) {
+        getSQLiteTemplate().execute(
+                getSqlString(R.string.score_setUploadedToGooglePlay_sql),
+                new ScoreSetUploadedToGooglePlayBinder(id));
+    }
+
     /**
      * Mapea cada fila del objeto Cursor a un objeto Score.
      * 
@@ -66,6 +73,7 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
             score.setLevel(SQLiteUtils.getInteger(cursor, "level"));
             score.setLines(SQLiteUtils.getInteger(cursor, "lines"));
             score.setPoints(SQLiteUtils.getInteger(cursor, "points"));
+            score.setUploadedToGooglePlay(SQLiteUtils.getBoolean(cursor, "is_uploaded_to_google_play"));
             return score;
         }
     }
@@ -95,9 +103,37 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
         @Override
         public void bindValues(SQLiteStatement statement) {
             int index = 0;
-            statement.bindString(++index, String.valueOf(score.getLevel()));
-            statement.bindString(++index, String.valueOf(score.getLines()));
-            statement.bindString(++index, String.valueOf(score.getPoints()));
+            statement.bindLong(++index, score.getLevel());
+            statement.bindLong(++index, score.getLines());
+            statement.bindLong(++index, score.getPoints());
+        }
+    }
+    
+    /**
+     * Enlaza el valore de un id de un Score a un SQLiteStatement.
+     * 
+     * @author Daniel Pedraza-Arcega
+     * @since 1.0
+     */
+    private static class ScoreSetUploadedToGooglePlayBinder implements SQLiteTemplate.SQLiteStatementBinder {
+
+        private final int id;
+
+        /**
+         * Constructor.
+         * 
+         * @param score el id para usar.
+         */
+        private ScoreSetUploadedToGooglePlayBinder(int id) {
+            this.id = id;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void bindValues(SQLiteStatement statement) {
+            statement.bindLong(1, id);
         }
     }
 }

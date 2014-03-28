@@ -19,14 +19,14 @@ public interface ScoreDAO extends GenericDAO<Integer, Score> {
     List<Score> readAllOrderedByPointsDesc();
 
     /**
-     * Guarda el objeto Score proporcionado en la fuente datos.
-     * 
-     * @param score el objeto a guardar.
-     */
-    void save(Score score);
-
-    /**
-     * Borra todos los objetos Score de la fuente datos.
+     * Borra todos los objetos de la fuente datos.
      */
     void deleteAll();
+
+    /**
+     * Marca el objeto Score en la fuente datos como subído a GooglePlay.
+     * 
+     * @param id el id del objeto Score a marcar.
+     */
+    void setUploadedToGooglePlay(int id);
 }

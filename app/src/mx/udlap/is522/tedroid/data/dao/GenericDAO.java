@@ -10,4 +10,10 @@ package mx.udlap.is522.tedroid.data.dao;
  */
 public interface GenericDAO<ID, T> {
 
+    /**
+     * Guarda el objeto T proporcionado en la fuente datos.
+     * 
+     * @param object el objeto a guardar.
+     */
+    void save(T object);
 }
