@@ -11,6 +11,12 @@
     <string name="play_button_label">JUGAR</string>
     <string name="scores_button_label">PUNTAJES</string>
     <string name="settings_button_label">CONFIGURACIÓN</string>
+    
+    <!-- SCORES ACTIVITY -->
+    <string name="points_header">Puntos</string>
+    <string name="level_header">Nivel</string>
+    <string name="lines_header">Lineas</string>
+    <string name="date_header">Fecha</string>
 
     <!-- DIALOGS -->
     <string name="exit_message">¿De verdad quieres salir del juego?</string>
