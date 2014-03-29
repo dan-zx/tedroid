@@ -3,7 +3,9 @@ package mx.udlap.is522.tedroid.activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -29,6 +31,8 @@ public class ScoresActivity extends BaseGameActivity implements LoaderManager.Lo
 
     private TableRow.LayoutParams layoutParams;
     private TableLayout scoreTable;
+    private int primaryColor;
+    private int secondaryColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,8 @@ public class ScoresActivity extends BaseGameActivity implements LoaderManager.Lo
         layoutParams = new TableRow.LayoutParams();
         layoutParams.rightMargin = dpToPixel(10);
         layoutParams.topMargin = dpToPixel(10);
+        primaryColor = getResources().getColor(R.color.primary_for_background);
+        secondaryColor = getResources().getColor(R.color.secondary_for_background);
         getSupportLoaderManager().initLoader(0, null, this).forceLoad();
     }
 
@@ -80,18 +86,26 @@ public class ScoresActivity extends BaseGameActivity implements LoaderManager.Lo
         TableRow row = new TableRow(this);
         TextView pointsText = new TextView(this);
         pointsText.setText(String.valueOf(score.getPoints()));
+        pointsText.setTextColor(secondaryColor);
+        pointsText.setTypeface(pointsText.getTypeface(), Typeface.BOLD);
         pointsText.setLayoutParams(layoutParams);
         TextView levelText = new TextView(this);
         levelText.setText(String.valueOf(score.getLevel()));
+        levelText.setTextColor(secondaryColor);
+        levelText.setTypeface(levelText.getTypeface(), Typeface.BOLD);
         levelText.setLayoutParams(layoutParams);
         TextView linesText = new TextView(this);
         linesText.setText(String.valueOf(score.getLines()));
+        linesText.setTextColor(secondaryColor);
+        linesText.setTypeface(linesText.getTypeface(), Typeface.BOLD);
         linesText.setLayoutParams(layoutParams);
         TextView dateText = new TextView(this);
         String dateStr = getString(R.string.datetime_format, 
                 DateFormat.getDateFormat(getApplicationContext()).format(score.getObtainedAt()),
                 DateFormat.getTimeFormat(getApplicationContext()).format(score.getObtainedAt()));
         dateText.setText(dateStr);
+        dateText.setTextColor(secondaryColor);
+        dateText.setTypeface(dateText.getTypeface(), Typeface.BOLD);
         dateText.setLayoutParams(layoutParams);
         row.addView(pointsText);
         row.addView(levelText);
@@ -106,16 +120,24 @@ public class ScoresActivity extends BaseGameActivity implements LoaderManager.Lo
     private TableRow createHeaderRow() {
         TableRow headerRow = new TableRow(this);
         TextView pointsHeaderText = new TextView(this);
-        pointsHeaderText.setText("Puntos");
+        pointsHeaderText.setText(R.string.points_header);
+        pointsHeaderText.setTextColor(primaryColor);
+        pointsHeaderText.setTypeface(pointsHeaderText.getTypeface(), Typeface.BOLD);
         pointsHeaderText.setLayoutParams(layoutParams);
         TextView levelHeaderText = new TextView(this);
-        levelHeaderText.setText("Nivel");
+        levelHeaderText.setText(R.string.level_header);
+        levelHeaderText.setTextColor(primaryColor);
+        levelHeaderText.setTypeface(levelHeaderText.getTypeface(), Typeface.BOLD);
         levelHeaderText.setLayoutParams(layoutParams);
         TextView linesHeaderText = new TextView(this);
-        linesHeaderText.setText("Lineas");
+        linesHeaderText.setText(R.string.lines_header);
+        linesHeaderText.setTextColor(primaryColor);
+        linesHeaderText.setTypeface(linesHeaderText.getTypeface(), Typeface.BOLD);
         linesHeaderText.setLayoutParams(layoutParams);
         TextView dateHeaderText = new TextView(this);
-        dateHeaderText.setText("Fecha");
+        dateHeaderText.setText(R.string.date_header);
+        dateHeaderText.setTextColor(primaryColor);
+        dateHeaderText.setTypeface(dateHeaderText.getTypeface(), Typeface.BOLD);
         dateHeaderText.setLayoutParams(layoutParams);
         headerRow.addView(pointsHeaderText);
         headerRow.addView(levelHeaderText);

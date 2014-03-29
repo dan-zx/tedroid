@@ -15,6 +15,12 @@
     <string name="settings_button_label">CONFIGURACIÓN</string>
     <string name="sign_in_why">Inicia sesión en Google para poder compartir tus puntajes y logros</string>
 
+    <!-- SCORES ACTIVITY -->
+    <string name="points_header">Puntos</string>
+    <string name="level_header">Nivel</string>
+    <string name="lines_header">Lineas</string>
+    <string name="date_header">Fecha</string>
+
     <!-- DIALOGS -->
     <string name="exit_message">¿De verdad quieres salir del juego?</string>
     <string name="restart_message">¿De verdad quieres reiniciar el juego?</string>
@@ -32,7 +38,7 @@
     <string name="action_pause">Pausa</string>
     <string name="action_resume">Resumir</string>
     <string name="action_restart">Reiniciar</string>
-    
+
     <!-- PENDING ACHIEVEMENTS -->
     <string name="pending_epic_win_achievement_unlocked">Epic win: Desbloquear todos los logros</string>
     <string name="pending_like_a_boss_achievement_unlocked">Like a Boss: Borra 9999 líneas o más en un solo juego</string>
@@ -42,7 +48,7 @@
     <string name="pending_nothing_to_do_win_achievement_unlocked">Nothing to do: Acumula 9,999 líneas borradas o más en tus puntajes</string>
     <string name="pending_tenacious_achievement_unlocked">Tenacious: Acumula 999,999 puntos o más en tus puntajes</string>
     <string name="pending_get_a_life_achievement_unlocked">Get a life: Acumula 999,999 líneas borradas o más en tus puntajes</string>
-    
+
     <!-- GMS -->
     <string name="gamehelper_sign_in_failed">No se pudo iniciar sesión. Por favor revise la conexión a internet y vuelva a intentarlo</string>
     <string name="gamehelper_app_misconfigured">La aplicación no esta configurada correctamente. Compruebe que el nombre del paquete y el certificado coinciden con el ID de cliente creado en la Consola de Google Play para desarrolladores. Además, si la aplicación aún no se publica, compruebe que la cuenta con la que está intentando iniciar sesión con aparece como una cuenta de tester. Consulte los registros para obtener más información</string>
