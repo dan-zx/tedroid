@@ -13,7 +13,7 @@ import java.util.List;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public class PendingAchievementSQLiteDAO extends BaseAchievementSQLiteDAO implements PendingAchievementDAO {
+public class PendingAchievementSQLiteDAO extends SQLiteTemplate.DaoSupport implements PendingAchievementDAO {
 
     /**
      * {@inheritDoc}
@@ -22,7 +22,7 @@ public class PendingAchievementSQLiteDAO extends BaseAchievementSQLiteDAO implem
     public List<String> readAll() {
         return getSQLiteTemplate().queryForList(
                 getSqlString(R.string.pending_achievement_readAll_sql), 
-                new AchievementMapper());
+                new SQLiteTemplate.SingleColumnRowMapper());
     }
 
     /**

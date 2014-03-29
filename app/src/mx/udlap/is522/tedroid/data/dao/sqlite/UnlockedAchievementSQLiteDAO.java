@@ -12,7 +12,7 @@ import java.util.List;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public class UnlockedAchievementSQLiteDAO extends BaseAchievementSQLiteDAO implements UnlockedAchievementDAO {
+public class UnlockedAchievementSQLiteDAO extends SQLiteTemplate.DaoSupport implements UnlockedAchievementDAO {
 
     /**
      * {@inheritDoc}
@@ -21,7 +21,7 @@ public class UnlockedAchievementSQLiteDAO extends BaseAchievementSQLiteDAO imple
     public List<String> readAll() {
         return getSQLiteTemplate().queryForList(
                 getSqlString(R.string.unlocked_achievement_readAll_sql), 
-                new AchievementMapper());
+                new SQLiteTemplate.SingleColumnRowMapper());
     }
 
     /**
