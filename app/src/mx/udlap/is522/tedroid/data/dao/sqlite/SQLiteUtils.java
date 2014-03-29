@@ -277,14 +277,13 @@ public final class SQLiteUtils {
                 : null;
 
         if (!Strings.isNullOrBlank(dateString)) {
-            for (String formats : timeString.formats) {
+            for (String format : timeString.formats) {
                 try {
-                    return new SimpleDateFormat(formats, Locale.ENGLISH).parse(dateString);
+                    return new SimpleDateFormat(format, Locale.ENGLISH).parse(dateString);
                 } catch (ParseException ex) { }
             }
         }
-        
-        Log.w(TAG, "Unable to parse [" + dateString + "]");
+
         return null;
     }
 }

@@ -9,7 +9,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Clase de conveniencia para no repitir código relacionado con transacciones de
@@ -300,6 +302,51 @@ public class SQLiteTemplate {
          * @param statement el objeto para enlazar valores.
          */
         void bindValues(SQLiteStatement statement);
+    }
+
+    /**
+     * Implementación de RowMapper que convierte una sola columna en un solo
+     * String por fila.
+     * 
+     * @author Daniel Pedraza-Arcega
+     * @since 1.0
+     */
+    public static class SingleColumnRowMapper implements RowMapper<String> {
+
+        private static final int COLUMN_INDEX = 1;
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public String mapRow(Cursor cursor, int rowNum) {
+            return cursor.getString(COLUMN_INDEX);
+        }
+    }
+
+    /**
+     * Implementación de RowMapper que crea un Map por cada fila, representando
+     * todas las columnas como pares de llaves y valores: cada entrada por cada
+     * columna con el nombre de la columna como llave.
+     * 
+     * @author Daniel Pedraza-Arcega
+     * @since 1.0
+     */
+    public static class ColumnMapRowMapper implements RowMapper<Map<String, String>> {
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public Map<String, String> mapRow(Cursor cursor, int rowNum) {
+            int columnCount = cursor.getColumnCount();
+            Map<String, String> row = new HashMap<String, String>(columnCount);
+            for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
+                row.put(cursor.getColumnName(columnIndex), cursor.getString(columnIndex));
+            }
+            return row;
+        }
+        
     }
 
     /**

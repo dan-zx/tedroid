@@ -11,24 +11,13 @@ import java.util.Date;
  */
 public class Score implements Serializable {
 
-    public static final int UNASSIGNED_ID = -1;
+    private static final long serialVersionUID = -9043388811203816706L;
 
-    private static final long serialVersionUID = -6306589594223400629L;
-
-    private int id = UNASSIGNED_ID;
     private Date obtainedAt;
     private int level;
     private int lines;
     private int points;
     private boolean isUploadedToGooglePlay;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public Date getObtainedAt() {
         return obtainedAt;
@@ -77,7 +66,6 @@ public class Score implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + id;
         result = prime * result + (isUploadedToGooglePlay ? 1231 : 1237);
         result = prime * result + level;
         result = prime * result + lines;
@@ -95,7 +83,6 @@ public class Score implements Serializable {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         Score other = (Score) obj;
-        if (id != other.id) return false;
         if (isUploadedToGooglePlay != other.isUploadedToGooglePlay) return false;
         if (level != other.level) return false;
         if (lines != other.lines) return false;
@@ -112,7 +99,6 @@ public class Score implements Serializable {
     @Override
     public String toString() {
         return new StringBuilder().append('{')
-                .append("id: ").append(id).append(", ")
                 .append("obtainedAt: ").append(obtainedAt).append(", ")
                 .append("level: ").append(level).append(", ")
                 .append("lines: ").append(lines).append(", ")

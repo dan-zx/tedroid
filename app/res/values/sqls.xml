@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <string name="score_readAllOrderedByPointsDesc_sql">SELECT _id, strftime(\'%s\', obtained_at) as obtained_at_unix, level, lines, points, is_uploaded_to_google_play FROM score ORDER BY points DESC</string>
+    <string name="score_readAllOrderedByPointsDesc_sql">SELECT strftime(\'%s\', obtained_at) as obtained_at_unix, level, lines, points, is_uploaded_to_google_play FROM score ORDER BY points DESC</string>
     <string name="score_insert_sql">INSERT INTO score (level, lines, points) VALUES (?, ?, ?)</string>
-    <string name="score_setUploadedToGooglePlay_sql">UPDATE score SET is_uploaded_to_google_play = 1 WHERE _id = ?</string>
+    <string name="score_setUploadedToGooglePlay_sql">UPDATE score SET is_uploaded_to_google_play = 1 WHERE obtained_at = datetime(?, \'unixepoch\')</string>
     <string name="score_deleteAll_sql">DELETE FROM score</string>
 
     <string name="pending_achievement_readAll_sql">SELECT achievement_id from pending_achievement</string>
