@@ -58,7 +58,7 @@ public abstract class BaseGameActivity extends ActionBarActivity implements Game
         if (gameHelper == null) {
             gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
             gameHelper.enableDebugLog(true);
-            gameHelper.setConnectOnStart(wasSignIn());
+            gameHelper.setConnectOnStart(wasSignedIn());
         }
 
         gameHelper.setup(this);
@@ -67,7 +67,7 @@ public abstract class BaseGameActivity extends ActionBarActivity implements Game
     @Override
     public void onSignInFailed() {
         Log.d(TAG, "Sign In Failed");
-        if (wasSignIn()) {
+        if (wasSignedIn()) {
             Preferences.defaultPrefs(getApplicationContext()).edit()
                 .putBoolean(Preferences.Keys.WAS_USER_SIGNED_IN_GAMES, false)
                 .commit();
@@ -77,7 +77,7 @@ public abstract class BaseGameActivity extends ActionBarActivity implements Game
     @Override
     public void onSignInSucceeded() {
         Log.d(TAG, "Sign In Succeeded");
-        if (!wasSignIn()) {
+        if (!wasSignedIn()) {
             Preferences.defaultPrefs(getApplicationContext()).edit()
                 .putBoolean(Preferences.Keys.WAS_USER_SIGNED_IN_GAMES, true)
                 .commit();
@@ -87,7 +87,7 @@ public abstract class BaseGameActivity extends ActionBarActivity implements Game
     /**
      * @return si ya había completado el proceso de inciar sesión o no.
      */
-    protected boolean wasSignIn() {
+    protected boolean wasSignedIn() {
         return Preferences.defaultPrefs(getApplicationContext())
                 .getBoolean(Preferences.Keys.WAS_USER_SIGNED_IN_GAMES, false);
     }
@@ -132,5 +132,15 @@ public abstract class BaseGameActivity extends ActionBarActivity implements Game
      */
     protected void unlockAchievement(int id) {
         achievementHelper.unlockAchievement(id, getApiClient());
+    }
+
+    /**
+     * Publica todos los logros desbloqueados pendientes si esta conectado a 
+     * Google.
+     */
+    protected void publishPendingAchievements() {
+        if (!gameHelper.isConnecting() && wasSignedIn()) {
+            achievementHelper.publishPendingAchievements(getApiClient());
+        }
     }
 }

@@ -82,5 +82,6 @@ public class MainMenuActivity extends BaseGameActivity {
         achievementsButton.setVisibility(View.VISIBLE);
         Player currentPlayer = Games.Players.getCurrentPlayer(getApiClient());
         signedUser.setText(currentPlayer.getDisplayName());
+        publishPendingAchievements();
     }
 }

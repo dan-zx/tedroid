@@ -111,7 +111,7 @@ public class AchievementHelper {
      * 
      * @param apiClient apiClient un objeto GoogleApiClient.
      */
-    public void publishPendingAchievementsIfPossible(GoogleApiClient apiClient) {
+    public void publishPendingAchievements(GoogleApiClient apiClient) {
         if (apiClient != null && apiClient.isConnected()) {
             for (String achievementId : pendingAchievements) {
                 Games.Achievements.unlock(apiClient, achievementId);
