@@ -11,13 +11,13 @@ import java.util.Date;
  */
 public class Score implements Serializable {
 
-    private static final long serialVersionUID = -9043388811203816706L;
+    private static final long serialVersionUID = -2512169818539926092L;
 
     private Date obtainedAt;
-    private int level;
-    private int lines;
-    private int points;
-    private boolean isUploadedToGooglePlay;
+    private Integer level;
+    private Integer lines;
+    private Integer points;
+    private Boolean isUploadedToGooglePlay;
 
     public Date getObtainedAt() {
         return obtainedAt;
@@ -27,35 +27,35 @@ public class Score implements Serializable {
         this.obtainedAt = obtainedAt;
     }
 
-    public int getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(Integer level) {
         this.level = level;
     }
 
-    public int getLines() {
+    public Integer getLines() {
         return lines;
     }
 
-    public void setLines(int lines) {
+    public void setLines(Integer lines) {
         this.lines = lines;
     }
 
-    public int getPoints() {
+    public Integer getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(Integer points) {
         this.points = points;
     }
 
-    public boolean isUploadedToGooglePlay() {
+    public Boolean getIsUploadedToGooglePlay() {
         return isUploadedToGooglePlay;
     }
-    
-    public void setUploadedToGooglePlay(boolean isUploadedToGooglePlay) {
+
+    public void setIsUploadedToGooglePlay(Boolean isUploadedToGooglePlay) {
         this.isUploadedToGooglePlay = isUploadedToGooglePlay;
     }
 
@@ -66,11 +66,11 @@ public class Score implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (isUploadedToGooglePlay ? 1231 : 1237);
-        result = prime * result + level;
-        result = prime * result + lines;
+        result = prime * result + ((isUploadedToGooglePlay == null) ? 0 : isUploadedToGooglePlay.hashCode());
+        result = prime * result + ((level == null) ? 0 : level.hashCode());
+        result = prime * result + ((lines == null) ? 0 : lines.hashCode());
         result = prime * result + ((obtainedAt == null) ? 0 : obtainedAt.hashCode());
-        result = prime * result + points;
+        result = prime * result + ((points == null) ? 0 : points.hashCode());
         return result;
     }
 
@@ -83,13 +83,21 @@ public class Score implements Serializable {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         Score other = (Score) obj;
-        if (isUploadedToGooglePlay != other.isUploadedToGooglePlay) return false;
-        if (level != other.level) return false;
-        if (lines != other.lines) return false;
+        if (isUploadedToGooglePlay == null) {
+            if (other.isUploadedToGooglePlay != null) return false;
+        } else if (!isUploadedToGooglePlay.equals(other.isUploadedToGooglePlay)) return false;
+        if (level == null) {
+            if (other.level != null) return false;
+        } else if (!level.equals(other.level)) return false;
+        if (lines == null) {
+            if (other.lines != null) return false;
+        } else if (!lines.equals(other.lines)) return false;
         if (obtainedAt == null) {
             if (other.obtainedAt != null) return false;
         } else if (!obtainedAt.equals(other.obtainedAt)) return false;
-        if (points != other.points) return false;
+        if (points == null) {
+            if (other.points != null) return false;
+        } else if (!points.equals(other.points)) return false;
         return true;
     }
 

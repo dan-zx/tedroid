@@ -109,6 +109,6 @@ public class ScoreDAOTest {
         assertThat(all.get(0)).isNotNull().isLenientEqualsToByIgnoringFields(newScore, "isUploadedToGooglePlay");
         
         /**** En el emulador y dispositivos reales SI funciona pero parece que Robolectric hace algo mal en el update *****/
-        assertThat(all.get(0).isUploadedToGooglePlay()).isTrue();
+        assertThat(all.get(0).getIsUploadedToGooglePlay()).isTrue();
     }
 }

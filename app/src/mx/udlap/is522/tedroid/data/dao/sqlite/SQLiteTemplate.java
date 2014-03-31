@@ -313,7 +313,7 @@ public class SQLiteTemplate {
      */
     public static class SingleColumnRowMapper implements RowMapper<String> {
 
-        private static final int COLUMN_INDEX = 1;
+        private static final int COLUMN_INDEX = 0;
 
         /**
          * {@inheritDoc}
