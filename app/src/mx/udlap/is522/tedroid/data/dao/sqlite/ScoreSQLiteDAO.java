@@ -33,6 +33,7 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
                         score.setLevel(SQLiteUtils.getInteger(cursor, "level"));
                         score.setLines(SQLiteUtils.getInteger(cursor, "lines"));
                         score.setPoints(SQLiteUtils.getInteger(cursor, "points"));
+                        score.setIsUploadedToGooglePlay(SQLiteUtils.getBoolean(cursor, "is_uploaded_to_google_play"));
                         return score;
                     }
                 });

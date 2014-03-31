@@ -33,6 +33,7 @@ public class ScoreDAOTest {
         newScore.setLevel(5);
         newScore.setLines(54);
         newScore.setPoints(27442346);
+        newScore.setIsUploadedToGooglePlay(false);
         
         scoreDAO.save(newScore);
         
@@ -51,16 +52,19 @@ public class ScoreDAOTest {
         score1.setLevel(5);
         score1.setLines(54);
         score1.setPoints(27442346);
+        score1.setIsUploadedToGooglePlay(false);
         
         Score score2 = new Score();
         score2.setLevel(6);
         score2.setLines(65);
         score2.setPoints(453543678);
+        score2.setIsUploadedToGooglePlay(false);
         
         Score score3 = new Score();
         score3.setLevel(2);
         score3.setLines(21);
         score3.setPoints(456456);
+        score3.setIsUploadedToGooglePlay(false);
         
         scoreDAO.save(score1);
         Thread.sleep(1000l);
@@ -92,6 +96,7 @@ public class ScoreDAOTest {
         newScore.setLevel(5);
         newScore.setLines(54);
         newScore.setPoints(27442346);
+        newScore.setIsUploadedToGooglePlay(false);
         
         scoreDAO.save(newScore);
         
@@ -107,8 +112,6 @@ public class ScoreDAOTest {
         all = scoreDAO.readAllOrderedByPointsDesc();
         assertThat(all).isNotNull().isNotEmpty().hasSize(1).doesNotContainNull();
         assertThat(all.get(0)).isNotNull().isLenientEqualsToByIgnoringFields(newScore, "isUploadedToGooglePlay");
-        
-        /**** En el emulador y dispositivos reales SI funciona pero parece que Robolectric hace algo mal en el update *****/
         assertThat(all.get(0).getIsUploadedToGooglePlay()).isTrue();
     }
 }

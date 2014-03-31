@@ -7,10 +7,10 @@
     <string name="score_deleteAll_sql">DELETE FROM score</string>
 
     <string name="pending_achievement_readAll_sql">SELECT achievement_id from pending_achievement</string>
-    <string name="pending_achievement_insert_sql">INSERT INTO pending_achievement VALUES (?)</string>
+    <string name="pending_achievement_insert_sql">INSERT INTO pending_achievement (achievement_id) VALUES (?)</string>
     <string name="pending_achievement_deleteAll_sql">DELETE FROM pending_achievement</string>
 
     <string name="unlocked_achievement_readAll_sql">SELECT achievement_id from unlocked_achievement</string>
-    <string name="unlocked_achievement_insert_sql">INSERT INTO unlocked_achievement VALUES (?)</string>
+    <string name="unlocked_achievement_insert_sql">INSERT INTO unlocked_achievement (achievement_id) VALUES (?)</string>
 
 </resources>
