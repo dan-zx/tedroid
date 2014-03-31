@@ -23,7 +23,7 @@
             android:layout_marginBottom="15dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="@drawable/ted" />
+            android:background="@drawable/tedroid_maintittle" />
 
         <Button
             android:id="@+id/play_button"
