@@ -26,27 +26,27 @@ public class Score implements Serializable {
         this.obtainedAt = obtainedAt;
     }
 
-    public int getLevel() {
+    public Integer getLevel() {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(Integer level) {
         this.level = level;
     }
 
-    public int getLines() {
+    public Integer getLines() {
         return lines;
     }
 
-    public void setLines(int lines) {
+    public void setLines(Integer lines) {
         this.lines = lines;
     }
 
-    public int getPoints() {
+    public Integer getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
+    public void setPoints(Integer points) {
         this.points = points;
     }
 
