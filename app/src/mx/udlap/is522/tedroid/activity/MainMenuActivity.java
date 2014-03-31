@@ -14,10 +14,9 @@ public class MainMenuActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainmenu);
-        TextView tx = (TextView)findViewById(R.id.app_title);
-        Typeface custom_font = Typeface.createFromAsset(getAssets(),
-        "fonts/Twobit.ttf");
-        tx.setTypeface(custom_font);
+        TextView appTitle = (TextView) findViewById(R.id.app_title);
+        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/twobit.ttf");
+        appTitle.setTypeface(customFont);
     }
     
     public void onPlayButtonClick(View view) {
