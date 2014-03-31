@@ -107,6 +107,8 @@ public class SimpleGameTest extends ActivityInstrumentationTestCase2<MockGameAct
 
         assertTrue("Tetromino should be moved to the right at least one space", gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixColumn() <= previousColumn - 1);
         
+        Thread.sleep(50l);
+
         solo.clickOnView(gameBoardView, true);
         solo.clickOnView(gameBoardView, true);
         
