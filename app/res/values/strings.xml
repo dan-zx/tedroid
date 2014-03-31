@@ -6,7 +6,8 @@
     <!-- ACTIVITY TITLES -->
     <string name="settings_activity_title">Configuración</string>
     <string name="scores_activity_title">Puntajes</string>
-
+	<string name="tedroid_title">TEDROID</string>
+    
     <!-- MAIN ACTIVITY -->
     <string name="play_button_label">JUGAR</string>
     <string name="scores_button_label">PUNTAJES</string>

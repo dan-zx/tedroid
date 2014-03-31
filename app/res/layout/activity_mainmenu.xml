@@ -16,14 +16,16 @@
         android:layout_marginRight="8dp"
         android:orientation="vertical" >
 
-        <View
+        <TextView
             android:id="@+id/app_title"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:layout_marginBottom="15dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="@drawable/tedroid_maintittle" />
+            android:background="@drawable/tedroid_maintittle"
+            android:text="@string/tedroid_title"
+            android:textSize="40sp" />
 
         <Button
             android:id="@+id/play_button"
