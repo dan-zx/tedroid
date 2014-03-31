@@ -20,25 +20,28 @@
         android:textColor="@android:color/white"
         android:textStyle="bold|italic" />
 
-    <View
-        android:id="@+id/app_title"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_below="@id/signed_user"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:background="@drawable/ted" />
-
     <LinearLayout
         android:id="@+id/menu_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/app_title"
+        android:layout_below="@id/signed_user"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/app_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/tedroid_maintittle"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/tedroid_title"
+            android:textSize="40sp" />
 
         <Button
             android:id="@+id/play_button"

@@ -1,6 +1,7 @@
 package mx.udlap.is522.tedroid.activity;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +27,9 @@ public class MainMenuActivity extends BaseGameActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainmenu);
+        TextView appTitle = (TextView) findViewById(R.id.app_title);
+        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/twobit.ttf");
+        appTitle.setTypeface(customFont);
         signInLayout = (LinearLayout) findViewById(R.id.sign_in_layout);
         achievementsButton = (Button) findViewById(R.id.achievements_button);
         signedUser = (TextView) findViewById(R.id.signed_user);
