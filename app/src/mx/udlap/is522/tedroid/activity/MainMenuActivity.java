@@ -18,7 +18,6 @@ public class MainMenuActivity extends BaseGameActivity {
     private static final int UNUSED_REQUEST_CODE = 5471;
 
     private LinearLayout signInLayout;
-    private Button leaderboardsButton;
     private Button achievementsButton;
     private SignInButton signInButton;
     private TextView signedUser;
@@ -28,7 +27,6 @@ public class MainMenuActivity extends BaseGameActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainmenu);
         signInLayout = (LinearLayout) findViewById(R.id.sign_in_layout);
-        leaderboardsButton = (Button) findViewById(R.id.leaderboards_button);
         achievementsButton = (Button) findViewById(R.id.achievements_button);
         signedUser = (TextView) findViewById(R.id.signed_user);
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
@@ -51,11 +49,6 @@ public class MainMenuActivity extends BaseGameActivity {
         startActivity(intent);
     }
 
-    public void onLeaderboardsButtonClick(View view) {
-        Intent intent = Games.Leaderboards.getAllLeaderboardsIntent(getApiClient());
-        startActivityForResult(intent, UNUSED_REQUEST_CODE);
-    }
-
     public void onAchievementsButtonClick(View view) {
         Intent intent = Games.Achievements.getAchievementsIntent(getApiClient());
         startActivityForResult(intent, UNUSED_REQUEST_CODE);
@@ -70,7 +63,6 @@ public class MainMenuActivity extends BaseGameActivity {
     public void onSignInFailed() {
         super.onSignInFailed();
         signInLayout.setVisibility(View.VISIBLE);
-        leaderboardsButton.setVisibility(View.GONE);
         achievementsButton.setVisibility(View.GONE);
     }
 
@@ -78,7 +70,6 @@ public class MainMenuActivity extends BaseGameActivity {
     public void onSignInSucceeded() {
         super.onSignInSucceeded();
         signInLayout.setVisibility(View.GONE);
-        leaderboardsButton.setVisibility(View.VISIBLE);
         achievementsButton.setVisibility(View.VISIBLE);
         Player currentPlayer = Games.Players.getCurrentPlayer(getApiClient());
         signedUser.setText(currentPlayer.getDisplayName());
