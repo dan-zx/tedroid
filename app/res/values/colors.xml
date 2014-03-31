@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- TETROMINOS -->
     <color name="red">#ffaa0000</color>
     <color name="gray">#ffc0c0c0</color>
     <color name="magenta">#ffaa00aa</color>
@@ -8,5 +9,9 @@
     <color name="green">#ff00aa00</color>
     <color name="brown">#ffaa5500</color>
     <color name="cyan">#ff00ffff</color>
+    
+    <!-- COLORS FOR BACKGROUND -->
+    <color name="primary_for_background">#ff32c89A</color>
+    <color name="secondary_for_background">#fff3f72c</color>
 
 </resources>

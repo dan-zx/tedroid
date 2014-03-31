@@ -1,7 +1,6 @@
 package mx.udlap.is522.tedroid.data.dao.sqlite;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteStatement;
 
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.Score;
@@ -25,7 +24,18 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
     public List<Score> readAllOrderedByPointsDesc() {
         return getSQLiteTemplate().queryForList(
                 getSqlString(R.string.score_readAllOrderedByPointsDesc_sql), 
-                new ScoreMapper());
+                new SQLiteTemplate.RowMapper<Score>() {
+
+                    @Override
+                    public Score mapRow(Cursor cursor, int rowNum) {
+                        Score score = new Score();
+                        score.setObtainedAt(SQLiteUtils.getDateFromUnixTime(cursor, "obtained_at_unix"));
+                        score.setLevel(SQLiteUtils.getInteger(cursor, "level"));
+                        score.setLines(SQLiteUtils.getInteger(cursor, "lines"));
+                        score.setPoints(SQLiteUtils.getInteger(cursor, "points"));
+                        return score;
+                    }
+                });
     }
 
     /**
@@ -35,7 +45,7 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
     public void save(Score score) {
         getSQLiteTemplate().execute(
                 getSqlString(R.string.score_insert_sql), 
-                new ScoreInsertBinder(score));
+                new String[] { String.valueOf(score.getLevel()), String.valueOf(score.getLines()), String.valueOf(score.getPoints()) });
     }
 
     /**
@@ -45,59 +55,5 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
     public void deleteAll() {
         getSQLiteTemplate().execute(
                 getSqlString(R.string.score_deleteAll_sql));
-    }
-
-    /**
-     * Mapea cada fila del objeto Cursor a un objeto Score.
-     * 
-     * @author Daniel Pedraza-Arcega
-     * @since 1.0
-     */
-    private static class ScoreMapper implements SQLiteTemplate.RowMapper<Score> {
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public Score mapRow(Cursor cursor, int rowNum) {
-            Score score = new Score();
-            score.setId(SQLiteUtils.getInteger(cursor, "_id"));
-            score.setObtainedAt(SQLiteUtils.getDateFromUnixTime(cursor, "obtained_at_unix"));
-            score.setLevel(SQLiteUtils.getInteger(cursor, "level"));
-            score.setLines(SQLiteUtils.getInteger(cursor, "lines"));
-            score.setPoints(SQLiteUtils.getInteger(cursor, "points"));
-            return score;
-        }
-    }
-
-    /**
-     * Enlaza los valores de un objeto Score a un SQLiteStatement.
-     * 
-     * @author Daniel Pedraza-Arcega
-     * @since 1.0
-     */
-    private static class ScoreInsertBinder implements SQLiteTemplate.SQLiteStatementBinder {
-
-        private final Score score;
-
-        /**
-         * Constructor.
-         * 
-         * @param score el objeto Score para usar.
-         */
-        private ScoreInsertBinder(Score score) {
-            this.score = score;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public void bindValues(SQLiteStatement statement) {
-            int index = 0;
-            statement.bindString(++index, String.valueOf(score.getLevel()));
-            statement.bindString(++index, String.valueOf(score.getLines()));
-            statement.bindString(++index, String.valueOf(score.getPoints()));
-        }
     }
 }

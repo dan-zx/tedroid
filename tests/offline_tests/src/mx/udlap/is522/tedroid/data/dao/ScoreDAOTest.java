@@ -30,7 +30,6 @@ public class ScoreDAOTest {
         assertThat(all).isNotNull().isEmpty();
         
         Score newScore = new Score();
-        newScore.setId(1);
         newScore.setLevel(5);
         newScore.setLines(54);
         newScore.setPoints(27442346);
@@ -45,20 +44,20 @@ public class ScoreDAOTest {
     
     @Test
     public void shouldDeleteAll() throws Exception {
+        List<Score> all = scoreDAO.readAllOrderedByPointsDesc();
+        assertThat(all).isNotNull().isEmpty();
+
         Score score1 = new Score();
-        score1.setId(1);
         score1.setLevel(5);
         score1.setLines(54);
         score1.setPoints(27442346);
         
         Score score2 = new Score();
-        score2.setId(2);
         score2.setLevel(6);
         score2.setLines(65);
         score2.setPoints(453543678);
         
         Score score3 = new Score();
-        score3.setId(3);
         score3.setLevel(2);
         score3.setLines(21);
         score3.setPoints(456456);
@@ -69,7 +68,7 @@ public class ScoreDAOTest {
         Thread.sleep(1000l);
         scoreDAO.save(score3);
         
-        List<Score> all = scoreDAO.readAllOrderedByPointsDesc();
+        all = scoreDAO.readAllOrderedByPointsDesc();
         assertThat(all).isNotNull().isNotEmpty().hasSize(3).doesNotContainNull();
 
         assertThat(all.get(0)).isNotNull().isLenientEqualsToByIgnoringFields(score2, "obtainedAt");

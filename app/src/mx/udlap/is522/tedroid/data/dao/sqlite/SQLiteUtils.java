@@ -207,9 +207,13 @@ public final class SQLiteUtils {
      *         columna es {@code null} entonces {@code null}.
      */
     public static Boolean getBoolean(Cursor cursor, String columnName) {
-        return containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
-                ? Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex(columnName)))
-                : null;
+        Boolean value = null;
+        if (containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))) {
+            short intValue = cursor.getShort(cursor.getColumnIndex(columnName));
+            value = intValue == 1 ? true : intValue == 0 ? false : null;
+        }
+
+        return value;
     }
 
     /**
@@ -279,8 +283,7 @@ public final class SQLiteUtils {
                 } catch (ParseException ex) { }
             }
         }
-        
-        Log.w(TAG, "Unable to parse [" + dateString + "]");
+
         return null;
     }
 }
