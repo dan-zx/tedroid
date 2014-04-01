@@ -4,6 +4,7 @@
     <string name="score_readAllOrderedByPointsDesc_sql">SELECT strftime(\'%s\', obtained_at) as obtained_at_unix, level, lines, points FROM score ORDER BY points DESC</string>
     <string name="score_insert_sql">INSERT INTO score (level, lines, points) VALUES (?, ?, ?)</string>
     <string name="score_deleteAll_sql">DELETE FROM score</string>
+    <string name="score_readSumOfLinesAndPoints_sql">SELECT sum(lines) AS lines_sum, sum(points) AS points_sum FROM score</string>
 
     <string name="pending_achievement_readAll_sql">SELECT achievement_id from pending_achievement</string>
     <string name="pending_achievement_insert_sql">INSERT INTO pending_achievement (achievement_id) VALUES (?)</string>

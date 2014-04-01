@@ -11,7 +11,10 @@ import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(RobolectricTestRunner.class)
 public class ScoreDAOTest {
@@ -26,27 +29,16 @@ public class ScoreDAOTest {
     
     @Test
     public void shouldPersist() throws Exception {
-        List<Score> all = scoreDAO.readAllOrderedByPointsDesc();
-        assertThat(all).isNotNull().isEmpty();
-        
         Score newScore = new Score();
         newScore.setLevel(5);
         newScore.setLines(54);
         newScore.setPoints(27442346);
-        
-        scoreDAO.save(newScore);
-        
-        all = scoreDAO.readAllOrderedByPointsDesc();
-        assertThat(all).isNotNull().isNotEmpty().hasSize(1).doesNotContainNull();
-        assertThat(all.get(0)).isNotNull().isLenientEqualsToByIgnoringFields(newScore, "obtainedAt");
-        assertThat(all.get(0).getObtainedAt()).isNotNull();
+
+        shouldPersist(newScore);
     }
     
     @Test
     public void shouldDeleteAll() throws Exception {
-        List<Score> all = scoreDAO.readAllOrderedByPointsDesc();
-        assertThat(all).isNotNull().isEmpty();
-
         Score score1 = new Score();
         score1.setLevel(5);
         score1.setLines(54);
@@ -62,24 +54,64 @@ public class ScoreDAOTest {
         score3.setLines(21);
         score3.setPoints(456456);
         
-        scoreDAO.save(score1);
-        Thread.sleep(1000l);
-        scoreDAO.save(score2);
-        Thread.sleep(1000l);
-        scoreDAO.save(score3);
-        
-        all = scoreDAO.readAllOrderedByPointsDesc();
-        assertThat(all).isNotNull().isNotEmpty().hasSize(3).doesNotContainNull();
-
-        assertThat(all.get(0)).isNotNull().isLenientEqualsToByIgnoringFields(score2, "obtainedAt");
-        assertThat(all.get(0).getObtainedAt()).isNotNull();
-        assertThat(all.get(1)).isNotNull().isLenientEqualsToByIgnoringFields(score1, "obtainedAt");
-        assertThat(all.get(1).getObtainedAt()).isNotNull();
-        assertThat(all.get(2)).isNotNull().isLenientEqualsToByIgnoringFields(score3, "obtainedAt");
-        assertThat(all.get(2).getObtainedAt()).isNotNull();
+        shouldPersist(score1, score2, score3);
         
         scoreDAO.deleteAll();
-        all = scoreDAO.readAllOrderedByPointsDesc();
+        List<Score> all = scoreDAO.readAllOrderedByPointsDesc();
         assertThat(all).isNotNull().isEmpty();
+    }
+    
+    @Test
+    public void shouldSumCorrectly() throws Exception {
+        Score score1 = new Score();
+        score1.setLevel(5);
+        score1.setLines(54);
+        score1.setPoints(27442346);
+        
+        Score score2 = new Score();
+        score2.setLevel(6);
+        score2.setLines(65);
+        score2.setPoints(453543678);
+        
+        Score score3 = new Score();
+        score3.setLevel(2);
+        score3.setLines(21);
+        score3.setPoints(456456);
+        
+        shouldPersist(score1, score2, score3);
+        
+        int expectedPointsSum = score1.getPoints() + score2.getPoints() + score3.getPoints();
+        int expectedLinesSum = score1.getLines() + score2.getLines() + score3.getLines();
+        
+        Map<String, Integer> sums = scoreDAO.readSumOfLinesAndPoints();
+        
+        assertThat(sums.get("points_sum")).isEqualTo(expectedPointsSum);
+        assertThat(sums.get("lines_sum")).isEqualTo(expectedLinesSum);
+    }
+    
+    private void shouldPersist(Score... scores) throws Exception {
+        List<Score> all = scoreDAO.readAllOrderedByPointsDesc();
+        assertThat(all).isNotNull().isEmpty();
+        
+        for (Score score : scores) {
+            scoreDAO.save(score);
+            Thread.sleep(1000L);
+        }
+        
+        Arrays.sort(scores, new Comparator<Score>() {
+
+            @Override
+            public int compare(Score o1, Score o2) {
+                return o1.getPoints() < o2.getPoints() ? 1 : o1.getPoints() > o2.getPoints() ? -1 : 0;
+            }
+        });
+        
+        all = scoreDAO.readAllOrderedByPointsDesc();
+        assertThat(all).isNotNull().isNotEmpty().hasSize(scores.length).doesNotContainNull();
+        
+        for (int i = 0; i < scores.length; i++) {
+            assertThat(all.get(i)).isNotNull().isLenientEqualsToByIgnoringFields(scores[i], "obtainedAt");
+            assertThat(all.get(i).getObtainedAt()).isNotNull();
+        }
     }
 }

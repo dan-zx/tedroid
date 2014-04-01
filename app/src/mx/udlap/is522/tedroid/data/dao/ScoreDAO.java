@@ -3,6 +3,7 @@ package mx.udlap.is522.tedroid.data.dao;
 import mx.udlap.is522.tedroid.data.Score;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Data Access Object de tipo Score.
@@ -17,6 +18,11 @@ public interface ScoreDAO extends GenericDAO<Integer, Score> {
      *         descendente.
      */
     List<Score> readAllOrderedByPointsDesc();
+
+    /**
+     * @return la suma de lineas con la llave "lines_sum" y la suma de puntos con la llave "points_sum".
+     */
+    Map<String, Integer> readSumOfLinesAndPoints();
 
     /**
      * Borra todos los objetos de la fuente datos.
