@@ -6,8 +6,7 @@ CREATE TABLE score (
     obtained_at DATETIME NOT NULL PRIMARY KEY DEFAULT CURRENT_TIMESTAMP,
     level INTEGER NOT NULL,
     lines INTEGER NOT NULL,
-    points INTEGER NOT NULL,
-    is_uploaded_to_google_play BOOLEAN NOT NULL DEFAULT 0
+    points INTEGER NOT NULL
 );
 
 CREATE TABLE unlocked_achievement (

@@ -6,7 +6,6 @@ import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.Score;
 import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,7 +32,6 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
                         score.setLevel(SQLiteUtils.getInteger(cursor, "level"));
                         score.setLines(SQLiteUtils.getInteger(cursor, "lines"));
                         score.setPoints(SQLiteUtils.getInteger(cursor, "points"));
-                        score.setIsUploadedToGooglePlay(SQLiteUtils.getBoolean(cursor, "is_uploaded_to_google_play"));
                         return score;
                     }
                 });
@@ -56,12 +54,5 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
     public void deleteAll() {
         getSQLiteTemplate().execute(
                 getSqlString(R.string.score_deleteAll_sql));
-    }
-
-    @Override
-    public void setUploadedToGooglePlay(Date date) {
-        getSQLiteTemplate().execute(
-                getSqlString(R.string.score_setUploadedToGooglePlay_sql),
-                new String[] { String.valueOf(date.getTime() / 1000L) });
     }
 }

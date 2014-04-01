@@ -2,7 +2,6 @@ package mx.udlap.is522.tedroid.data.dao;
 
 import mx.udlap.is522.tedroid.data.Score;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -23,11 +22,4 @@ public interface ScoreDAO extends GenericDAO<Integer, Score> {
      * Borra todos los objetos de la fuente datos.
      */
     void deleteAll();
-
-    /**
-     * Marca el objeto Score en la fuente datos como subído a GooglePlay.
-     * 
-     * @param date la fecha del objeto Score a marcar.
-     */
-    void setUploadedToGooglePlay(Date date);
 }

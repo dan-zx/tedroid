@@ -11,13 +11,12 @@ import java.util.Date;
  */
 public class Score implements Serializable {
 
-    private static final long serialVersionUID = -2512169818539926092L;
+    private static final long serialVersionUID = 2888499014768693222L;
 
     private Date obtainedAt;
     private Integer level;
     private Integer lines;
     private Integer points;
-    private Boolean isUploadedToGooglePlay;
 
     public Date getObtainedAt() {
         return obtainedAt;
@@ -51,14 +50,6 @@ public class Score implements Serializable {
         this.points = points;
     }
 
-    public Boolean getIsUploadedToGooglePlay() {
-        return isUploadedToGooglePlay;
-    }
-
-    public void setIsUploadedToGooglePlay(Boolean isUploadedToGooglePlay) {
-        this.isUploadedToGooglePlay = isUploadedToGooglePlay;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -66,7 +57,6 @@ public class Score implements Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((isUploadedToGooglePlay == null) ? 0 : isUploadedToGooglePlay.hashCode());
         result = prime * result + ((level == null) ? 0 : level.hashCode());
         result = prime * result + ((lines == null) ? 0 : lines.hashCode());
         result = prime * result + ((obtainedAt == null) ? 0 : obtainedAt.hashCode());
@@ -83,9 +73,6 @@ public class Score implements Serializable {
         if (obj == null) return false;
         if (getClass() != obj.getClass()) return false;
         Score other = (Score) obj;
-        if (isUploadedToGooglePlay == null) {
-            if (other.isUploadedToGooglePlay != null) return false;
-        } else if (!isUploadedToGooglePlay.equals(other.isUploadedToGooglePlay)) return false;
         if (level == null) {
             if (other.level != null) return false;
         } else if (!level.equals(other.level)) return false;
@@ -110,8 +97,7 @@ public class Score implements Serializable {
                 .append("obtainedAt: ").append(obtainedAt).append(", ")
                 .append("level: ").append(level).append(", ")
                 .append("lines: ").append(lines).append(", ")
-                .append("points: ").append(points).append(", ")
-                .append("isUploadedToGooglePlay: ").append(isUploadedToGooglePlay)
+                .append("points: ").append(points)
                 .append('}')
                 .toString();
     }
