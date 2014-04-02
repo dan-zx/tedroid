@@ -26,14 +26,23 @@ public class AchievementHelper {
     private static AchievementHelper instance;
     
     static {
-        PENDING_ACHIEVEMENT_TOASTS.put(R.string.epic_win_achievement_id, R.string.pending_epic_win_achievement_unlocked);
         PENDING_ACHIEVEMENT_TOASTS.put(R.string.like_a_boss_achievement_id, R.string.pending_like_a_boss_achievement_unlocked);
         PENDING_ACHIEVEMENT_TOASTS.put(R.string.believe_it_or_not_achievement_id, R.string.pending_believe_it_or_not_achievement_unlocked);
-        PENDING_ACHIEVEMENT_TOASTS.put(R.string.in_a_row_achievement_id, R.string.pending_in_a_row_achievement_unlocked);
-        PENDING_ACHIEVEMENT_TOASTS.put(R.string.boooooring_achievement_id, R.string.pending_boooooring_achievement_unlocked);
-        PENDING_ACHIEVEMENT_TOASTS.put(R.string.nothing_to_do_achievement_id, R.string.pending_nothing_to_do_win_achievement_unlocked);
-        PENDING_ACHIEVEMENT_TOASTS.put(R.string.tenacious_achievement_id, R.string.pending_tenacious_achievement_unlocked);
         PENDING_ACHIEVEMENT_TOASTS.put(R.string.get_a_life_achievement_id, R.string.pending_get_a_life_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.tenacious_achievement_id, R.string.pending_tenacious_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.nothing_to_do_achievement_id, R.string.pending_nothing_to_do_win_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.boooooring_achievement_id, R.string.pending_boooooring_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.whats_next_achievement_id, R.string.pending_whats_next_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.lucky_you_achievement_id, R.string.pending_lucky_you_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.pro_plus_plus_achievement_id, R.string.pending_pro_plus_plus_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.pro_achievement_id, R.string.pending_pro_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.master_achievement_id, R.string.pending_master_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.expert_achievement_id, R.string.pending_expert_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.amateur_achievement_id, R.string.pending_amateur_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.beginner_achievement_id, R.string.pending_beginner_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.as_easy_as_pie_achievement_id, R.string.pending_as_easy_as_pie_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.for_dummies_achievement_id, R.string.pending_for_dummies_achievement_unlocked);
+        PENDING_ACHIEVEMENT_TOASTS.put(R.string.in_a_row_achievement_id, R.string.pending_in_a_row_achievement_unlocked);
     }
 
     private final Context context;

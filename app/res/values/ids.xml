@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="gms_games_app_id">60162916341</string>
+    <!-- GOOGLE PLAY GAMES APP ID -->
+    <string name="app_id">60162916341</string>
 
-    <!-- ACHIEVEMENTS -->
-    <string name="epic_win_achievement_id">CgkI9f_0j-ABEAIQBw</string>
+    <!-- ACHIEVEMENT IDS -->
     <string name="like_a_boss_achievement_id">CgkI9f_0j-ABEAIQCA</string>
     <string name="believe_it_or_not_achievement_id">CgkI9f_0j-ABEAIQCQ</string>
     <string name="get_a_life_achievement_id">CgkI9f_0j-ABEAIQBg</string>

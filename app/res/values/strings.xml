@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- APP NAME -->
     <string name="app_name">Tedroid</string>
 
     <!-- ACTIVITY TITLES -->
     <string name="settings_activity_title">Configuración</string>
     <string name="scores_activity_title">Puntajes</string>
-	<string name="tedroid_title">TEDROID</string>
-    
+    <string name="tedroid_title">TEDROID</string>
+
     <!-- MAIN ACTIVITY -->
     <string name="play_button_label">JUGAR</string>
     <string name="scores_button_label">PUNTAJES</string>
@@ -41,16 +42,25 @@
     <string name="action_restart">Reiniciar</string>
 
     <!-- PENDING ACHIEVEMENTS -->
-    <string name="pending_epic_win_achievement_unlocked">Epic win: Desbloquear todos los logros</string>
     <string name="pending_like_a_boss_achievement_unlocked">Like a Boss: Borra 9999 líneas o más en un solo juego</string>
     <string name="pending_believe_it_or_not_achievement_unlocked">Believe it or not: Puntúa 999,999 o más en un solo juego</string>
-    <string name="pending_in_a_row_achievement_unlocked">In a row: Borrar 4 líneas a la vez</string>
-    <string name="pending_boooooring_achievement_unlocked">Boooooring: Acumula 9,999 puntos o más en tus puntajes</string>
-    <string name="pending_nothing_to_do_win_achievement_unlocked">Nothing to do: Acumula 9,999 líneas borradas o más en tus puntajes</string>
-    <string name="pending_tenacious_achievement_unlocked">Tenacious: Acumula 999,999 puntos o más en tus puntajes</string>
     <string name="pending_get_a_life_achievement_unlocked">Get a life: Acumula 999,999 líneas borradas o más en tus puntajes</string>
+    <string name="pending_tenacious_achievement_unlocked">Tenacious: Acumula 999,999 puntos o más en tus puntajes</string>
+    <string name="pending_nothing_to_do_win_achievement_unlocked">Nothing to do: Acumula 9,999 líneas borradas o más en tus puntajes</string>
+    <string name="pending_boooooring_achievement_unlocked">Boooooring: Acumula 9,999 puntos o más en tus puntajes</string>
+    <string name="pending_whats_next_achievement_unlocked">What\'s next?: Supera el nivel 9 por primera vez</string>
+    <string name="pending_lucky_you_achievement_unlocked">Lucky You: Llega al nivel 9 por primera vez</string>
+    <string name="pending_pro_plus_plus_achievement_unlocked">Pro++: Llega al nivel 8 por primera vez</string>
+    <string name="pending_pro_achievement_unlocked">Pro: Llega al nivel 7 por primera vez</string>
+    <string name="pending_master_achievement_unlocked">Master: Llega al nivel 6 por primera vez</string>
+    <string name="pending_expert_achievement_unlocked">Expert: Llega al nivel 5 por primera vez</string>
+    <string name="pending_amateur_achievement_unlocked">Amateur: Llega al nivel 4 por primera vez</string>
+    <string name="pending_beginner_achievement_unlocked">Beginner: Llega al nivel 3 por primera vez</string>
+    <string name="pending_as_easy_as_pie_achievement_unlocked">As easy as pie: Llega al nivel 2 por primera vez</string>
+    <string name="pending_for_dummies_achievement_unlocked">For dummies: Llega al nivel 1 por primera vez</string>
+    <string name="pending_in_a_row_achievement_unlocked">In a row: Borrar 4 líneas a la vez</string>
 
-    <!-- GMS -->
+    <!-- GAME HELPER -->
     <string name="gamehelper_sign_in_failed">No se pudo iniciar sesión. Por favor revise la conexión a internet y vuelva a intentarlo</string>
     <string name="gamehelper_app_misconfigured">La aplicación no esta configurada correctamente. Compruebe que el nombre del paquete y el certificado coinciden con el ID de cliente creado en la Consola de Google Play para desarrolladores. Además, si la aplicación aún no se publica, compruebe que la cuenta con la que está intentando iniciar sesión con aparece como una cuenta de tester. Consulte los registros para obtener más información</string>
     <string name="gamehelper_license_failed">Revisión de licencia falló</string>
