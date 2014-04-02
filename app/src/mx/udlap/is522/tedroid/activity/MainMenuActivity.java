@@ -1,5 +1,7 @@
 package mx.udlap.is522.tedroid.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -11,7 +13,6 @@ import android.widget.TextView;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
-
 import mx.udlap.is522.tedroid.R;
 
 public class MainMenuActivity extends BaseGameActivity {
@@ -22,6 +23,7 @@ public class MainMenuActivity extends BaseGameActivity {
     private Button achievementsButton;
     private SignInButton signInButton;
     private TextView signedUser;
+    private AlertDialog offlineAlertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,27 @@ public class MainMenuActivity extends BaseGameActivity {
         TextView appTitle = (TextView) findViewById(R.id.app_title);
         Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/twobit.ttf");
         appTitle.setTypeface(customFont);
+        offlineAlertDialog = new AlertDialog.Builder(this)
+            .setMessage(R.string.offline_warn)
+            .setCancelable(false)
+            .setPositiveButton(R.string.offline_warn_understand,
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(MainMenuActivity.this, GameActivity.class);
+                        startActivity(intent);
+                    }
+                })
+            .setNegativeButton(R.string.offline_warn_sign_in,
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        beginUserInitiatedSignIn();
+                    }
+                })
+            .create();
         signInLayout = (LinearLayout) findViewById(R.id.sign_in_layout);
         achievementsButton = (Button) findViewById(R.id.achievements_button);
         signedUser = (TextView) findViewById(R.id.signed_user);
@@ -44,8 +67,7 @@ public class MainMenuActivity extends BaseGameActivity {
     }
 
     public void onPlayButtonClick(View view) {
-        Intent intent = new Intent(this, GameActivity.class);
-        startActivity(intent);
+        offlineAlertDialog.show();
     }
 
     public void onScoresButtonClick(View view) {
@@ -65,18 +87,15 @@ public class MainMenuActivity extends BaseGameActivity {
 
     @Override
     public void onSignInFailed() {
-        super.onSignInFailed();
         signInLayout.setVisibility(View.VISIBLE);
         achievementsButton.setVisibility(View.GONE);
     }
 
     @Override
     public void onSignInSucceeded() {
-        super.onSignInSucceeded();
         signInLayout.setVisibility(View.GONE);
         achievementsButton.setVisibility(View.VISIBLE);
         Player currentPlayer = Games.Players.getCurrentPlayer(getApiClient());
         signedUser.setText(currentPlayer.getDisplayName());
-        publishPendingAchievements();
     }
 }

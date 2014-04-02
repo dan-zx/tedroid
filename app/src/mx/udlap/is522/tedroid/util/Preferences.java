@@ -20,8 +20,6 @@ public final class Preferences {
      */
     public static final class Keys {
 
-        public static final String WAS_USER_SIGNED_IN_GAMES = "wasSignedIn";
-
         /**
          * NO INVOCAR.
          */

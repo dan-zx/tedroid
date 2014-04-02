@@ -3,13 +3,11 @@ package mx.udlap.is522.tedroid.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.games.Games;
 
-import mx.udlap.is522.tedroid.gms.AchievementHelper;
 import mx.udlap.is522.tedroid.gms.GameHelper;
-import mx.udlap.is522.tedroid.util.Preferences;
 
 /**
  * Base para actividades que usan GoogleApiClient. En esta clase se manejan la
@@ -21,16 +19,12 @@ import mx.udlap.is522.tedroid.util.Preferences;
  */
 public abstract class BaseGameActivity extends ActionBarActivity implements GameHelper.GameHelperListener {
 
-    private static final String TAG = BaseGameActivity.class.getSimpleName();
-
     private GameHelper gameHelper;
-    private AchievementHelper achievementHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initGameHelper();
-        achievementHelper = AchievementHelper.getInstance(getApplicationContext());
     }
 
     @Override
@@ -58,38 +52,23 @@ public abstract class BaseGameActivity extends ActionBarActivity implements Game
         if (gameHelper == null) {
             gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
             gameHelper.enableDebugLog(true);
-            gameHelper.setConnectOnStart(wasSignedIn());
+            gameHelper.setConnectOnStart(isSignedIn());
         }
 
         gameHelper.setup(this);
     }
 
     @Override
-    public void onSignInFailed() {
-        Log.d(TAG, "Sign In Failed");
-        if (wasSignedIn()) {
-            Preferences.defaultPrefs(getApplicationContext()).edit()
-                .putBoolean(Preferences.Keys.WAS_USER_SIGNED_IN_GAMES, false)
-                .commit();
-        }
-    }
+    public void onSignInFailed() { }
 
     @Override
-    public void onSignInSucceeded() {
-        Log.d(TAG, "Sign In Succeeded");
-        if (!wasSignedIn()) {
-            Preferences.defaultPrefs(getApplicationContext()).edit()
-                .putBoolean(Preferences.Keys.WAS_USER_SIGNED_IN_GAMES, true)
-                .commit();
-        }
-    }
+    public void onSignInSucceeded() { }
 
     /**
      * @return si ya había completado el proceso de inciar sesión o no.
      */
-    protected boolean wasSignedIn() {
-        return Preferences.defaultPrefs(getApplicationContext())
-                .getBoolean(Preferences.Keys.WAS_USER_SIGNED_IN_GAMES, false);
+    protected boolean isSignedIn() {
+        return gameHelper.isSignedIn();
     }
 
     /**
@@ -120,9 +99,6 @@ public abstract class BaseGameActivity extends ActionBarActivity implements Game
      */
     protected void signOut() {
         gameHelper.signOut();
-        Preferences.defaultPrefs(getApplicationContext()).edit()
-            .putBoolean(Preferences.Keys.WAS_USER_SIGNED_IN_GAMES, false)
-            .commit();
     }
 
     /**
@@ -131,16 +107,8 @@ public abstract class BaseGameActivity extends ActionBarActivity implements Game
      * @param id el id del logro a desbloquear.
      */
     protected void unlockAchievement(int id) {
-        achievementHelper.unlockAchievement(id, getApiClient());
-    }
-
-    /**
-     * Publica todos los logros desbloqueados pendientes si esta conectado a 
-     * Google.
-     */
-    protected void publishPendingAchievements() {
-        if (!gameHelper.isConnecting() && wasSignedIn()) {
-            achievementHelper.publishPendingAchievements(getApiClient());
+        if (isSignedIn()) {
+            Games.Achievements.unlock(getApiClient(), getString(id));
         }
     }
 }
