@@ -28,8 +28,10 @@ import java.util.Random;
 public class GameBoardView extends View {
 
     public static final int DEFAULT_LEVEL = 0;
-
-    private static final long DEFAULT_SPEED = 1000l;
+    public static final int MAX_LEVEL = 9;
+    
+    private static final long DEFAULT_SPEED = 1000L;
+    private static final int SPEED_FACTOR = 6;
     private static final int DEFAULT_COLUMNS = 10;
     private static final int DEFAULT_ROWS = 20;
     private static final String TAG = GameBoardView.class.getSimpleName();
@@ -39,7 +41,6 @@ public class GameBoardView extends View {
     private int[][] boardMatrix;
     private int rows;
     private int columns;
-    private int level;
     private int repeatedTetromino;
     private long currentSpeed;
     private float boardColumnWidth;
@@ -414,20 +415,33 @@ public class GameBoardView extends View {
     /**
      * Cambia el nivel del juego.
      * 
-     * @param level 0+.
+     * @param level {@link #DEFAULT_LEVEL} <= level <= {@link #MAX_LEVEL}.
      */
     public void setLevel(int level) {
-        this.level = level < DEFAULT_LEVEL ? DEFAULT_LEVEL : level;
-        currentSpeed = DEFAULT_SPEED / (this.level + 1);
+        int realLevel = level <= DEFAULT_LEVEL ? DEFAULT_LEVEL : level >= MAX_LEVEL ? MAX_LEVEL : level;
+        currentSpeed = DEFAULT_SPEED;
+        for (int i = 0; i < realLevel; i++) {
+            currentSpeed -= currentSpeed / SPEED_FACTOR;
+        }
+        
+        Log.d(TAG, "currentSpeed=" + currentSpeed);
     }
 
     /**
      * Aumenta la velocidad y el nivel de juego.
      */
     public void levelUp() {
-        currentSpeed = DEFAULT_SPEED / (++level + 1);
+        currentSpeed -= currentSpeed / SPEED_FACTOR;
+        Log.d(TAG, "currentSpeed=" + currentSpeed);
         stopDropingTaskIfNeeded();
         startDropingTask(currentSpeed);
+    }
+
+    /**
+     * @return la velocidad del juego actual.
+     */
+    public long getCurrentSpeed() {
+        return currentSpeed;
     }
 
     /**

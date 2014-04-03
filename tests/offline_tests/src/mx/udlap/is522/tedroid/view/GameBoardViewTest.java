@@ -27,7 +27,7 @@ import java.util.Queue;
 public class GameBoardViewTest {
 
     @Test
-    public void shouldNotRepeatMoreThan2EqualTetrominos() {
+    public void shouldNotRepeatMoreThan2EqualTetrominos() throws Exception {
         GameBoardView gameBoardViewMock = mock(GameBoardView.class, CALLS_REAL_METHODS);
         final Activity dummyActivity = Robolectric.buildActivity(Activity.class).create().get();
         when(gameBoardViewMock.getContext()).thenReturn(dummyActivity);
@@ -59,6 +59,21 @@ public class GameBoardViewTest {
 
         gameBoardViewMock.setUpCurrentAndNextTetrominos();
         assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isTrue();
+    }
+
+    @Test
+    public void shouldLevelUp() throws Exception {
+        GameBoardView gameBoardView = new GameBoardView(Robolectric.buildActivity(Activity.class).create().get());
+        long previousSpeed = gameBoardView.getCurrentSpeed();
+
+        for (int level = GameBoardView.DEFAULT_LEVEL + 1; level <= GameBoardView.MAX_LEVEL; level++) {
+            gameBoardView.setLevel(level);
+            long actualSpeed = gameBoardView.getCurrentSpeed();
+
+            assertThat(actualSpeed).isLessThan(previousSpeed).isNotNegative().isNotZero();
+            
+            previousSpeed = actualSpeed;
+        }
     }
 
     private Queue<Tetromino> buildTestTetrominos(GameBoardView gameBoardView) {
