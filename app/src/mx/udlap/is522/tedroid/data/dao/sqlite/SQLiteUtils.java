@@ -280,7 +280,9 @@ public final class SQLiteUtils {
             for (String format : timeString.formats) {
                 try {
                     return new SimpleDateFormat(format, Locale.ENGLISH).parse(dateString);
-                } catch (ParseException ex) { }
+                } catch (ParseException ex) { 
+                    // Si no es el formato correcto, se ignora y sigue con el siguiente formato.
+                }
             }
         }
 
