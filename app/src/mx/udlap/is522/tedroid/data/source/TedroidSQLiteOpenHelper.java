@@ -1,6 +1,7 @@
 package mx.udlap.is522.tedroid.data.source;
 
 import android.content.Context;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -53,6 +54,8 @@ public class TedroidSQLiteOpenHelper extends SQLiteOpenHelper {
             }
         } catch (IOException ex) {
             Log.e(TAG, "Unable read schema", ex);
+        } catch (SQLException ex) {
+            Log.e(TAG, "Incorrect SQL statement", ex);
         }
     }
 
