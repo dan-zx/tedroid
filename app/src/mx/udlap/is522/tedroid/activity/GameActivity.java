@@ -136,7 +136,6 @@ public class GameActivity extends BaseGameActivity {
                 }
             })
             .create();
-
         exitDialog = new AlertDialog.Builder(this)
             .setMessage(R.string.exit_message)
             .setCancelable(false)
@@ -168,7 +167,7 @@ public class GameActivity extends BaseGameActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (gameBoardView.isPaused()) {
+        if (!gameBoardView.isGameOver() && gameBoardView.isPaused()) {
             if (pauseTextView.getVisibility() == View.GONE && 
                     !exitDialog.isShowing() &&
                     !restartDialog.isShowing()) {
@@ -206,8 +205,10 @@ public class GameActivity extends BaseGameActivity {
                 }
                 return true;
             case R.id.action_restart:
-                gameBoardView.pauseGame();
-                mediaPlayer.pause();
+                if (!gameBoardView.isGameOver()) {
+                    gameBoardView.pauseGame();
+                    mediaPlayer.pause();
+                }
                 restartDialog.show();
                 return true;
             default: return super.onOptionsItemSelected(item);
@@ -218,21 +219,25 @@ public class GameActivity extends BaseGameActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) mediaPlayer.pause();
-        if (!gameBoardView.isPaused()) gameBoardView.pauseGame();
+        if (!gameBoardView.isGameOver()) {
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) mediaPlayer.pause();
+            if (!gameBoardView.isPaused()) gameBoardView.pauseGame();
+        }
     }
 
     @Override
     public void onBackPressed() {
-        gameBoardView.pauseGame();
-        mediaPlayer.pause();
+        if (!gameBoardView.isGameOver()) {
+            gameBoardView.pauseGame();
+            mediaPlayer.pause();
+        }
         exitDialog.show();
     }
 
     @Override
     public void finish() {
         super.finish();
-        gameBoardView.stopGame();
+        if (!gameBoardView.isGameOver()) gameBoardView.stopGame();
         mediaPlayer.stop();
         mediaPlayer.release();
         mediaPlayer = null;
