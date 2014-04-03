@@ -64,6 +64,9 @@ public class Score implements Serializable {
         return result;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -84,7 +87,7 @@ public class Score implements Serializable {
         } else if (!points.equals(other.points)) return false;
         return true;
     }
-    
+
     /**
      * {@inheritDoc}
      */

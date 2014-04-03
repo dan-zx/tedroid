@@ -26,7 +26,7 @@ public interface ScoreDAO extends GenericDAO<Integer, Score> {
     void save(Score score);
 
     /**
-     * Borra todos los objetos Score de la fuente datos.
+     * Borra todos los objetos de la fuente datos.
      */
     void deleteAll();
 }
