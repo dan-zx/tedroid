@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
+
 import mx.udlap.is522.tedroid.R;
 
 public class MainMenuActivity extends BaseGameActivity {
@@ -40,8 +41,7 @@ public class MainMenuActivity extends BaseGameActivity {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(MainMenuActivity.this, GameActivity.class);
-                        startActivity(intent);
+                        gotoGame();
                     }
                 })
             .setNegativeButton(R.string.offline_warn_sign_in,
@@ -67,7 +67,8 @@ public class MainMenuActivity extends BaseGameActivity {
     }
 
     public void onPlayButtonClick(View view) {
-        offlineAlertDialog.show();
+        if (!isSignedIn()) offlineAlertDialog.show();
+        else gotoGame();
     }
 
     public void onScoresButtonClick(View view) {
@@ -84,15 +85,22 @@ public class MainMenuActivity extends BaseGameActivity {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
+    
+    private void gotoGame() {
+        Intent intent = new Intent(MainMenuActivity.this, GameActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public void onSignInFailed() {
+        super.onSignInFailed();
         signInLayout.setVisibility(View.VISIBLE);
         achievementsButton.setVisibility(View.GONE);
     }
 
     @Override
     public void onSignInSucceeded() {
+        super.onSignInSucceeded();
         signInLayout.setVisibility(View.GONE);
         achievementsButton.setVisibility(View.VISIBLE);
         Player currentPlayer = Games.Players.getCurrentPlayer(getApiClient());

@@ -10,28 +10,12 @@ import android.preference.PreferenceManager;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public final class Preferences {
-
-    /**
-     * Constantes que representan las llaves de cada configuración. 
-     * 
-     * @author Daniel Pedraza-Arcega
-     * @since 1.0
-     */
-    public static final class Keys {
-
-        /**
-         * NO INVOCAR.
-         */
-        private Keys() {
-            throw new IllegalAccessError("This class cannot be instantiated nor extended");
-        }
-    }
+public final class Settings {
 
     /**
      * NO INVOCAR.
      */
-    private Preferences() {
+    private Settings() {
         throw new IllegalAccessError("This class cannot be instantiated nor extended");
     }
 
@@ -40,7 +24,7 @@ public final class Preferences {
      * @return el objeto SharedPreferences que contiene todos las
      *         configuraciones de esta aplicación.
      */
-    public static SharedPreferences defaultPrefs(Context context) {
+    public static SharedPreferences getPreferences(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context);
     }
 
@@ -49,7 +33,7 @@ public final class Preferences {
      * 
      * @param context el contexto de la aplicación.
      */
-    public static void restore(Context context) {
+    public static void clear(Context context) {
         PreferenceManager.getDefaultSharedPreferences(context).edit()
             .clear()
             .commit();

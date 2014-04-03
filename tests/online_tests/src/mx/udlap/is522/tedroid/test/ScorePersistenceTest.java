@@ -52,6 +52,9 @@ public class ScorePersistenceTest extends ActivityInstrumentationTestCase2<MainM
 
         Log.d(TAG, "Opennig GameActivity...");
         solo.clickOnView(solo.getView(R.id.play_button));
+        solo.waitForDialogToOpen();
+        solo.clickOnButton(solo.getString(R.string.offline_warn_understand));
+        solo.waitForDialogToClose();
         solo.waitForActivity(GameActivity.class);
         
         GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.game_board);

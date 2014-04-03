@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- PREFERENCE KEYS -->
+    <string name="is_signed_in">isSignedIn</string>
+
+</resources>

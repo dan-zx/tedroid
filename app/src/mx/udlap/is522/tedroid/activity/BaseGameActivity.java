@@ -7,7 +7,9 @@ import android.support.v7.app.ActionBarActivity;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 
+import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.gms.GameHelper;
+import mx.udlap.is522.tedroid.util.Settings;
 
 /**
  * Base para actividades que usan GoogleApiClient. En esta clase se manejan la
@@ -59,16 +61,31 @@ public abstract class BaseGameActivity extends ActionBarActivity implements Game
     }
 
     @Override
-    public void onSignInFailed() { }
+    public void onSignInFailed() {
+        if (isSignedIn()) {
+            Settings.getPreferences(getApplicationContext())
+                .edit()
+                .putBoolean(getString(R.string.is_signed_in), false)
+                .commit();
+        }
+    }
 
     @Override
-    public void onSignInSucceeded() { }
+    public void onSignInSucceeded() {
+        if (!isSignedIn()) {
+            Settings.getPreferences(getApplicationContext())
+                .edit()
+                .putBoolean(getString(R.string.is_signed_in), true)
+                .commit();
+        }
+    }
 
     /**
-     * @return si ya había completado el proceso de inciar sesión o no.
+     * @return si ya completado el proceso de inciar sesión o no.
      */
     protected boolean isSignedIn() {
-        return gameHelper.isSignedIn();
+        return Settings.getPreferences(getApplicationContext())
+                .getBoolean(getString(R.string.is_signed_in), false);
     }
 
     /**
@@ -99,6 +116,10 @@ public abstract class BaseGameActivity extends ActionBarActivity implements Game
      */
     protected void signOut() {
         gameHelper.signOut();
+        Settings.getPreferences(getApplicationContext())
+            .edit()
+            .putBoolean(getString(R.string.is_signed_in), false)
+            .commit();
     }
 
     /**

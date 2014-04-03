@@ -37,6 +37,9 @@ public class MainMenuTest extends ActivityInstrumentationTestCase2<MainMenuActiv
         
         Log.d(TAG, "Opennig GameActivity...");
         solo.clickOnView(solo.getView(R.id.play_button));
+        solo.waitForDialogToOpen();
+        solo.clickOnButton(solo.getString(R.string.offline_warn_understand));
+        solo.waitForDialogToClose();
         solo.waitForActivity(GameActivity.class);
         
         Log.d(TAG, "Exit game and returning to MainMenuActivity...");
