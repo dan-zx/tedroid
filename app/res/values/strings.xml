@@ -15,7 +15,8 @@
     <string name="leaderboards_button_label">MARCADORES</string>
     <string name="achievements_button_label">LOGROS</string>
     <string name="settings_button_label">CONFIGURACIÓN</string>
-    <string name="offline_warn">Si juegas sin inciar sesión en Google no podrás compartir tus puntajes y ni desbloquear logros</string>
+    <string name="offline_warn_title">Importante</string>
+    <string name="offline_warn_message">Si juegas sin inciar sesión en Google no podrás compartir puntajes con amigos y ni conseguir logros en el juego</string>
     <string name="offline_warn_understand">Entiendo y jugaré así</string>
     <string name="offline_warn_sign_in">Iniciar sesión en Google</string>
     <string name="sign_in_why">Inicia sesión en Google para poder compartir tus puntajes y logros</string>

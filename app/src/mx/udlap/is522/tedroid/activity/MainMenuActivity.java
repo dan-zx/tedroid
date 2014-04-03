@@ -33,8 +33,8 @@ public class MainMenuActivity extends BaseGameActivity {
         Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/twobit.ttf");
         appTitle.setTypeface(customFont);
         offlineAlertDialog = new AlertDialog.Builder(this)
-            .setMessage(R.string.offline_warn)
-            .setCancelable(false)
+            .setTitle(R.string.offline_warn_title)
+            .setMessage(R.string.offline_warn_message)
             .setPositiveButton(R.string.offline_warn_understand,
                 new DialogInterface.OnClickListener() {
 
