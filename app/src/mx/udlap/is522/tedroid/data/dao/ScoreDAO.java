@@ -25,6 +25,13 @@ public interface ScoreDAO extends GenericDAO<Integer, Score> {
     Map<String, Integer> readSumOfLinesAndPoints();
 
     /**
+     * Guarda el objeto Score proporcionado en la fuente datos.
+     * 
+     * @param score el objeto a guardar.
+     */
+    void save(Score score);
+
+    /**
      * Borra todos los objetos de la fuente datos.
      */
     void deleteAll();
