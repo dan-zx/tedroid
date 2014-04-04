@@ -132,4 +132,16 @@ public abstract class BaseGameActivity extends ActionBarActivity implements Game
             Games.Achievements.unlock(getApiClient(), getString(id));
         }
     }
+
+    /**
+     * Envía los puntos provistos al marcador indicado en Google Play.
+     * 
+     * @param id el id del marcador.
+     * @param points los puntos a enviar.
+     */
+    protected void submitScore(int id, long points) {
+        if (isSignedIn()) {
+            Games.Leaderboards.submitScore(getApiClient(), getString(id), points);
+        }
+    }
 }

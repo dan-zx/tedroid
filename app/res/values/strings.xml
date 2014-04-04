@@ -6,12 +6,13 @@
 
     <!-- ACTIVITY TITLES -->
     <string name="settings_activity_title">Configuración</string>
-    <string name="scores_activity_title">Puntajes</string>
+    <string name="scores_activity_title">Puntajes locales</string>
     <string name="tedroid_title">TEDROID</string>
 
     <!-- MAIN ACTIVITY -->
     <string name="play_button_label">JUGAR</string>
-    <string name="scores_button_label">PUNTAJES</string>
+    <string name="scores_button_label">PUNTAJES LOCALES</string>
+    <string name="leaderboards_button_label">MARCADORES</string>
     <string name="achievements_button_label">LOGROS</string>
     <string name="settings_button_label">CONFIGURACIÓN</string>
     <string name="offline_warn_title">Importante</string>

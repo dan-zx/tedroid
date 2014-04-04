@@ -323,7 +323,8 @@ public class GameActivity extends BaseGameActivity {
     private class ScoresAsyncTask extends AsyncTask<Score, Void, List<Integer>> {
 
         private ScoreDAO scoreDAO;
-        
+        private Score awardedScore;
+
         @Override
         protected void onPreExecute() {
             scoreDAO = new DAOFactory(getApplicationContext()).get(ScoreDAO.class);
@@ -331,7 +332,8 @@ public class GameActivity extends BaseGameActivity {
 
         @Override
         protected List<Integer> doInBackground(Score... score) {
-            scoreDAO.save(score[0]);
+            awardedScore = score[0];
+            scoreDAO.save(awardedScore);
             ArrayList<Integer> unlockedAchievements = new ArrayList<Integer>();
             Map<String, Integer> sums = scoreDAO.readSumOfLinesAndPoints();
             int linesSum = sums.get("lines_sum");
@@ -348,6 +350,10 @@ public class GameActivity extends BaseGameActivity {
             for (int id : unlockedAchievements) {
                 unlockAchievement(id);
             }
+            
+            submitScore(R.string.scores_leaderboard_id, awardedScore.getPoints());
+            submitScore(R.string.levels_leaderboard_id, awardedScore.getLevel());
+            submitScore(R.string.cleared_lines_leaderboard_id, awardedScore.getLines());
         }
     }
 }

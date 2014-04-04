@@ -66,6 +66,18 @@
             android:text="@string/scores_button_label" />
 
         <Button
+            android:id="@+id/leaderboards_button"
+            style="@style/TedroidButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:onClick="onLeaderboardsButtonClick"
+            android:text="@string/leaderboards_button_label"
+            android:visibility="gone" />
+
+        <Button
             android:id="@+id/achievements_button"
             style="@style/TedroidButton"
             android:layout_width="match_parent"

@@ -22,6 +22,7 @@ public class MainMenuActivity extends BaseGameActivity {
 
     private LinearLayout signInLayout;
     private Button achievementsButton;
+    private Button leaderboardsButton;
     private SignInButton signInButton;
     private TextView signedUser;
     private AlertDialog offlineAlertDialog;
@@ -55,6 +56,7 @@ public class MainMenuActivity extends BaseGameActivity {
             .create();
         signInLayout = (LinearLayout) findViewById(R.id.sign_in_layout);
         achievementsButton = (Button) findViewById(R.id.achievements_button);
+        leaderboardsButton = (Button) findViewById(R.id.leaderboards_button);
         signedUser = (TextView) findViewById(R.id.signed_user);
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +82,11 @@ public class MainMenuActivity extends BaseGameActivity {
         Intent intent = Games.Achievements.getAchievementsIntent(getApiClient());
         startActivityForResult(intent, UNUSED_REQUEST_CODE);
     }
+    
+    public void onLeaderboardsButtonClick(View view) {
+        Intent intent = Games.Leaderboards.getAllLeaderboardsIntent(getApiClient());
+        startActivityForResult(intent, UNUSED_REQUEST_CODE);
+    }
 
     public void onSettingsButtonClick(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
@@ -96,6 +103,7 @@ public class MainMenuActivity extends BaseGameActivity {
         super.onSignInFailed();
         signInLayout.setVisibility(View.VISIBLE);
         achievementsButton.setVisibility(View.GONE);
+        leaderboardsButton.setVisibility(View.GONE);
     }
 
     @Override
@@ -103,6 +111,7 @@ public class MainMenuActivity extends BaseGameActivity {
         super.onSignInSucceeded();
         signInLayout.setVisibility(View.GONE);
         achievementsButton.setVisibility(View.VISIBLE);
+        leaderboardsButton.setVisibility(View.VISIBLE);
         Player currentPlayer = Games.Players.getCurrentPlayer(getApiClient());
         signedUser.setText(currentPlayer.getDisplayName());
     }
