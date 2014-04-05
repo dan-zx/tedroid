@@ -2,7 +2,7 @@ package mx.udlap.is522.tedroid.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
@@ -19,7 +19,7 @@ import mx.udlap.is522.tedroid.util.Settings;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public abstract class BaseGameActivity extends ActionBarActivity implements GameHelper.GameHelperListener {
+public abstract class BaseGameActivity extends FragmentActivity implements GameHelper.GameHelperListener {
 
     private GameHelper gameHelper;
 

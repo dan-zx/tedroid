@@ -6,10 +6,9 @@
 
     <!-- ACTIVITY TITLES -->
     <string name="settings_activity_title">Configuración</string>
-    <string name="scores_activity_title">Puntajes</string>
-    <string name="tedroid_title">TEDROID</string>
 
-    <!-- MAIN ACTIVITY -->
+    <!-- MAIN MENU ACTIVITY -->
+    <string name="tedroid_title">TEDROID</string>
     <string name="play_button_label">JUGAR</string>
     <string name="scores_button_label">PUNTAJES</string>
     <string name="achievements_button_label">LOGROS</string>
@@ -25,24 +24,19 @@
     <string name="level_header">Nivel</string>
     <string name="lines_header">Lineas</string>
     <string name="date_header">Fecha</string>
-
-    <!-- DIALOGS -->
-    <string name="exit_message">¿De verdad quieres salir del juego?</string>
-    <string name="restart_message">¿De verdad quieres reiniciar el juego?</string>
     <string name="no_scores_message">No tienes puntajes todavía</string>
 
-    <!-- GAME LAYOUT -->
+    <!-- GAME ACTIVITY -->
     <string name="score_text">Puntaje:</string>
     <string name="level_text">Nivel:</string>
     <string name="lines_text">Lineas:</string>
     <string name="next_tetromino_text">Siguiente:</string>
     <string name="pause_text">Pausa</string>
+    <string name="resume_text">Resumir</string>
+    <string name="restart_text">Reiniciar</string>
     <string name="game_over_text">Game Over</string>
-
-    <!-- MENU -->
-    <string name="action_pause">Pausa</string>
-    <string name="action_resume">Resumir</string>
-    <string name="action_restart">Reiniciar</string>
+    <string name="exit_message">¿De verdad quieres salir del juego?</string>
+    <string name="restart_message">¿De verdad quieres reiniciar el juego?</string>
 
     <!-- GAME HELPER -->
     <string name="gamehelper_sign_in_failed">No se pudo iniciar sesión. Por favor revise la conexión a internet y vuelva a intentarlo</string>

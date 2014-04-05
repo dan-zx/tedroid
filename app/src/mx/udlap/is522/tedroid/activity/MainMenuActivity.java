@@ -15,55 +15,88 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 
 import mx.udlap.is522.tedroid.R;
+import mx.udlap.is522.tedroid.util.Typefaces;
 
 public class MainMenuActivity extends BaseGameActivity {
 
     private static final int UNUSED_REQUEST_CODE = 5471;
 
-    private LinearLayout signInLayout;
-    private Button achievementsButton;
-    private SignInButton signInButton;
+    private TextView appTitle;
     private TextView signedUser;
+    private TextView signInWhy;
+    private Button playButton;
+    private Button scoresButton;
+    private Button achievementsButton;
+    private Button settingsButton;
+    private SignInButton signInButton;
+    private LinearLayout signInLayout;
     private AlertDialog offlineAlertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainmenu);
-        TextView appTitle = (TextView) findViewById(R.id.app_title);
-        Typeface customFont = Typeface.createFromAsset(getAssets(), "fonts/twobit.ttf");
-        appTitle.setTypeface(customFont);
-        offlineAlertDialog = new AlertDialog.Builder(this)
-            .setTitle(R.string.offline_warn_title)
-            .setMessage(R.string.offline_warn_message)
-            .setPositiveButton(R.string.offline_warn_understand,
-                new DialogInterface.OnClickListener() {
+        initViews();
+        setUpSignInButton();
+        setUpFont();
+        setUpOfflineAlertDialog();
+    }
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        gotoGame();
-                    }
-                })
-            .setNegativeButton(R.string.offline_warn_sign_in,
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        beginUserInitiatedSignIn();
-                    }
-                })
-            .create();
-        signInLayout = (LinearLayout) findViewById(R.id.sign_in_layout);
-        achievementsButton = (Button) findViewById(R.id.achievements_button);
+    /** Inicializa las vistas */
+    private void initViews() {
+        appTitle = (TextView) findViewById(R.id.app_title);
         signedUser = (TextView) findViewById(R.id.signed_user);
+        signInWhy = (TextView) findViewById(R.id.sign_in_why_text);
+        playButton = (Button) findViewById(R.id.play_button);
+        scoresButton = (Button) findViewById(R.id.scores_button);
+        achievementsButton = (Button) findViewById(R.id.achievements_button);
+        settingsButton = (Button) findViewById(R.id.settings_button);        
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        signInLayout = (LinearLayout) findViewById(R.id.sign_in_layout);
+    }
+
+    /** Inicializa la fuente y la coloca en cada boton */
+    private void setUpFont() {
+        Typeface typeface = Typefaces.get(this, Typefaces.Font.TWOBIT);
+        appTitle.setTypeface(typeface);
+        signedUser.setTypeface(typeface);
+        signInWhy.setTypeface(typeface);
+        playButton.setTypeface(typeface);
+        scoresButton.setTypeface(typeface);
+        achievementsButton.setTypeface(typeface);
+        settingsButton.setTypeface(typeface);
+    }
+
+    /** Inicializa el boton de iniciar sesión en Google */
+    private void setUpSignInButton() {
         signInButton.setOnClickListener(new View.OnClickListener() {
-            
+
             @Override
             public void onClick(View v) {
                 beginUserInitiatedSignIn();
             }
         });
+    }
+
+    /** Inicializa dialog de alerta de juego fuera de Google */
+    private void setUpOfflineAlertDialog() {
+        offlineAlertDialog = new AlertDialog.Builder(this)
+            .setTitle(R.string.offline_warn_title)
+            .setMessage(R.string.offline_warn_message)
+            .setPositiveButton(R.string.offline_warn_understand, new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    gotoGame();
+                }
+            }).setNegativeButton(R.string.offline_warn_sign_in, new DialogInterface.OnClickListener() {
+    
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    beginUserInitiatedSignIn();
+                }
+            })
+            .create();
     }
 
     public void onPlayButtonClick(View view) {
@@ -85,7 +118,7 @@ public class MainMenuActivity extends BaseGameActivity {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
-    
+
     private void gotoGame() {
         Intent intent = new Intent(MainMenuActivity.this, GameActivity.class);
         startActivity(intent);
