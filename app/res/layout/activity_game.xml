@@ -126,6 +126,27 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@id/next_tetromino_text"
             android:layout_margin="8dp" />
+
+        <Button
+            android:id="@+id/Pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/Restart"
+            android:layout_alignLeft="@+id/next_tetromino"
+            android:layout_alignRight="@+id/next_tetromino"
+            android:onClick="Pausa"
+            android:text="@string/action_pause" />
+
+        <Button
+            android:id="@+id/Restart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/next_tetromino"
+            android:layout_alignLeft="@+id/next_tetromino"
+            android:layout_alignRight="@+id/next_tetromino"
+            android:onClick="Restart"
+            android:text="@string/action_restart" />
+
     </RelativeLayout>
 
 </LinearLayout>

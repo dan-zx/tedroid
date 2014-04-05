@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +26,7 @@ import mx.udlap.is522.tedroid.view.model.Tetromino;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public class GameActivity extends ActionBarActivity {
+public class GameActivity extends Activity {
 
     private int totalLines;
     private int score;
@@ -116,8 +116,7 @@ public class GameActivity extends ActionBarActivity {
                     gameBoardView.setVisibility(View.VISIBLE);
                     gameBoardView.setLevel(GameBoardView.DEFAULT_LEVEL); // TODO: resetear el nivel seleccionado
                     gameBoardView.restartGame();
-                    MenuItem pauseResumeItem = menu.findItem(R.id.action_pause_resume);
-                    pauseResumeItem.setIcon(R.drawable.ic_action_pause);
+                   
                     if (!mediaPlayer.isPlaying()) mediaPlayer.start();
                 }
             })
@@ -183,37 +182,42 @@ public class GameActivity extends ActionBarActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_pause_resume:
-                if (!gameBoardView.isGameOver()) {
-                    if (gameBoardView.isPaused()) {
-                        pauseTextView.setVisibility(View.GONE);
-                        gameBoardView.setVisibility(View.VISIBLE);
-                        gameBoardView.resumeGame();
-                        if (!mediaPlayer.isPlaying()) mediaPlayer.start();
-                        item.setIcon(R.drawable.ic_action_pause);
-                    } else {
-                        gameBoardView.setVisibility(View.GONE);
-                        pauseTextView.setVisibility(View.VISIBLE);
-                        gameBoardView.pauseGame();
-                        mediaPlayer.pause();
-                        item.setIcon(R.drawable.ic_action_play);
-                    }
-                }
-                return true;
-            case R.id.action_restart:
-                gameBoardView.pauseGame();
-                mediaPlayer.pause();
-                restartDialog.show();
-                return true;
-            default: return super.onOptionsItemSelected(item);
-        }
-
+  
+    public void Pausa(View view)
+    {
+    	 if (!gameBoardView.isGameOver()) {
+             if (gameBoardView.isPaused()) {
+                 pauseTextView.setVisibility(View.GONE);
+                 gameBoardView.setVisibility(View.VISIBLE);
+                 gameBoardView.resumeGame();
+                 if (!mediaPlayer.isPlaying()) mediaPlayer.start();
+                
+             } else {
+                 gameBoardView.setVisibility(View.GONE);
+                 pauseTextView.setVisibility(View.VISIBLE);
+                 gameBoardView.pauseGame();
+                 mediaPlayer.pause();
+                 
+                 
+             }
+         }	
+    	 
     }
-
-    @Override
+    
+    
+    public void Restart(View view)
+    { 
+    	
+    	gameBoardView.pauseGame();
+    	mediaPlayer.pause();
+    	restartDialog.show(); 
+   }
+    
+    
+    
+    
+   
+    
     protected void onPause() {
         super.onPause();
         if (mediaPlayer != null && mediaPlayer.isPlaying()) mediaPlayer.pause();
