@@ -277,10 +277,12 @@ public final class SQLiteUtils {
                 : null;
 
         if (!Strings.isNullOrBlank(dateString)) {
-            for (String formats : timeString.formats) {
+            for (String format : timeString.formats) {
                 try {
-                    return new SimpleDateFormat(formats, Locale.ENGLISH).parse(dateString);
-                } catch (ParseException ex) { }
+                    return new SimpleDateFormat(format, Locale.ENGLISH).parse(dateString);
+                } catch (ParseException ex) { 
+                    // Si no es el formato correcto, se ignora y sigue con el siguiente formato.
+                }
             }
         }
 

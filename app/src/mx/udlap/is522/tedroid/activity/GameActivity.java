@@ -1,14 +1,12 @@
 package mx.udlap.is522.tedroid.activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -39,7 +37,6 @@ public class GameActivity extends Activity {
     private TextView levelTextView;
     private TextView linesTextView;
     private MediaPlayer mediaPlayer;
-    private Menu menu;
     private AlertDialog restartDialog;
     private AlertDialog exitDialog;
 
@@ -116,7 +113,6 @@ public class GameActivity extends Activity {
                     gameBoardView.setVisibility(View.VISIBLE);
                     gameBoardView.setLevel(GameBoardView.DEFAULT_LEVEL); // TODO: resetear el nivel seleccionado
                     gameBoardView.restartGame();
-                   
                     if (!mediaPlayer.isPlaying()) mediaPlayer.start();
                 }
             })
@@ -133,7 +129,6 @@ public class GameActivity extends Activity {
                 }
             })
             .create();
-
         exitDialog = new AlertDialog.Builder(this)
             .setMessage(R.string.exit_message)
             .setCancelable(false)
@@ -165,7 +160,7 @@ public class GameActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (gameBoardView.isPaused()) {
+        if (!gameBoardView.isGameOver() && gameBoardView.isPaused()) {
             if (pauseTextView.getVisibility() == View.GONE && 
                     !exitDialog.isShowing() &&
                     !restartDialog.isShowing()) {
@@ -175,16 +170,7 @@ public class GameActivity extends Activity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.game, menu);
-        this.menu = menu;
-        return true;
-    }
-
-  
-    public void Pausa(View view)
-    {
+    public void Pausa(View view) {
     	 if (!gameBoardView.isGameOver()) {
              if (gameBoardView.isPaused()) {
                  pauseTextView.setVisibility(View.GONE);
@@ -200,41 +186,37 @@ public class GameActivity extends Activity {
                  
                  
              }
-         }	
-    	 
+         }
     }
     
     
-    public void Restart(View view)
-    { 
-    	
+    public void Restart(View view) {
     	gameBoardView.pauseGame();
     	mediaPlayer.pause();
-    	restartDialog.show(); 
+    	restartDialog.show();
    }
-    
-    
-    
-    
-   
-    
+
     protected void onPause() {
         super.onPause();
-        if (mediaPlayer != null && mediaPlayer.isPlaying()) mediaPlayer.pause();
-        if (!gameBoardView.isPaused()) gameBoardView.pauseGame();
+        if (!gameBoardView.isGameOver()) {
+            if (mediaPlayer != null && mediaPlayer.isPlaying()) mediaPlayer.pause();
+            if (!gameBoardView.isPaused()) gameBoardView.pauseGame();
+        }
     }
 
     @Override
     public void onBackPressed() {
-        gameBoardView.pauseGame();
-        mediaPlayer.pause();
+        if (!gameBoardView.isGameOver()) {
+            gameBoardView.pauseGame();
+            mediaPlayer.pause();
+        }
         exitDialog.show();
     }
 
     @Override
     public void finish() {
         super.finish();
-        gameBoardView.stopGame();
+        if (!gameBoardView.isGameOver()) gameBoardView.stopGame();
         mediaPlayer.stop();
         mediaPlayer.release();
         mediaPlayer = null;
@@ -282,15 +264,6 @@ public class GameActivity extends Activity {
         score = 0;
         level = 0;
         totalLines = 0;
-    }
-
-    /**
-     * Solo se usa para pruebas.
-     * 
-     * @return el menu de esta actividad.
-     */
-    public Menu getMenu() {
-        return menu;
     }
 
     /**

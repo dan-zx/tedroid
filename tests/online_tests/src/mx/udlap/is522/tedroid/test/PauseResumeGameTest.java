@@ -2,7 +2,6 @@ package mx.udlap.is522.tedroid.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
-import android.view.MenuItem;
 
 import com.robotium.solo.Solo;
 
@@ -36,23 +35,17 @@ public class PauseResumeGameTest extends ActivityInstrumentationTestCase2<GameAc
         solo.waitForActivity(GameActivity.class);
 
         Log.d(TAG, "Pausing game...");
-        solo.clickOnActionBarItem(R.id.action_pause_resume);
+        solo.clickOnView(solo.getView(R.id.Pause));
         solo.sleep(DELAY);
 
         GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.game_board);
         assertNotNull("GameBoardView should not be null", gameBoardView);
         assertTrue("The game should be paused", gameBoardView.isPaused());
 
-        GameActivity activity = (GameActivity) solo.getCurrentActivity();
-        MenuItem pauseResumeItem = activity.getMenu().findItem(R.id.action_pause_resume);
-        assertNotNull("Pause/Resume MenuItem should not be null", pauseResumeItem);
-        assertEquals("Pause/Resume MenuItem should have changed its icon", getActivity().getResources().getDrawable(R.drawable.ic_action_play).getConstantState(), pauseResumeItem.getIcon().getConstantState());
-
         Log.d(TAG, "Resuming game...");
-        solo.clickOnActionBarItem(R.id.action_pause_resume);
+        solo.clickOnView(solo.getView(R.id.Pause));
         solo.sleep(DELAY);
 
         assertFalse("The game should be resumed", gameBoardView.isPaused());
-        assertEquals("Pause/Resume MenuItem should have changed its icon", getActivity().getResources().getDrawable(R.drawable.ic_action_pause).getConstantState(), pauseResumeItem.getIcon().getConstantState());
     }
 }
