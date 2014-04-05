@@ -14,6 +14,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import mx.udlap.is522.tedroid.util.Typefaces;
+
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.Score;
 import mx.udlap.is522.tedroid.data.dao.DAOFactory;
@@ -31,6 +33,7 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
 
     private TableRow.LayoutParams layoutParams;
     private TableLayout scoreTable;
+    private Typeface twobitTypeface;
     private int primaryColor;
     private int secondaryColor;
 
@@ -38,6 +41,7 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scores);
+        twobitTypeface = Typefaces.get(this, Typefaces.Font.TWOBIT);
         scoreTable = (TableLayout) findViewById(R.id.score_table);
         layoutParams = new TableRow.LayoutParams();
         layoutParams.rightMargin = dpToPixel(10);
@@ -87,17 +91,17 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
         TextView pointsText = new TextView(this);
         pointsText.setText(String.valueOf(score.getPoints()));
         pointsText.setTextColor(secondaryColor);
-        pointsText.setTypeface(pointsText.getTypeface(), Typeface.BOLD);
+        pointsText.setTypeface(twobitTypeface);
         pointsText.setLayoutParams(layoutParams);
         TextView levelText = new TextView(this);
         levelText.setText(String.valueOf(score.getLevel()));
         levelText.setTextColor(secondaryColor);
-        levelText.setTypeface(levelText.getTypeface(), Typeface.BOLD);
+        levelText.setTypeface(twobitTypeface);
         levelText.setLayoutParams(layoutParams);
         TextView linesText = new TextView(this);
         linesText.setText(String.valueOf(score.getLines()));
         linesText.setTextColor(secondaryColor);
-        linesText.setTypeface(linesText.getTypeface(), Typeface.BOLD);
+        linesText.setTypeface(twobitTypeface);
         linesText.setLayoutParams(layoutParams);
         TextView dateText = new TextView(this);
         String dateStr = getString(R.string.datetime_format, 
@@ -105,7 +109,7 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
                 DateFormat.getTimeFormat(getApplicationContext()).format(score.getObtainedAt()));
         dateText.setText(dateStr);
         dateText.setTextColor(secondaryColor);
-        dateText.setTypeface(dateText.getTypeface(), Typeface.BOLD);
+        dateText.setTypeface(twobitTypeface);
         dateText.setLayoutParams(layoutParams);
         row.addView(pointsText);
         row.addView(levelText);
@@ -122,22 +126,22 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
         TextView pointsHeaderText = new TextView(this);
         pointsHeaderText.setText(R.string.points_header);
         pointsHeaderText.setTextColor(primaryColor);
-        pointsHeaderText.setTypeface(pointsHeaderText.getTypeface(), Typeface.BOLD);
+        pointsHeaderText.setTypeface(twobitTypeface);
         pointsHeaderText.setLayoutParams(layoutParams);
         TextView levelHeaderText = new TextView(this);
         levelHeaderText.setText(R.string.level_header);
         levelHeaderText.setTextColor(primaryColor);
-        levelHeaderText.setTypeface(levelHeaderText.getTypeface(), Typeface.BOLD);
+        levelHeaderText.setTypeface(twobitTypeface);
         levelHeaderText.setLayoutParams(layoutParams);
         TextView linesHeaderText = new TextView(this);
         linesHeaderText.setText(R.string.lines_header);
         linesHeaderText.setTextColor(primaryColor);
-        linesHeaderText.setTypeface(linesHeaderText.getTypeface(), Typeface.BOLD);
+        linesHeaderText.setTypeface(twobitTypeface);
         linesHeaderText.setLayoutParams(layoutParams);
         TextView dateHeaderText = new TextView(this);
         dateHeaderText.setText(R.string.date_header);
         dateHeaderText.setTextColor(primaryColor);
-        dateHeaderText.setTypeface(dateHeaderText.getTypeface(), Typeface.BOLD);
+        dateHeaderText.setTypeface(twobitTypeface);
         dateHeaderText.setLayoutParams(layoutParams);
         headerRow.addView(pointsHeaderText);
         headerRow.addView(levelHeaderText);

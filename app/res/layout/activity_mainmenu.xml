@@ -23,7 +23,7 @@
             android:layout_marginBottom="15dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="@drawable/tedroid_maintittle"
+            android:background="@drawable/tedroid_blue_rounded_background"
             android:gravity="center"
             android:padding="8dp"
             android:text="@string/tedroid_title"
@@ -31,7 +31,7 @@
 
         <Button
             android:id="@+id/play_button"
-            style="@style/TedroidButton"
+            style="@style/TedroidYellowButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
@@ -42,7 +42,7 @@
 
         <Button
             android:id="@+id/scores_button"
-            style="@style/TedroidButton"
+            style="@style/TedroidYellowButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
@@ -53,7 +53,7 @@
 
         <Button
             android:id="@+id/settings_button"
-            style="@style/TedroidButton"
+            style="@style/TedroidYellowButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"

@@ -2,10 +2,17 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="TedroidButton" parent="@android:style/Widget.Button">
-        <item name="android:background">@drawable/tedroid_button_background</item>
         <item name="android:textSize">25sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="TedroidYellowButton" parent="@style/TedroidButton">
+        <item name="android:background">@drawable/tedroid_yellow_rounded_background</item>
+    </style>
+    
+    <style name="TedroidBlueButton" parent="@style/TedroidButton">
+        <item name="android:background">@drawable/tedroid_blue_rounded_background</item>
     </style>
 
 </resources>

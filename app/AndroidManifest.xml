@@ -32,7 +32,6 @@
             android:theme="@android:style/Theme.Light.NoTitleBar" />
         <activity
             android:name=".activity.ScoresActivity"
-            android:label="@string/scores_activity_title"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Light.NoTitleBar" />
         <activity

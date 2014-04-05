@@ -35,7 +35,7 @@ public class PauseResumeGameTest extends ActivityInstrumentationTestCase2<GameAc
         solo.waitForActivity(GameActivity.class);
 
         Log.d(TAG, "Pausing game...");
-        solo.clickOnView(solo.getView(R.id.Pause));
+        solo.clickOnView(solo.getView(R.id.pause_button));
         solo.sleep(DELAY);
 
         GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.game_board);
@@ -43,7 +43,7 @@ public class PauseResumeGameTest extends ActivityInstrumentationTestCase2<GameAc
         assertTrue("The game should be paused", gameBoardView.isPaused());
 
         Log.d(TAG, "Resuming game...");
-        solo.clickOnView(solo.getView(R.id.Pause));
+        solo.clickOnView(solo.getView(R.id.pause_button));
         solo.sleep(DELAY);
 
         assertFalse("The game should be resumed", gameBoardView.isPaused());

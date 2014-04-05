@@ -5,14 +5,14 @@
     android:layout_height="match_parent"
     android:background="@drawable/photo"
     android:orientation="horizontal"
-    android:weightSum="6"
+    android:weightSum="7"
     tools:context=".activity.GameActivity" >
 
     <TextView
         android:id="@+id/pause_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="4"
+        android:layout_weight="4.3"
         android:gravity="center"
         android:text="@string/pause_text"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -23,7 +23,7 @@
         android:id="@+id/game_over_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="4"
+        android:layout_weight="4.3"
         android:gravity="center"
         android:text="@string/game_over_text"
         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -34,13 +34,13 @@
         android:id="@+id/game_board"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="4"
+        android:layout_weight="4.3"
         android:background="#9b9898" />
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="2" >
+        android:layout_weight="2.7" >
 
         <TextView
             android:id="@+id/score_text"
@@ -127,26 +127,33 @@
             android:layout_below="@id/next_tetromino_text"
             android:layout_margin="8dp" />
 
-        <Button
-            android:id="@+id/Pause"
+        <ImageButton
+            android:id="@+id/restart_button"
+            style="@style/TedroidBlueButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/Restart"
-            android:layout_alignLeft="@+id/next_tetromino"
-            android:layout_alignRight="@+id/next_tetromino"
-            android:onClick="Pausa"
-            android:text="@string/action_pause" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/restart_text"
+            android:onClick="onRestartButtonClick"
+            android:src="@drawable/ic_action_restart" />
 
-        <Button
-            android:id="@+id/Restart"
+        <ImageButton
+            android:id="@+id/pause_button"
+            style="@style/TedroidBlueButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/next_tetromino"
-            android:layout_alignLeft="@+id/next_tetromino"
-            android:layout_alignRight="@+id/next_tetromino"
-            android:onClick="Restart"
-            android:text="@string/action_restart" />
-
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="@string/pause_text"
+            android:onClick="onPauseButtonClick"
+            android:src="@drawable/ic_action_pause" />
     </RelativeLayout>
 
 </LinearLayout>
