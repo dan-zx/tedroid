@@ -2,14 +2,14 @@ package mx.udlap.is522.tedroid.data.dao;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-import mx.udlap.is522.tedroid.data.Score;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+
+import mx.udlap.is522.tedroid.data.Score;
 
 import java.util.Arrays;
 import java.util.Comparator;

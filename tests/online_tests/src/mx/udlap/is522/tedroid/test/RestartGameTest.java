@@ -34,7 +34,7 @@ public class RestartGameTest extends ActivityInstrumentationTestCase2<GameActivi
         solo.waitForActivity(GameActivity.class);
 
         Log.d(TAG, "Restarting game...");
-        solo.clickOnActionBarItem(R.id.action_restart);
+        solo.clickOnView(solo.getView(R.id.restart_button));
         solo.waitForDialogToOpen();
 
         GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.game_board);
@@ -48,7 +48,7 @@ public class RestartGameTest extends ActivityInstrumentationTestCase2<GameActivi
         assertFalse("The game should be resumed", gameBoardView.isPaused());
 
         Log.d(TAG, "Restarting game again...");
-        solo.clickOnActionBarItem(R.id.action_restart);
+        solo.clickOnView(solo.getView(R.id.restart_button));
         solo.waitForDialogToOpen();
 
         assertTrue("The game should be paused", gameBoardView.isPaused());

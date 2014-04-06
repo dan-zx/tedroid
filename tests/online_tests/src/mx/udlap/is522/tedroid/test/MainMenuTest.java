@@ -3,13 +3,13 @@ package mx.udlap.is522.tedroid.test;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
 
-import mx.udlap.is522.tedroid.activity.SettingsActivity;
-
-import mx.udlap.is522.tedroid.activity.GameActivity;
-import mx.udlap.is522.tedroid.R;
-import mx.udlap.is522.tedroid.activity.ScoresActivity;
 import com.robotium.solo.Solo;
+
+import mx.udlap.is522.tedroid.R;
+import mx.udlap.is522.tedroid.activity.GameActivity;
 import mx.udlap.is522.tedroid.activity.MainMenuActivity;
+import mx.udlap.is522.tedroid.activity.ScoresActivity;
+import mx.udlap.is522.tedroid.activity.SettingsActivity;
 
 public class MainMenuTest extends ActivityInstrumentationTestCase2<MainMenuActivity> {
 

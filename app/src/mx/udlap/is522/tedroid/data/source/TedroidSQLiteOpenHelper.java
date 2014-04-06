@@ -39,9 +39,6 @@ public class TedroidSQLiteOpenHelper extends SQLiteOpenHelper {
         version = CURRENT_VERSION;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onCreate(SQLiteDatabase database) {
         try {
@@ -59,9 +56,6 @@ public class TedroidSQLiteOpenHelper extends SQLiteOpenHelper {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
         Log.v(TAG, "Destroying version " + oldVersion + "...");

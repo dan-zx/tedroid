@@ -2,18 +2,19 @@ package mx.udlap.is522.tedroid.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.Score;
 import mx.udlap.is522.tedroid.data.dao.DAOFactory;
 import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
+import mx.udlap.is522.tedroid.util.Typefaces;
 import mx.udlap.is522.tedroid.view.GameBoardView;
 import mx.udlap.is522.tedroid.view.NextTetrominoView;
 import mx.udlap.is522.tedroid.view.model.Tetromino;
@@ -25,13 +26,13 @@ import java.util.Map;
 /**
  * Actividad principal del juego donde se puede jugar realmente.
  * 
- * @author Daniel Pedraza-Arcega
+ * @author Daniel Pedraza-Arcega, Andrés Peña-Peralta, Alejandro Díaz-Torres
  * @since 1.0
  */
 public class GameActivity extends BaseGameActivity {
 
     private int totalLines;
-    private int score;
+    private int totalScore;
     private int level;
     private NextTetrominoView nextTetrominoView;
     private GameBoardView gameBoardView;
@@ -40,8 +41,12 @@ public class GameActivity extends BaseGameActivity {
     private TextView scoreTextView;
     private TextView levelTextView;
     private TextView linesTextView;
+    private TextView scoreTextTextView;
+    private TextView levelTextTextView;
+    private TextView linesTextTextView;
+    private TextView nextTetrominoTextTextView;
+    private ImageButton pauseButton;
     private MediaPlayer mediaPlayer;
-    private Menu menu;
     private AlertDialog restartDialog;
     private AlertDialog exitDialog;
 
@@ -49,16 +54,61 @@ public class GameActivity extends BaseGameActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        setUpMediaPlayer();
+        initViews();
+        setUpFont();
+        setUpScoreTextViews();
+        setUpGameBoardView();
+        setUpRestartDialog();
+        setUpExitDialog();
+    }
+
+    /** Inicializa el media player que toca la música */
+    private void setUpMediaPlayer() {
         mediaPlayer = MediaPlayer.create(this, R.raw.tetris_theme);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
+    }
+
+    /** Inicializa las vistas */
+    private void initViews() {
+        scoreTextTextView = (TextView) findViewById(R.id.score_text);
+        levelTextTextView = (TextView) findViewById(R.id.level_text);
+        linesTextTextView = (TextView) findViewById(R.id.lines_text);
+        nextTetrominoTextTextView = (TextView) findViewById(R.id.next_tetromino_text);
         pauseTextView = (TextView) findViewById(R.id.pause_text);
         gameOverTextView = (TextView) findViewById(R.id.game_over_text);
         scoreTextView = (TextView) findViewById(R.id.score);
         levelTextView = (TextView) findViewById(R.id.levels);
         linesTextView = (TextView) findViewById(R.id.lines);
         nextTetrominoView = (NextTetrominoView) findViewById(R.id.next_tetromino);
+        pauseButton = (ImageButton) findViewById(R.id.pause_button);
         gameBoardView = (GameBoardView) findViewById(R.id.game_board);
+    }
+
+    /** Inicializa el valor de cada textview del puntaje del usuario */
+    private void setUpScoreTextViews() {
+        linesTextView.setText(String.valueOf(totalLines));
+        scoreTextView.setText(String.valueOf(totalScore));
+        levelTextView.setText(String.valueOf(level));
+    }
+
+    /** Inicializa la fuente y la coloca en cada textview */
+    private void setUpFont() {
+        Typeface typeface = Typefaces.get(this, Typefaces.Font.TWOBIT);
+        scoreTextTextView.setTypeface(typeface);
+        levelTextTextView.setTypeface(typeface);
+        linesTextTextView.setTypeface(typeface);
+        nextTetrominoTextTextView.setTypeface(typeface);
+        pauseTextView.setTypeface(typeface);
+        gameOverTextView.setTypeface(typeface);
+        scoreTextView.setTypeface(typeface);
+        levelTextView.setTypeface(typeface);
+        linesTextView.setTypeface(typeface);
+    }
+
+    /** Inicializa el tablero de juego */
+    private void setUpGameBoardView() {
         gameBoardView.setOnCommingNextTetrominoListener(new GameBoardView.OnCommingNextTetrominoListener() {
 
             @Override
@@ -70,22 +120,20 @@ public class GameActivity extends BaseGameActivity {
 
             @Override
             public void onHardDropped(int gridSpaces) {
-                score += gridSpaces * 2;
-                scoreTextView.setText(String.valueOf(score));
+                totalScore += gridSpaces * 2;
+                setUpScoreTextViews();
             }
             
             @Override
             public void onSoftDropped(int gridSpaces) {
-                score += gridSpaces;
-                scoreTextView.setText(String.valueOf(score));
+                totalScore += gridSpaces;
+                setUpScoreTextViews();
             }
             
             public void onClearedLines(int linesCleared) {
                 if (updateLevelIfNeeded(linesCleared)) gameBoardView.levelUp();
                 updateScoreWhenClearLines(linesCleared);
-                linesTextView.setText(String.valueOf(totalLines));
-                scoreTextView.setText(String.valueOf(score));
-                levelTextView.setText(String.valueOf(level));
+                setUpScoreTextViews();
             }
         });
         gameBoardView.setOnGameOverListener(new GameBoardView.OnGameOverListener() {
@@ -98,47 +146,53 @@ public class GameActivity extends BaseGameActivity {
                 Score newScore = new Score();
                 newScore.setLevel(level);
                 newScore.setLines(totalLines);
-                newScore.setPoints(score);
+                newScore.setPoints(totalScore);
                 new ScoresAsyncTask().execute(newScore);
             }
         });
+    }
+
+    /** Inicializa el dialog de reinicio */
+    private void setUpRestartDialog() {
         restartDialog = new AlertDialog.Builder(this)
             .setMessage(R.string.restart_message)
-            .setCancelable(false)
             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
+    
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     resetCounters();
-                    scoreTextView.setText(String.valueOf(score));
-                    levelTextView.setText(String.valueOf(level));
-                    linesTextView.setText(String.valueOf(totalLines));
+                    setUpScoreTextViews();
                     pauseTextView.setVisibility(View.GONE);
                     gameOverTextView.setVisibility(View.GONE);
                     gameBoardView.setVisibility(View.VISIBLE);
-                    gameBoardView.setLevel(GameBoardView.DEFAULT_LEVEL); // TODO: resetear el nivel seleccionado
+                    gameBoardView.setLevel(GameBoardView.DEFAULT_LEVEL); // TODO: resetear al nivel seleccionado
                     gameBoardView.restartGame();
-                    MenuItem pauseResumeItem = menu.findItem(R.id.action_pause_resume);
-                    pauseResumeItem.setIcon(R.drawable.ic_action_pause);
+                    pauseButton.setImageResource(R.drawable.ic_action_pause);
+                    pauseButton.setContentDescription(getString(R.string.pause_text));
                     if (!mediaPlayer.isPlaying()) mediaPlayer.start();
                 }
             })
             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-
+    
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    if (pauseTextView.getVisibility() == View.GONE && 
-                            !gameBoardView.isGameOver()) {
-                        gameBoardView.resumeGame();
-                        if (!mediaPlayer.isPlaying()) mediaPlayer.start();
-                    }
+                    onCancelDialogs(dialog);
+                }
+            })
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
+    
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    onCancelDialogs(dialog);
                 }
             })
             .create();
+    }
+
+    /** Inicializa el dialogo de salida */
+    private void setUpExitDialog() {
         exitDialog = new AlertDialog.Builder(this)
             .setMessage(R.string.exit_message)
-            .setCancelable(false)
             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                 @Override
@@ -150,18 +204,30 @@ public class GameActivity extends BaseGameActivity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    if (pauseTextView.getVisibility() == View.GONE &&
-                            !gameBoardView.isGameOver()) {
-                        gameBoardView.resumeGame();
-                        if (!mediaPlayer.isPlaying()) mediaPlayer.start();
-                    }
+                    onCancelDialogs(dialog);
+                }
+            }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+    
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    onCancelDialogs(dialog);
                 }
             })
             .create();
-        scoreTextView.setText(String.valueOf(score));
-        levelTextView.setText(String.valueOf(level));
-        linesTextView.setText(String.valueOf(totalLines));
+    }
+
+    /**
+     * Cierra el dialog provisto y reinicia el juego donde se quedó.
+     * 
+     * @param dialog que dialogo llamó este método.
+     */
+    private void onCancelDialogs(DialogInterface dialog) {
+        dialog.dismiss();
+        if (pauseTextView.getVisibility() == View.GONE && 
+                !gameBoardView.isGameOver()) {
+            gameBoardView.resumeGame();
+            if (!mediaPlayer.isPlaying()) mediaPlayer.start();
+        }
     }
 
     @Override
@@ -177,46 +243,34 @@ public class GameActivity extends BaseGameActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.game, menu);
-        this.menu = menu;
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_pause_resume:
-                if (!gameBoardView.isGameOver()) {
-                    if (gameBoardView.isPaused()) {
-                        pauseTextView.setVisibility(View.GONE);
-                        gameBoardView.setVisibility(View.VISIBLE);
-                        gameBoardView.resumeGame();
-                        if (!mediaPlayer.isPlaying()) mediaPlayer.start();
-                        item.setIcon(R.drawable.ic_action_pause);
-                    } else {
-                        gameBoardView.setVisibility(View.GONE);
-                        pauseTextView.setVisibility(View.VISIBLE);
-                        gameBoardView.pauseGame();
-                        mediaPlayer.pause();
-                        item.setIcon(R.drawable.ic_action_play);
-                    }
-                }
-                return true;
-            case R.id.action_restart:
-                if (!gameBoardView.isGameOver()) {
-                    gameBoardView.pauseGame();
-                    mediaPlayer.pause();
-                }
-                restartDialog.show();
-                return true;
-            default: return super.onOptionsItemSelected(item);
+    public void onPauseButtonClick(View view) {
+        if (!gameBoardView.isGameOver()) {
+            if (gameBoardView.isPaused()) {
+                pauseTextView.setVisibility(View.GONE);
+                gameBoardView.setVisibility(View.VISIBLE);
+                gameBoardView.resumeGame();
+                if (!mediaPlayer.isPlaying()) mediaPlayer.start();
+                pauseButton.setImageResource(R.drawable.ic_action_pause);
+                pauseButton.setContentDescription(getString(R.string.pause_text));
+            } else {
+                gameBoardView.setVisibility(View.GONE);
+                pauseTextView.setVisibility(View.VISIBLE);
+                gameBoardView.pauseGame();
+                mediaPlayer.pause();
+                pauseButton.setImageResource(R.drawable.ic_action_play);
+                pauseButton.setContentDescription(getString(R.string.resume_text));
+            }
         }
-
     }
 
-    @Override
+    public void onRestartButtonClick(View view) {
+        if (!gameBoardView.isGameOver()) {
+            gameBoardView.pauseGame();
+            mediaPlayer.pause();
+        }
+        restartDialog.show();
+    }
+
     protected void onPause() {
         super.onPause();
         if (!gameBoardView.isGameOver()) {
@@ -259,8 +313,8 @@ public class GameActivity extends BaseGameActivity {
             default: factor = 1; break;
         }
         
-        score += factor * (level + 1);
-        if (score >= 999999) unlockAchievement(R.string.believe_it_or_not_achievement_id);
+        totalScore += factor * (level + 1);
+        if (totalScore >= 999999) unlockAchievement(R.string.believe_it_or_not_achievement_id);
     }
 
     /**
@@ -300,18 +354,9 @@ public class GameActivity extends BaseGameActivity {
      * Resetea todos los contadores.
      */
     private void resetCounters() {
-        score = 0;
+        totalScore = 0;
         level = 0;
         totalLines = 0;
-    }
-
-    /**
-     * Solo se usa para pruebas.
-     * 
-     * @return el menu de esta actividad.
-     */
-    public Menu getMenu() {
-        return menu;
     }
 
     /**

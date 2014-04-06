@@ -12,7 +12,7 @@ import mx.udlap.is522.tedroid.view.GameBoardView;
 public class GameOverTest extends ActivityInstrumentationTestCase2<MockGameActivity> {
 
     private static final String TAG = GameOverTest.class.getSimpleName();
-    private static final long DELAY = 16000l;
+    private static final long DELAY = 16000L;
 
     private Solo solo;
 
