@@ -4,15 +4,15 @@ import static org.fest.assertions.api.Assertions.assertThat;
 
 import android.app.Activity;
 
-import mx.udlap.is522.tedroid.R;
-import mx.udlap.is522.tedroid.view.GameBoardView;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+
+import mx.udlap.is522.tedroid.R;
+import mx.udlap.is522.tedroid.view.GameBoardView;
 
 @RunWith(RobolectricTestRunner.class)
 public class TetrominoTest {

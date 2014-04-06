@@ -14,12 +14,11 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import mx.udlap.is522.tedroid.util.Typefaces;
-
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.Score;
 import mx.udlap.is522.tedroid.data.dao.DAOFactory;
 import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
+import mx.udlap.is522.tedroid.util.Typefaces;
 
 import java.util.List;
 

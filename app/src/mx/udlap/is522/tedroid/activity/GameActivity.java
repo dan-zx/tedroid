@@ -24,7 +24,7 @@ import mx.udlap.is522.tedroid.view.model.Tetromino;
 /**
  * Actividad principal del juego donde se puede jugar realmente.
  * 
- * @author Daniel Pedraza-Arcega
+ * @author Daniel Pedraza-Arcega, Andrés Peña-Peralta, Alejandro Díaz-Torres
  * @since 1.0
  */
 public class GameActivity extends Activity {

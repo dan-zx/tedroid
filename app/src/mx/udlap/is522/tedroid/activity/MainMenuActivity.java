@@ -8,10 +8,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.util.Typefaces;
 
-import mx.udlap.is522.tedroid.R;
-
+/**
+ * Actividad que presenta el menu principal del juego.
+ * 
+ * @author Alejandro Díaz-Torres, Wassim Lima-Saad, Daniel Pedraza-Arcega
+ * @since 1.0
+ */
 public class MainMenuActivity extends Activity {
 
     private TextView appTitle;
