@@ -8,9 +8,6 @@ import static org.mockito.Mockito.when;
 
 import android.app.Activity;
 
-import mx.udlap.is522.tedroid.view.model.DefaultShape;
-import mx.udlap.is522.tedroid.view.model.Tetromino;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -19,6 +16,9 @@ import org.mockito.stubbing.Answer;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+
+import mx.udlap.is522.tedroid.view.model.DefaultShape;
+import mx.udlap.is522.tedroid.view.model.Tetromino;
 
 import java.util.LinkedList;
 import java.util.Queue;

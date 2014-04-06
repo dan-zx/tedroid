@@ -17,6 +17,12 @@ import com.google.android.gms.games.Player;
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.util.Typefaces;
 
+/**
+ * Actividad que presenta el menu principal del juego.
+ * 
+ * @author Alejandro Díaz-Torres, Wassim Lima-Saad, Daniel Pedraza-Arcega
+ * @since 1.0
+ */
 public class MainMenuActivity extends BaseGameActivity {
 
     private static final int UNUSED_REQUEST_CODE = 5471;
