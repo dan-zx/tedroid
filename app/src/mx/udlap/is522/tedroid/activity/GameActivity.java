@@ -63,7 +63,7 @@ public class GameActivity extends Activity {
 
     /** Inicializa el media player que toca la música */
     private void setUpMediaPlayer() {
-        mediaPlayer = MediaPlayer.create(this, R.raw.tetris_theme);
+        mediaPlayer = MediaPlayer.create(this, R.raw.music_a_type);
         mediaPlayer.setLooping(true);
         mediaPlayer.start();
     }
