@@ -42,7 +42,7 @@ public final class Typefaces {
      * @param which que fuente.
      * @return una fuente que se encuentra en assets
      */
-    public static final Typeface get(Context context, Font which) {
+    public static Typeface get(Context context, Font which) {
         return Typeface.createFromAsset(context.getAssets(), which.path); 
     }
 }
