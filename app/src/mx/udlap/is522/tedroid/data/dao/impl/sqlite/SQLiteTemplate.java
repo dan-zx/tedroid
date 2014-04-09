@@ -1,4 +1,4 @@
-package mx.udlap.is522.tedroid.data.dao.sqlite;
+package mx.udlap.is522.tedroid.data.dao.impl.sqlite;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -20,7 +20,7 @@ import java.util.Map;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public class SQLiteTemplate {
+class SQLiteTemplate {
 
     private static final String TAG = SQLiteTemplate.class.getSimpleName();
 
@@ -31,7 +31,7 @@ public class SQLiteTemplate {
      * 
      * @param databaseHelper el objeto SQLiteOpenHelper a usar.
      */
-    public SQLiteTemplate(SQLiteOpenHelper databaseHelper) {
+    SQLiteTemplate(SQLiteOpenHelper databaseHelper) {
         this.databaseHelper = databaseHelper;
     }
 
@@ -45,7 +45,7 @@ public class SQLiteTemplate {
      * @return un objeto tipo T o {@code null} si no hubo resultado o hay más de
      *         un resultado o hubo errores.
      */
-    public <T> T queryForSingleResult(String sql, RowMapper<T> rowMapper) {
+    <T> T queryForSingleResult(String sql, RowMapper<T> rowMapper) {
         return queryForSingleResult(sql, null, rowMapper);
     }
 
@@ -60,7 +60,7 @@ public class SQLiteTemplate {
      * @return un objeto tipo T o {@code null} si no hubo resultado, hay más
      *         de un resultado o hubo errores.
      */
-    public <T> T queryForSingleResult(String sql, String[] args, RowMapper<T> rowMapper) {
+    <T> T queryForSingleResult(String sql, String[] args, RowMapper<T> rowMapper) {
         SQLiteDatabase database = null;
         Cursor cursor = null;
         T object = null;
@@ -89,7 +89,7 @@ public class SQLiteTemplate {
      * @return una lista con objetos tipo T o una lista vacia si no hubo
      *         resultados o {@code null} si hubo errores.
      */
-    public <T> List<T> queryForList(String sql, RowMapper<T> rowMapper) {
+    <T> List<T> queryForList(String sql, RowMapper<T> rowMapper) {
         return queryForList(sql, null, rowMapper);
     }
 
@@ -105,7 +105,7 @@ public class SQLiteTemplate {
      * @return una lista con objetos tipo T, una lista vacia si no hubo
      *         resultados o {@code null} si hubo errores.
      */
-    public <T> List<T> queryForList(String sql, String[] args, RowMapper<T> rowMapper) {
+    <T> List<T> queryForList(String sql, String[] args, RowMapper<T> rowMapper) {
         SQLiteDatabase database = null;
         Cursor cursor = null;
         List<T> list = null;
@@ -131,7 +131,7 @@ public class SQLiteTemplate {
      * 
      * @param sql la sentencia SQL a ejecutar.
      */
-    public void execute(String sql) {
+    void execute(String sql) {
         SQLiteDatabase database = null;
         SQLiteStatement statement = null;
         try {
@@ -158,7 +158,7 @@ public class SQLiteTemplate {
      * @param statementBinder el objeto que reemplazarán los '?' de la
      *        sentencia.
      */
-    public void execute(String sql, SQLiteStatementBinder statementBinder) {
+    void execute(String sql, SQLiteStatementBinder statementBinder) {
         SQLiteDatabase database = null;
         SQLiteStatement statement = null;
         try {
@@ -185,7 +185,7 @@ public class SQLiteTemplate {
      * @param sql la sentencia SQL a ejecutar.
      * @param args el arreglo de String para enlazar valores.
      */
-    public void execute(String sql, String[] args) {
+    void execute(String sql, String[] args) {
         SQLiteDatabase database = null;
         SQLiteStatement statement = null;
         try {
@@ -213,7 +213,7 @@ public class SQLiteTemplate {
      * 
      * @param sqls las sentencias SQL a ejecutar.
      */
-    public void batchExecute(String[] sqls) {
+    void batchExecute(String[] sqls) {
         SQLiteDatabase database = null;
         try {
             database = databaseHelper.getWritableDatabase();
@@ -241,7 +241,7 @@ public class SQLiteTemplate {
      * @param statementBinder el objeto que reemplazarán los '?' de la sentencia
      *        varias veces.
      */
-    public void batchExecute(String sql, BatchSQLiteStatementBinder statementBinder) {
+    void batchExecute(String sql, BatchSQLiteStatementBinder statementBinder) {
         SQLiteDatabase database = null;
         SQLiteStatement statement = null;
         try {
@@ -271,7 +271,7 @@ public class SQLiteTemplate {
      * @since 1.0
      * @param <T> el tipo del objeto a mapear.
      */
-    public static interface RowMapper<T> {
+    static interface RowMapper<T> {
 
         /**
          * Se debe implementar este método para que se mape cada una de las
@@ -293,7 +293,7 @@ public class SQLiteTemplate {
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    public static interface SQLiteStatementBinder {
+    static interface SQLiteStatementBinder {
 
         /**
          * Se debe implementar este método para que se enlazen los valores para
@@ -311,7 +311,7 @@ public class SQLiteTemplate {
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    public static class SingleColumnRowMapper implements RowMapper<String> {
+    static class SingleColumnRowMapper implements RowMapper<String> {
 
         private static final int COLUMN_INDEX = 0;
 
@@ -332,7 +332,7 @@ public class SQLiteTemplate {
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    public static class ColumnMapRowMapper implements RowMapper<Map<String, String>> {
+    static class ColumnMapRowMapper implements RowMapper<Map<String, String>> {
 
         /**
          * {@inheritDoc}
@@ -356,7 +356,7 @@ public class SQLiteTemplate {
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    public static interface BatchSQLiteStatementBinder {
+    static interface BatchSQLiteStatementBinder {
 
         /**
          * Se debe implementar este método para que se enlazen los valores para
@@ -379,7 +379,7 @@ public class SQLiteTemplate {
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    public static abstract class DaoSupport {
+    static abstract class DaoSupport {
 
         private SQLiteTemplate sqliteTemplate;
         private Context context;

@@ -1,4 +1,4 @@
-package mx.udlap.is522.tedroid.data.dao.sqlite;
+package mx.udlap.is522.tedroid.data.dao.impl.sqlite;
 
 import android.database.Cursor;
 

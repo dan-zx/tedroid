@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.Score;
-import mx.udlap.is522.tedroid.data.dao.DAOFactory;
 import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
+import mx.udlap.is522.tedroid.data.dao.impl.DAOFactory;
 import mx.udlap.is522.tedroid.util.Typefaces;
 
 import java.util.List;

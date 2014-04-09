@@ -1,8 +1,10 @@
-package mx.udlap.is522.tedroid.data.dao;
+package mx.udlap.is522.tedroid.data.dao.impl;
 
 import android.content.Context;
 
-import mx.udlap.is522.tedroid.data.dao.sqlite.ScoreSQLiteDAO;
+import mx.udlap.is522.tedroid.data.dao.GenericDAO;
+import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
+import mx.udlap.is522.tedroid.data.dao.impl.sqlite.ScoreSQLiteDAO;
 import mx.udlap.is522.tedroid.data.source.TedroidSQLiteOpenHelper;
 
 /**
