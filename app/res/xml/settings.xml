@@ -3,7 +3,7 @@
 
     <PreferenceCategory android:title="@string/sfx_category_title" >
         <ListPreference
-            android:defaultValue="@raw/music_a_type"
+            android:defaultValue="@string/default_music_type"
             android:entries="@array/music_type_entries"
             android:entryValues="@array/music_type_values"
             android:key="@string/music_type_key"

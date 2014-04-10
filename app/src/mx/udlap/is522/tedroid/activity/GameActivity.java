@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.Score;
 import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
 import mx.udlap.is522.tedroid.data.dao.impl.DAOFactory;
+import mx.udlap.is522.tedroid.util.Identifiers;
 import mx.udlap.is522.tedroid.util.Typefaces;
 import mx.udlap.is522.tedroid.view.GameBoardView;
 import mx.udlap.is522.tedroid.view.NextTetrominoView;
@@ -63,9 +66,13 @@ public class GameActivity extends Activity {
 
     /** Inicializa el media player que toca la música */
     private void setUpMediaPlayer() {
-        mediaPlayer = MediaPlayer.create(this, R.raw.music_a_type);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
+        String resIdName = getPreferences().getString(getString(R.string.music_type_key), null);
+        int musicId = Identifiers.getFrom(resIdName, Identifiers.ResourceType.RAW, this);
+        if (musicId != Identifiers.NOT_FOUND) {
+            mediaPlayer = MediaPlayer.create(this, musicId);
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
+        }
     }
 
     /** Inicializa las vistas */
@@ -138,7 +145,7 @@ public class GameActivity extends Activity {
 
             @Override
             public void onGameOver() {
-                mediaPlayer.pause();
+                if (mediaPlayer != null) mediaPlayer.pause();
                 gameBoardView.setVisibility(View.GONE);
                 gameOverTextView.setVisibility(View.VISIBLE);
                 Score newScore = new Score();
@@ -167,7 +174,7 @@ public class GameActivity extends Activity {
                     gameBoardView.restartGame();
                     pauseButton.setImageResource(R.drawable.ic_action_pause);
                     pauseButton.setContentDescription(getString(R.string.pause_text));
-                    if (!mediaPlayer.isPlaying()) mediaPlayer.start();
+                    if (mediaPlayer != null && !mediaPlayer.isPlaying()) mediaPlayer.start();
                 }
             })
             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -224,7 +231,7 @@ public class GameActivity extends Activity {
         if (pauseTextView.getVisibility() == View.GONE && 
                 !gameBoardView.isGameOver()) {
             gameBoardView.resumeGame();
-            if (!mediaPlayer.isPlaying()) mediaPlayer.start();
+            if (mediaPlayer != null && !mediaPlayer.isPlaying()) mediaPlayer.start();
         }
     }
 
@@ -236,7 +243,7 @@ public class GameActivity extends Activity {
                     !exitDialog.isShowing() &&
                     !restartDialog.isShowing()) {
                 gameBoardView.resumeGame();
-                if (!mediaPlayer.isPlaying()) mediaPlayer.start();
+                if (mediaPlayer != null && !mediaPlayer.isPlaying()) mediaPlayer.start();
             }
         }
     }
@@ -247,14 +254,14 @@ public class GameActivity extends Activity {
                 pauseTextView.setVisibility(View.GONE);
                 gameBoardView.setVisibility(View.VISIBLE);
                 gameBoardView.resumeGame();
-                if (!mediaPlayer.isPlaying()) mediaPlayer.start();
+                if (mediaPlayer != null && !mediaPlayer.isPlaying()) mediaPlayer.start();
                 pauseButton.setImageResource(R.drawable.ic_action_pause);
                 pauseButton.setContentDescription(getString(R.string.pause_text));
             } else {
                 gameBoardView.setVisibility(View.GONE);
                 pauseTextView.setVisibility(View.VISIBLE);
                 gameBoardView.pauseGame();
-                mediaPlayer.pause();
+                if (mediaPlayer != null) mediaPlayer.pause();
                 pauseButton.setImageResource(R.drawable.ic_action_play);
                 pauseButton.setContentDescription(getString(R.string.resume_text));
             }
@@ -263,7 +270,7 @@ public class GameActivity extends Activity {
 
     public void onRestartButtonClick(View view) {
         gameBoardView.pauseGame();
-        mediaPlayer.pause();
+        if (mediaPlayer != null) mediaPlayer.pause();
         restartDialog.show();
     }
 
@@ -279,7 +286,7 @@ public class GameActivity extends Activity {
     public void onBackPressed() {
         if (!gameBoardView.isGameOver()) {
             gameBoardView.pauseGame();
-            mediaPlayer.pause();
+            if (mediaPlayer != null) mediaPlayer.pause();
         }
         exitDialog.show();
     }
@@ -288,9 +295,11 @@ public class GameActivity extends Activity {
     public void finish() {
         super.finish();
         if (!gameBoardView.isGameOver()) gameBoardView.stopGame();
-        mediaPlayer.stop();
-        mediaPlayer.release();
-        mediaPlayer = null;
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 
     /**
@@ -335,6 +344,10 @@ public class GameActivity extends Activity {
         totalScore = 0;
         level = 0;
         totalLines = 0;
+    }
+
+    private SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     /**
