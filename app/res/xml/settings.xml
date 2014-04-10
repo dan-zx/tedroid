@@ -11,7 +11,7 @@
             android:title="@string/music_type_pref_title" />
 
         <CheckBoxPreference
-            android:defaultValue="true"
+            android:defaultValue="@bool/default_sounds_switch_value"
             android:key="@string/sounds_switch_key"
             android:summaryOff="@string/sounds_pref_off"
             android:summaryOn="@string/sounds_pref_on"

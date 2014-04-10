@@ -10,6 +10,7 @@
     </string-array>
     <string name="default_music_type">music_a_type</string>
     <string name="sounds_switch_key">sounds_switch</string>
+    <bool name="default_sounds_switch_value">true</bool>
     <string name="delete_scores_key">delete_scores</string>
     <string name="restore_settings_key">restore_settings</string>
     <string name="manual_key">manual</string>

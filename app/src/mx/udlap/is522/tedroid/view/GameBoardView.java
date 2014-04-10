@@ -3,13 +3,18 @@ package mx.udlap.is522.tedroid.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
+import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.view.model.DefaultShape;
 import mx.udlap.is522.tedroid.view.model.Direction;
 import mx.udlap.is522.tedroid.view.model.Tetromino;
@@ -34,6 +39,12 @@ public class GameBoardView extends View {
     private static final int SPEED_FACTOR = 6;
     private static final int DEFAULT_COLUMNS = 10;
     private static final int DEFAULT_ROWS = 20;
+    private static final int DROP_SOUND = 0;
+    private static final int GAME_OVER_SOUND = 1;
+    private static final int LEVEL_UP_SOUND = 2;
+    private static final int LINE_CLEAR_SOUND = 3;
+    private static final int PAUSE_SOUND = 4;
+    private static final int ROTATE_SOUND = 5;
     private static final String TAG = GameBoardView.class.getSimpleName();
 
     private Tetromino currentTetromino;
@@ -58,6 +69,8 @@ public class GameBoardView extends View {
     private OnPointsAwardedListener pointsAwardedListener;
     private OnGameOverListener gameOverListener;
     private Random random;
+    private SoundPool soundPool;
+    private SparseIntArray soundPoolMap;
 
     /**
      * Construye un tablero de juego mediante un context.
@@ -143,6 +156,20 @@ public class GameBoardView extends View {
         background.setStyle(Paint.Style.STROKE);
         background.setStrokeWidth(2);
         background.setColor(getContext().getResources().getColor(android.R.color.black));
+        setUpSounds();
+    }
+    
+    private void setUpSounds() {
+        if (isSoundEnabled()) {
+            soundPool = new SoundPool(6, AudioManager.STREAM_MUSIC, 0);
+            soundPoolMap = new SparseIntArray(6);
+            soundPoolMap.put(DROP_SOUND, soundPool.load(getContext(), R.raw.on_drop, 1));
+            soundPoolMap.put(GAME_OVER_SOUND, soundPool.load(getContext(), R.raw.on_game_over, 1));
+            soundPoolMap.put(LEVEL_UP_SOUND, soundPool.load(getContext(), R.raw.on_level_up, 1));
+            soundPoolMap.put(LINE_CLEAR_SOUND, soundPool.load(getContext(), R.raw.on_line_clear, 1));
+            soundPoolMap.put(PAUSE_SOUND, soundPool.load(getContext(), R.raw.on_pause, 1));
+            soundPoolMap.put(ROTATE_SOUND, soundPool.load(getContext(), R.raw.on_rotate, 1));
+        }
     }
 
     protected void setUpCurrentAndNextTetrominos() {
@@ -157,6 +184,7 @@ public class GameBoardView extends View {
             stopGame();
             isGameOver = true;
             invalidate();
+            play(GAME_OVER_SOUND);
             if (gameOverListener != null) gameOverListener.onGameOver();
         }
     }
@@ -295,6 +323,12 @@ public class GameBoardView extends View {
             .build();
     }
 
+    private boolean isSoundEnabled() {
+        return PreferenceManager.getDefaultSharedPreferences(
+                getContext()).getBoolean(getContext().getString(R.string.sounds_switch_key),
+                getContext().getResources().getBoolean(R.bool.default_sounds_switch_value));
+    }
+
     /**
      * Revisa que no haya más de 3 tetrominos repetidos uno tras otro.
      * 
@@ -309,6 +343,10 @@ public class GameBoardView extends View {
         }
 
         return repeatedTetromino >= 3;
+    }
+
+    protected void play(int sound) {
+        if (isSoundEnabled()) soundPool.play(soundPoolMap.get(sound), 1f, 1f, 1, 0, 1f); 
     }
 
     /**
@@ -369,7 +407,10 @@ public class GameBoardView extends View {
      * Pausa el juego.
      */
     public void pauseGame() {
-        isPaused = true;
+        if (!isGameOver) {
+            isPaused = true;
+            play(PAUSE_SOUND);
+        }
     }
 
     /**
@@ -433,6 +474,7 @@ public class GameBoardView extends View {
     public void levelUp() {
         currentSpeed -= currentSpeed / SPEED_FACTOR;
         Log.d(TAG, "currentSpeed=" + currentSpeed);
+        play(LEVEL_UP_SOUND);
         stopDropingTaskIfNeeded();
         startDropingTask(currentSpeed);
     }
@@ -539,12 +581,14 @@ public class GameBoardView extends View {
             List<Integer> rowsToClear = lookForCompletedLines();
             if (!rowsToClear.isEmpty()) {
                 clearCompletedLines(rowsToClear);
+                play(LINE_CLEAR_SOUND);
                 if (pointsAwardedListener != null) pointsAwardedListener.onClearedLines(rowsToClear.size());
             }
             setUpCurrentAndNextTetrominos();
             setAnotherRandomTetrominoIfNeeded();
             if (commingNextTetrominoListener != null) commingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
             invalidate();
+            play(DROP_SOUND);
             return false;
         } else {
             Log.d(TAG, "Move down tetromino");
@@ -561,6 +605,7 @@ public class GameBoardView extends View {
         for (gridSpaces = 0; moveDownCurrentTetrominoIfPossible(); gridSpaces++);
         if (pointsAwardedListener != null) pointsAwardedListener.onHardDropped(gridSpaces);
         invalidate();
+        play(DROP_SOUND);
     }
 
     /**
@@ -662,6 +707,7 @@ public class GameBoardView extends View {
                 if (currentTetromino.rotate()) {
                     Log.d(TAG, "Rotate tetromino");
                     invalidate();
+                    play(ROTATE_SOUND);
                 }
             }
 
