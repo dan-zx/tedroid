@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.source.TedroidSQLiteOpenHelper;
@@ -98,6 +99,10 @@ public class SettingsActivity extends PreferenceActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     TedroidSQLiteOpenHelper.destroyDb(getApplicationContext());
                     dialog.dismiss();
+                    Toast.makeText(getApplicationContext(), 
+                            R.string.done_delete_scores_message, 
+                            Toast.LENGTH_SHORT)
+                            .show();
                 }
             })
             .create();
@@ -186,5 +191,9 @@ public class SettingsActivity extends PreferenceActivity {
         overridePendingTransition(0, 0);
         startActivity(getIntent());
         overridePendingTransition(0, 0);
+        Toast.makeText(getApplicationContext(), 
+                R.string.done_restore_settings_message, 
+                Toast.LENGTH_SHORT)
+                .show();
     }
 }
