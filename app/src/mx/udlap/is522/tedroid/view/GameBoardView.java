@@ -410,7 +410,7 @@ public class GameBoardView extends View {
      * Pausa el juego.
      */
     public void pauseGame() {
-        if (!isGameOver) {
+        if (!isGameOver && !isPaused) {
             isPaused = true;
             play(PAUSE_SOUND);
         }
