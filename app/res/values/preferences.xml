@@ -14,6 +14,7 @@
     <string name="manual_key">manual</string>
     <string name="github_site_key">github_site</string>
     <string name="version_key">version</string>
+    <string name="open_source_licenses_key">open_source_licenses</string>
     <string name="unknown_version">\?\?\?\?</string>
 
 </resources>

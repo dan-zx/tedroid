@@ -12,6 +12,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.webkit.WebView;
 
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.source.TedroidSQLiteOpenHelper;
@@ -30,8 +31,10 @@ public class SettingsActivity extends PreferenceActivity {
     private Preference deleteScoresPreference;
     private Preference restoreSettingsPreference;
     private Preference versionPreference;
+    private Preference openSourceLicencesPreference;
     private AlertDialog deleteScoresWarnDialog;
     private AlertDialog restoreSettingsWarnDialog;
+    private AlertDialog openSourceLicencesDialog;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -43,6 +46,7 @@ public class SettingsActivity extends PreferenceActivity {
         setUpMusicTypePreference();
         setUpDeleteScoresPreference();
         setUpRestoreSettingsPreference();
+        setUpOpenSourceLicencesPreference();
         setUpVersionPreference();
     }
 
@@ -62,6 +66,7 @@ public class SettingsActivity extends PreferenceActivity {
         musicTypePreference = (ListPreference) findPreference(getString(R.string.music_type_key));
         deleteScoresPreference = findPreference(getString(R.string.delete_scores_key));
         restoreSettingsPreference = findPreference(getString(R.string.restore_settings_key));
+        openSourceLicencesPreference = findPreference(getString(R.string.open_source_licenses_key));
         versionPreference = findPreference(getString(R.string.version_key));
     }
 
@@ -128,6 +133,24 @@ public class SettingsActivity extends PreferenceActivity {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 restoreSettingsWarnDialog.show();
+                return true;
+            }
+        });
+    }
+
+    /** Inicializa la configuración del anuncio de licensias de código libre */
+    private void setUpOpenSourceLicencesPreference() {
+        WebView webView = new WebView(this);
+        webView.loadUrl(getString(R.string.open_source_licenses_url));
+        openSourceLicencesDialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.open_source_licenses_pref_title)
+                .setView(webView)
+                .create();
+        openSourceLicencesPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                openSourceLicencesDialog.show();
                 return true;
             }
         });

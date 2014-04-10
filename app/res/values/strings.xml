@@ -57,6 +57,8 @@
     <string name="manual_pref_summary">Como jugar, Logros, FAQs</string>
     <string name="github_site_pref_title">Tedroid en GitHub</string>
     <string name="github_site_pref_summary">Código, wikis, problemas conocidos</string>
+    <string name="open_source_licenses_pref_title">Licencias de código abierto</string>
+    <string name="open_source_licenses_pref_summary">Detalles de las licencias de software de código abierto</string>
     <string name="version_pref_title">Versión de la aplicación</string>
 
 </resources>

@@ -44,6 +44,12 @@
         </PreferenceScreen>
 
         <Preference
+            android:key="@string/open_source_licenses_key"
+            android:summary="@string/open_source_licenses_pref_summary"
+            android:title="@string/open_source_licenses_pref_title" />
+        
+        <Preference
+            android:enabled="false"
             android:key="@string/version_key"
             android:summary="@string/unknown_version"
             android:title="@string/version_pref_title" />
