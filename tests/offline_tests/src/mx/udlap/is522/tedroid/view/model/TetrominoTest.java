@@ -3,13 +3,14 @@ package mx.udlap.is522.tedroid.view.model;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.shadows.ShadowPreferenceManager;
 
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.view.GameBoardView;
@@ -23,6 +24,12 @@ public class TetrominoTest {
     public void setUp() throws Exception {
         dummyActivity = Robolectric.buildActivity(Activity.class).create().get();
         assertThat(dummyActivity).isNotNull();
+        
+        SharedPreferences sharedPreferences = ShadowPreferenceManager.getDefaultSharedPreferences(Robolectric.application.getApplicationContext());
+        sharedPreferences
+            .edit()
+            .putBoolean(Robolectric.application.getString(R.string.sounds_switch_key), false)
+            .commit();
     }
 
     @Test

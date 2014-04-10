@@ -323,7 +323,10 @@ public class GameBoardView extends View {
             .build();
     }
 
-    private boolean isSoundEnabled() {
+    /**
+     * @return si los sonidos estan habilitados o no la configuración.
+     */
+    protected boolean isSoundEnabled() {
         return PreferenceManager.getDefaultSharedPreferences(
                 getContext()).getBoolean(getContext().getString(R.string.sounds_switch_key),
                 getContext().getResources().getBoolean(R.bool.default_sounds_switch_value));
