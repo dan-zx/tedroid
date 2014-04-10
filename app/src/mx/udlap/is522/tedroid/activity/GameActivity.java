@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -66,8 +65,7 @@ public class GameActivity extends Activity {
 
     /** Inicializa el media player que toca la música */
     private void setUpMediaPlayer() {
-        String resIdName = getPreferences().getString(getString(R.string.music_type_key), null);
-        int musicId = Identifiers.getFrom(resIdName, Identifiers.ResourceType.RAW, this);
+        int musicId = getSelectedMusicType();
         if (musicId != Identifiers.NOT_FOUND) {
             mediaPlayer = MediaPlayer.create(this, musicId);
             mediaPlayer.setLooping(true);
@@ -174,7 +172,10 @@ public class GameActivity extends Activity {
                     gameBoardView.restartGame();
                     pauseButton.setImageResource(R.drawable.ic_action_pause);
                     pauseButton.setContentDescription(getString(R.string.pause_text));
-                    if (mediaPlayer != null && !mediaPlayer.isPlaying()) mediaPlayer.start();
+                    if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
+                        mediaPlayer.seekTo(0);
+                        mediaPlayer.start();
+                    }
                 }
             })
             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -346,8 +347,13 @@ public class GameActivity extends Activity {
         totalLines = 0;
     }
 
-    private SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(this);
+    /**
+     * @return el id de la música seleccionada o {@link Identifiers#NOT_FOUND}.
+     */
+    private int getSelectedMusicType() {
+        String resIdName = PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(getString(R.string.music_type_key), getString(R.string.default_music_type));
+        return Identifiers.getFrom(resIdName, Identifiers.ResourceType.RAW, this);
     }
 
     /**
