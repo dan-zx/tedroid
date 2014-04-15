@@ -7,8 +7,8 @@ import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.view.MockGameBoardView;
 
 /**
- * Actividad donde solo hay un tablero de muestra para pruebas. NO LLAMAR A ESTA
- * CLASE DIRECTAMENTE pues solo es para pruebas unitarias.
+ * Actividad donde solo hay un tablero de muestra para pruebas. NO LLAMAR A ESTA CLASE DIRECTAMENTE
+ * pues solo es para pruebas unitarias.
  * 
  * @author Daniel Pedraza-Arcega
  * @since 1.0

@@ -28,8 +28,7 @@ public class DAOFactory {
 
     /**
      * @param which que tipo de DAO (interfaz).
-     * @return un GenericDAO o {@code null} si no hay implementación de esa
-     *         interfaz.
+     * @return un GenericDAO o {@code null} si no hay implementación de esa interfaz.
      */
     @SuppressWarnings("unchecked")
     public <T extends GenericDAO<?, ?>> T get(Class<T> which) {
@@ -37,9 +36,7 @@ public class DAOFactory {
         return null;
     }
 
-    /**
-     * @return un ScoreSQLiteDAO.
-     */
+    /** @return un ScoreSQLiteDAO. */
     private ScoreSQLiteDAO buildScoreDAO() {
         ScoreSQLiteDAO scoreSQLiteDAO = new ScoreSQLiteDAO();
         scoreSQLiteDAO.setContext(context);

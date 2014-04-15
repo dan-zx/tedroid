@@ -19,30 +19,29 @@ public final class Typefaces {
      */
     public static enum Font {
         TWOBIT ("fonts/twobit.ttf");
-        
+
         private final String path;
-        
+
         Font(String path) {
             this.path = path;
         }
-        
+
         public String getPath() {
             return path;
         }
     }
-    /**
-     * NO INVOCAR.
-     */
+
+    /** NO INVOCAR. */
     private Typefaces() {
         throw new IllegalAccessError("This class cannot be instantiated nor extended");
     }
-    
+
     /**
      * @param context el contexto de la aplicación.
      * @param which que fuente.
      * @return una fuente que se encuentra en assets
      */
     public static Typeface get(Context context, Font which) {
-        return Typeface.createFromAsset(context.getAssets(), which.path); 
+        return Typeface.createFromAsset(context.getAssets(), which.path);
     }
 }

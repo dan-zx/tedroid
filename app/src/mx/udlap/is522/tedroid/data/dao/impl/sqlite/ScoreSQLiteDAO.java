@@ -9,17 +9,14 @@ import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
 import java.util.List;
 
 /**
- * Data Access Object de tipo Score que usa una base de datos SQLite como fuente
- * de datos.
+ * Data Access Object de tipo Score que usa una base de datos SQLite como fuente de datos.
  * 
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDAO {
+public class ScoreSQLiteDAO extends SQLiteTemplate.DAOSupport implements ScoreDAO {
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public List<Score> readAllOrderedByPointsDesc() {
         return getSQLiteTemplate().queryForList(
@@ -38,22 +35,16 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DaoSupport implements ScoreDA
                 });
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void save(Score score) {
-        getSQLiteTemplate().execute(
-                getSqlString(R.string.score_insert_sql), 
+        getSQLiteTemplate().execute(getSqlString(R.string.score_insert_sql), 
                 new String[] { String.valueOf(score.getLevel()), String.valueOf(score.getLines()), String.valueOf(score.getPoints()) });
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void deleteAll() {
-        getSQLiteTemplate().execute(
-                getSqlString(R.string.score_deleteAll_sql));
+        getSQLiteTemplate().execute(getSqlString(R.string.score_deleteAll_sql));
     }
 }

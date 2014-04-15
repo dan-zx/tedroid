@@ -107,7 +107,7 @@ public class SettingsActivity extends PreferenceActivity {
             })
             .create();
         deleteScoresPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-    
+
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 deleteScoresWarnDialog.show();
@@ -132,9 +132,9 @@ public class SettingsActivity extends PreferenceActivity {
                 }
             })
             .create();
-        
+
         restoreSettingsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-    
+
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 restoreSettingsWarnDialog.show();
@@ -148,9 +148,9 @@ public class SettingsActivity extends PreferenceActivity {
         WebView webView = new WebView(this);
         webView.loadUrl(getString(R.string.open_source_licenses_url));
         openSourceLicencesDialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.open_source_licenses_pref_title)
-                .setView(webView)
-                .create();
+            .setTitle(R.string.open_source_licenses_pref_title)
+            .setView(webView)
+            .create();
         openSourceLicencesPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
             @Override
@@ -172,8 +172,8 @@ public class SettingsActivity extends PreferenceActivity {
     }
 
     /**
-     * Muestra el icóno de la actividad como atajo para regresar a la actividad
-     * anterior (Solo en API 11+).
+     * Muestra el icóno de la actividad como atajo para regresar a la actividad anterior (Solo en
+     * API 11+).
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void displayHomeAsUp() {

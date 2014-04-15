@@ -28,33 +28,31 @@ class SQLiteUtils {
      * @since 1.0
      */
     static enum TimeString {
-        DATE("yyyy-MM-dd"), 
-        DATETIME("yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm"), 
-        TIMESTAMP("yyyy-MM-dd HH:mm:ss.SSS"), 
-        TIME("HH:mm:ss.SSS", "HH:mm:ss", "HH:mm");
-        
+        DATE ("yyyy-MM-dd"), 
+        DATETIME ("yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm"), 
+        TIMESTAMP ("yyyy-MM-dd HH:mm:ss.SSS"), 
+        TIME ("HH:mm:ss.SSS", "HH:mm:ss", "HH:mm");
+
         private final String[] formats;
-        
+
         TimeString(String... formats) {
             this.formats = formats;
         }
-        
+
         public String[] getFormats() {
             return formats;
         }
     }
 
     /**
-     * El valor que {@link android.database.Cursor#getColumnIndex(String)}
-     * devuelve cuando la columna no se encuentra.
+     * El valor que {@link android.database.Cursor#getColumnIndex(String)} devuelve cuando la
+     * columna no se encuentra.
      */
     static final int COLUMN_NOT_FOUND = -1;
-    
+
     private static final String TAG = SQLiteUtils.class.getSimpleName();
 
-    /**
-     * NO INVOCAR.
-     */
+    /** NO INVOCAR. */
     private SQLiteUtils() {
         throw new IllegalAccessError("This class cannot be instantiated nor extended");
     }
@@ -131,8 +129,8 @@ class SQLiteUtils {
     /**
      * @param cursor un objeto Cursor.
      * @param columnName el nombre de la columna.
-     * @return el valor de la columna. Si no existe la columna o el valor de la
-     *         columna es {@code null} entonces {@code null}.
+     * @return el valor de la columna. Si no existe la columna o el valor de la columna es
+     *         {@code null} entonces {@code null}.
      */
     static Byte getByte(Cursor cursor, String columnName) {
         return containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
@@ -143,8 +141,8 @@ class SQLiteUtils {
     /**
      * @param cursor un objeto Cursor.
      * @param columnName el nombre de la columna.
-     * @return el valor de la columna. Si no existe la columna o el valor de la
-     *         columna es {@code null} entonces {@code null}.
+     * @return el valor de la columna. Si no existe la columna o el valor de la columna es
+     *         {@code null} entonces {@code null}.
      */
     static Short getShort(Cursor cursor, String columnName) {
         return containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
@@ -155,8 +153,8 @@ class SQLiteUtils {
     /**
      * @param cursor un objeto Cursor.
      * @param columnName el nombre de la columna.
-     * @return el valor de la columna. Si no existe la columna o el valor de la
-     *         columna es {@code null} entonces {@code null}.
+     * @return el valor de la columna. Si no existe la columna o el valor de la columna es
+     *         {@code null} entonces {@code null}.
      */
     static Integer getInteger(Cursor cursor, String columnName) {
         return containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
@@ -167,8 +165,8 @@ class SQLiteUtils {
     /**
      * @param cursor un objeto Cursor.
      * @param columnName el nombre de la columna.
-     * @return el valor de la columna. Si no existe la columna o el valor de la
-     *         columna es {@code null} entonces {@code null}.
+     * @return el valor de la columna. Si no existe la columna o el valor de la columna es
+     *         {@code null} entonces {@code null}.
      */
     static Long getLong(Cursor cursor, String columnName) {
         return containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
@@ -179,8 +177,8 @@ class SQLiteUtils {
     /**
      * @param cursor un objeto Cursor.
      * @param columnName el nombre de la columna.
-     * @return el valor de la columna. Si no existe la columna o el valor de la
-     *         columna es {@code null} entonces {@code null}.
+     * @return el valor de la columna. Si no existe la columna o el valor de la columna es
+     *         {@code null} entonces {@code null}.
      */
     static Float getFloat(Cursor cursor, String columnName) {
         return containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
@@ -191,8 +189,8 @@ class SQLiteUtils {
     /**
      * @param cursor un objeto Cursor.
      * @param columnName el nombre de la columna.
-     * @return el valor de la columna. Si no existe la columna o el valor de la
-     *         columna es {@code null} entonces {@code null}.
+     * @return el valor de la columna. Si no existe la columna o el valor de la columna es
+     *         {@code null} entonces {@code null}.
      */
     static Double getDouble(Cursor cursor, String columnName) {
         return containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
@@ -203,8 +201,8 @@ class SQLiteUtils {
     /**
      * @param cursor un objeto Cursor.
      * @param columnName el nombre de la columna.
-     * @return el valor de la columna. Si no existe la columna o el valor de la
-     *         columna es {@code null} entonces {@code null}.
+     * @return el valor de la columna. Si no existe la columna o el valor de la columna es
+     *         {@code null} entonces {@code null}.
      */
     static Boolean getBoolean(Cursor cursor, String columnName) {
         Boolean value = null;
@@ -219,8 +217,8 @@ class SQLiteUtils {
     /**
      * @param cursor un objeto Cursor.
      * @param columnName el nombre de la columna.
-     * @return el valor de la columna. Si no existe la columna o el valor de la
-     *         columna es {@code null} entonces {@code null}.
+     * @return el valor de la columna. Si no existe la columna o el valor de la columna es
+     *         {@code null} entonces {@code null}.
      */
     static Character getCharacter(Cursor cursor, String columnName) {
         return containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
@@ -231,32 +229,32 @@ class SQLiteUtils {
     /**
      * @param cursor un objeto Cursor.
      * @param columnName el nombre de la columna.
-     * @return el valor de la columna. Si no existe la columna o el valor de la
-     *         columna es {@code null} entonces {@code null}.
+     * @return el valor de la columna. Si no existe la columna o el valor de la columna es
+     *         {@code null} entonces {@code null}.
      */
     static String getString(Cursor cursor, String columnName) {
         return containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
-                ? cursor.getString(cursor.getColumnIndex(columnName)) 
+                ? cursor.getString(cursor.getColumnIndex(columnName))
                 : null;
     }
 
     /**
      * @param cursor un objeto Cursor.
      * @param columnName el nombre de la columna.
-     * @return el valor de la columna. Si no existe la columna o el valor de la
-     *         columna es {@code null} entonces {@code null}.
+     * @return el valor de la columna. Si no existe la columna o el valor de la columna es
+     *         {@code null} entonces {@code null}.
      */
     static byte[] getBlob(Cursor cursor, String columnName) {
         return containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
-                ? cursor.getBlob(cursor.getColumnIndex(columnName)) 
+                ? cursor.getBlob(cursor.getColumnIndex(columnName))
                 : null;
     }
 
     /**
      * @param cursor un objeto Cursor.
      * @param columnName el nombre de la columna.
-     * @return el valor de la columna. Si no existe la columna o el valor de la
-     *         columna es {@code null} entonces {@code null}.
+     * @return el valor de la columna. Si no existe la columna o el valor de la columna es
+     *         {@code null} entonces {@code null}.
      */
     static Date getDateFromUnixTime(Cursor cursor, String columnName) {
         return containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
@@ -268,19 +266,16 @@ class SQLiteUtils {
      * @param cursor un objeto Cursor.
      * @param columnName el nombre de la columna.
      * @param timeString el formato de la fecha.
-     * @return el valor de la columna. Si no existe la columna o el valor de la
-     *         columna es {@code null} entonces {@code null}.
+     * @return el valor de la columna. Si no existe la columna o el valor de la columna es
+     *         {@code null} entonces {@code null}.
      */
     static Date getDateFromString(Cursor cursor, String columnName, TimeString timeString) {
-        String dateString = containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
-                ? cursor.getString(cursor.getColumnIndex(columnName))
-                : null;
-
+        String dateString = getString(cursor, columnName);
         if (!Strings.isNullOrBlank(dateString)) {
             for (String format : timeString.formats) {
                 try {
                     return new SimpleDateFormat(format, Locale.ENGLISH).parse(dateString);
-                } catch (ParseException ex) { 
+                } catch (ParseException ex) {
                     // Si no es el formato correcto, se ignora y sigue con el siguiente formato.
                 }
             }

@@ -48,7 +48,7 @@ public class MainMenuActivity extends Activity {
         scoresButton.setTypeface(typeface);
         settingsButton.setTypeface(typeface);
     }
-    
+
     public void onPlayButtonClick(View view) {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);

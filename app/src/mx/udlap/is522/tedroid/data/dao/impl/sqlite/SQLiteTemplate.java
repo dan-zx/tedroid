@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Clase de conveniencia para no repitir código relacionado con transacciones de
- * SQLite.
+ * Clase de conveniencia para no repitir código relacionado con transacciones de SQLite.
  * 
  * @author Daniel Pedraza-Arcega
  * @since 1.0
@@ -36,29 +35,27 @@ class SQLiteTemplate {
     }
 
     /**
-     * Ejecuta una consulta en la base de datos para recuperar un solo
-     * resultado.
+     * Ejecuta una consulta en la base de datos para recuperar un solo resultado.
      * 
      * @param <T> el tipo del objeto a regresar.
      * @param sql la sentencia SQL a ejecutar.
      * @param rowMapper el objeto que mapeará el resultado de la consulta.
-     * @return un objeto tipo T o {@code null} si no hubo resultado o hay más de
-     *         un resultado o hubo errores.
+     * @return un objeto tipo T o {@code null} si no hubo resultado o hay más de un resultado o hubo
+     *         errores.
      */
     <T> T queryForSingleResult(String sql, RowMapper<T> rowMapper) {
         return queryForSingleResult(sql, null, rowMapper);
     }
 
     /**
-     * Ejecuta una consulta en la base de datos para recuperar un solo
-     * resultado.
+     * Ejecuta una consulta en la base de datos para recuperar un solo resultado.
      * 
      * @param <T> el tipo del objeto a regresar.
      * @param sql la sentencia SQL a ejecutar.
      * @param args los argumentos que reemplazarán los '?' de la consulta.
      * @param rowMapper el objeto que mapeará el resultado de la consulta.
-     * @return un objeto tipo T o {@code null} si no hubo resultado, hay más
-     *         de un resultado o hubo errores.
+     * @return un objeto tipo T o {@code null} si no hubo resultado, hay más de un resultado o hubo
+     *         errores.
      */
     <T> T queryForSingleResult(String sql, String[] args, RowMapper<T> rowMapper) {
         SQLiteDatabase database = null;
@@ -66,7 +63,6 @@ class SQLiteTemplate {
         T object = null;
         try {
             database = databaseHelper.getReadableDatabase();
-            Log.d(TAG, "<-- " + sql);
             cursor = database.rawQuery(sql, args);
             if (cursor.getCount() == 1 && cursor.moveToNext()) object = rowMapper.mapRow(cursor, 1);
         } catch (Exception ex) {
@@ -79,31 +75,27 @@ class SQLiteTemplate {
     }
 
     /**
-     * Ejecuta una consulta en la base de datos para recuperar una lista de
-     * resultados.
+     * Ejecuta una consulta en la base de datos para recuperar una lista de resultados.
      * 
      * @param <T> el tipo de la lista a regresar.
      * @param sql la sentencia SQL a ejecutar.
-     * @param rowMapper el objeto que mapeará cada fila del resultado de la
-     *        consulta.
-     * @return una lista con objetos tipo T o una lista vacia si no hubo
-     *         resultados o {@code null} si hubo errores.
+     * @param rowMapper el objeto que mapeará cada fila del resultado de la consulta.
+     * @return una lista con objetos tipo T o una lista vacia si no hubo resultados o {@code null}
+     *         si hubo errores.
      */
     <T> List<T> queryForList(String sql, RowMapper<T> rowMapper) {
         return queryForList(sql, null, rowMapper);
     }
 
     /**
-     * Ejecuta una consulta en la base de datos para recuperar una lista de
-     * resultados.
+     * Ejecuta una consulta en la base de datos para recuperar una lista de resultados.
      * 
      * @param <T> el tipo de la lista a regresar.
      * @param sql la sentencia SQL a ejecutar.
      * @param args los argumentos que reemplazarán los '?' de la sentencia.
-     * @param rowMapper el objeto que mapeará cada fila del resultado de la
-     *        consulta.
-     * @return una lista con objetos tipo T, una lista vacia si no hubo
-     *         resultados o {@code null} si hubo errores.
+     * @param rowMapper el objeto que mapeará cada fila del resultado de la consulta.
+     * @return una lista con objetos tipo T, una lista vacia si no hubo resultados o {@code null} si
+     *         hubo errores.
      */
     <T> List<T> queryForList(String sql, String[] args, RowMapper<T> rowMapper) {
         SQLiteDatabase database = null;
@@ -111,7 +103,6 @@ class SQLiteTemplate {
         List<T> list = null;
         try {
             database = databaseHelper.getReadableDatabase();
-            Log.d(TAG, "<-- " + sql);
             cursor = database.rawQuery(sql, args);
             list = new ArrayList<T>(cursor.getCount());
             int rowNum = 0;
@@ -126,8 +117,7 @@ class SQLiteTemplate {
     }
 
     /**
-     * Ejecuta una sentencia SQL (INSERT, UPDATE, DELETE, etc.) en la base de
-     * datos.
+     * Ejecuta una sentencia SQL (INSERT, UPDATE, DELETE, etc.) en la base de datos.
      * 
      * @param sql la sentencia SQL a ejecutar.
      */
@@ -137,7 +127,6 @@ class SQLiteTemplate {
         try {
             database = databaseHelper.getWritableDatabase();
             database.beginTransaction();
-            Log.d(TAG, "--> " + sql);
             statement = database.compileStatement(sql);
             statement.execute();
             database.setTransactionSuccessful();
@@ -151,12 +140,10 @@ class SQLiteTemplate {
     }
 
     /**
-     * Ejecuta una sentencia SQL (INSERT, UPDATE, DELETE, etc.) en la base de
-     * datos.
+     * Ejecuta una sentencia SQL (INSERT, UPDATE, DELETE, etc.) en la base de datos.
      * 
      * @param sql la sentencia SQL a ejecutar.
-     * @param statementBinder el objeto que reemplazarán los '?' de la
-     *        sentencia.
+     * @param statementBinder el objeto que reemplazarán los '?' de la sentencia.
      */
     void execute(String sql, SQLiteStatementBinder statementBinder) {
         SQLiteDatabase database = null;
@@ -164,7 +151,6 @@ class SQLiteTemplate {
         try {
             database = databaseHelper.getWritableDatabase();
             database.beginTransaction();
-            Log.d(TAG, "--> " + sql);
             statement = database.compileStatement(sql);
             statementBinder.bindValues(statement);
             statement.execute();
@@ -179,8 +165,7 @@ class SQLiteTemplate {
     }
 
     /**
-     * Ejecuta una sentencia SQL (INSERT, UPDATE, DELETE, etc.) en la base de
-     * datos.
+     * Ejecuta una sentencia SQL (INSERT, UPDATE, DELETE, etc.) en la base de datos.
      * 
      * @param sql la sentencia SQL a ejecutar.
      * @param args el arreglo de String para enlazar valores.
@@ -191,10 +176,9 @@ class SQLiteTemplate {
         try {
             database = databaseHelper.getWritableDatabase();
             database.beginTransaction();
-            Log.d(TAG, "--> " + sql);
             statement = database.compileStatement(sql);
             for (int index = args.length; index != 0; index--) {
-                statement.bindString(index, args[index-1]);
+                statement.bindString(index, args[index - 1]);
             }
             statement.execute();
             database.setTransactionSuccessful();
@@ -208,8 +192,8 @@ class SQLiteTemplate {
     }
 
     /**
-     * Ejecuta varias sentencias SQL (INSERT, UPDATE, DELETE, etc.) en la base
-     * de datos usando una misma transacción.
+     * Ejecuta varias sentencias SQL (INSERT, UPDATE, DELETE, etc.) en la base de datos usando una
+     * misma transacción.
      * 
      * @param sqls las sentencias SQL a ejecutar.
      */
@@ -219,7 +203,6 @@ class SQLiteTemplate {
             database = databaseHelper.getWritableDatabase();
             database.beginTransaction();
             for (String sql : sqls) {
-                Log.d(TAG, "--> " + sql);
                 SQLiteStatement statement = database.compileStatement(sql);
                 statement.execute();
                 statement.close();
@@ -234,12 +217,11 @@ class SQLiteTemplate {
     }
 
     /**
-     * Ejecuta varias sentencias SQL (INSERT, UPDATE, DELETE, etc.) en la base
-     * de datos usando una misma transacción.
+     * Ejecuta varias sentencias SQL (INSERT, UPDATE, DELETE, etc.) en la base de datos usando una
+     * misma transacción.
      * 
      * @param sql las sentencia SQL a ejecutar.
-     * @param statementBinder el objeto que reemplazarán los '?' de la sentencia
-     *        varias veces.
+     * @param statementBinder el objeto que reemplazarán los '?' de la sentencia varias veces.
      */
     void batchExecute(String sql, BatchSQLiteStatementBinder statementBinder) {
         SQLiteDatabase database = null;
@@ -247,7 +229,6 @@ class SQLiteTemplate {
         try {
             database = databaseHelper.getWritableDatabase();
             database.beginTransaction();
-            Log.d(TAG, "--> " + sql);
             statement = database.compileStatement(sql);
             for (int i = 0; i < statementBinder.getBatchSize(); i++) {
                 statement.clearBindings();
@@ -274,12 +255,10 @@ class SQLiteTemplate {
     static interface RowMapper<T> {
 
         /**
-         * Se debe implementar este método para que se mape cada una de las
-         * filas de datos. Este método no debe llamar
-         * {@link android.database.Cursor#moveToNext()}.
+         * Se debe implementar este método para que se mape cada una de las filas de datos. Este
+         * método no debe llamar {@link android.database.Cursor#moveToNext()}.
          * 
-         * @param cursor un objeto Cursor que tiene los datos de la fila en
-         *        curso.
+         * @param cursor un objeto Cursor que tiene los datos de la fila en curso.
          * @param rowNum la fila en curso (base 1).
          * @return un objeto tipo T.
          */
@@ -287,8 +266,8 @@ class SQLiteTemplate {
     }
 
     /**
-     * Enlaza valores al objeto SQLiteStatement proporcionado para realizar una
-     * actulización en la base datos.
+     * Enlaza valores al objeto SQLiteStatement proporcionado para realizar una actulización en la
+     * base datos.
      * 
      * @author Daniel Pedraza-Arcega
      * @since 1.0
@@ -296,8 +275,8 @@ class SQLiteTemplate {
     static interface SQLiteStatementBinder {
 
         /**
-         * Se debe implementar este método para que se enlazen los valores para
-         * reemplazar los '?' en la sentencia SQL.
+         * Se debe implementar este método para que se enlazen los valores para reemplazar los '?'
+         * en la sentencia SQL.
          * 
          * @param statement el objeto para enlazar valores.
          */
@@ -305,8 +284,7 @@ class SQLiteTemplate {
     }
 
     /**
-     * Implementación de RowMapper que convierte una sola columna en un solo
-     * String por fila.
+     * Implementación de RowMapper que convierte una sola columna en un solo String por fila.
      * 
      * @author Daniel Pedraza-Arcega
      * @since 1.0
@@ -315,9 +293,7 @@ class SQLiteTemplate {
 
         private static final int COLUMN_INDEX = 0;
 
-        /**
-         * {@inheritDoc}
-         */
+        /** {@inheritDoc} */
         @Override
         public String mapRow(Cursor cursor, int rowNum) {
             return cursor.getString(COLUMN_INDEX);
@@ -325,18 +301,16 @@ class SQLiteTemplate {
     }
 
     /**
-     * Implementación de RowMapper que crea un Map por cada fila, representando
-     * todas las columnas como pares de llaves y valores: cada entrada por cada
-     * columna con el nombre de la columna como llave.
+     * Implementación de RowMapper que crea un Map por cada fila, representando todas las columnas
+     * como pares de llaves y valores: cada entrada por cada columna con el nombre de la columna
+     * como llave.
      * 
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
     static class ColumnMapRowMapper implements RowMapper<Map<String, String>> {
 
-        /**
-         * {@inheritDoc}
-         */
+        /** {@inheritDoc} */
         @Override
         public Map<String, String> mapRow(Cursor cursor, int rowNum) {
             int columnCount = cursor.getColumnCount();
@@ -346,12 +320,12 @@ class SQLiteTemplate {
             }
             return row;
         }
-        
+
     }
 
     /**
-     * Enlaza valores al objeto SQLiteStatement proporcionado para realizar una
-     * actulización por lotes en la base datos.
+     * Enlaza valores al objeto SQLiteStatement proporcionado para realizar una actulización por
+     * lotes en la base datos.
      * 
      * @author Daniel Pedraza-Arcega
      * @since 1.0
@@ -359,17 +333,15 @@ class SQLiteTemplate {
     static interface BatchSQLiteStatementBinder {
 
         /**
-         * Se debe implementar este método para que se enlazen los valores para
-         * reemplazar los '?' en la sentencia SQL.
+         * Se debe implementar este método para que se enlazen los valores para reemplazar los '?'
+         * en la sentencia SQL.
          * 
          * @param statement el objeto para enlazar valores.
          * @param i el índice del lote actual.
          */
         void bindValues(SQLiteStatement statement, int i);
 
-        /**
-         * @return el tamaño del lote.
-         */
+        /** @return el tamaño del lote. */
         int getBatchSize();
     }
 
@@ -379,29 +351,37 @@ class SQLiteTemplate {
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    static abstract class DaoSupport {
+    static abstract class DAOSupport {
 
         private SQLiteTemplate sqliteTemplate;
         private Context context;
 
+        /** @return el objeto SQLiteTemplate a utilizar en las operaciones. */
         protected SQLiteTemplate getSQLiteTemplate() {
             return sqliteTemplate;
         }
 
+        /** @return el contexto de la aplicación. */
         protected Context getContext() {
             return context;
         }
 
+        /** @param context el contexto de la aplicación. */
         public void setContext(Context context) {
             this.context = context;
         }
 
+        /** @param databaseHelper el objeto ayudante para la conexión a SQLite. */
         public void setSQLiteOpenHelper(SQLiteOpenHelper databaseHelper) {
-            if (sqliteTemplate == null || databaseHelper != sqliteTemplate.databaseHelper) {
-                sqliteTemplate = new SQLiteTemplate(databaseHelper);
-            }
+            sqliteTemplate = new SQLiteTemplate(databaseHelper);
         }
 
+        /**
+         * Quita los caracteres especiales del query con id dado.
+         * 
+         * @param resId el id del query.
+         * @return un query SQL compilante.
+         */
         protected String getSqlString(int resId) {
             return context.getString(resId).replaceAll("\\\\'", "'");
         }

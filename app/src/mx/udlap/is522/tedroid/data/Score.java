@@ -18,41 +18,46 @@ public class Score implements Serializable {
     private Integer lines;
     private Integer points;
 
+    /** @return la fecha en la que se obtuvo este puntaje. */
     public Date getObtainedAt() {
         return obtainedAt;
     }
 
+    /** @param obtainedAt la fecha en la que se obtuvo este puntaje. */
     public void setObtainedAt(Date obtainedAt) {
         this.obtainedAt = obtainedAt;
     }
 
+    /** @return el nivel alcanzado en la partida. */
     public Integer getLevel() {
         return level;
     }
 
+    /** @param level el nivel alcanzado en la partida. */
     public void setLevel(Integer level) {
         this.level = level;
     }
 
+    /** @return las lineas borradas en la partida. */
     public Integer getLines() {
         return lines;
     }
 
+    /** @param lines las lineas borradas en la partida. */
     public void setLines(Integer lines) {
         this.lines = lines;
     }
 
+    /** @return los puntos conseguidos en la partida. */
     public Integer getPoints() {
         return points;
     }
 
+    /** @param points los puntos conseguidos en la partida. */
     public void setPoints(Integer points) {
         this.points = points;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -64,9 +69,6 @@ public class Score implements Serializable {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -88,17 +90,15 @@ public class Score implements Serializable {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
-        return new StringBuilder().append('{')
-                .append("obtainedAt: ").append(obtainedAt).append(", ")
-                .append("level: ").append(level).append(", ")
-                .append("lines: ").append(lines).append(", ")
-                .append("points: ").append(points)
-                .append('}')
-                .toString();
+        return new StringBuilder()
+            .append('{')
+            .append("obtainedAt: ").append(obtainedAt).append(", ")
+            .append("level: ").append(level).append(", ")
+            .append("lines: ").append(lines).append(", ")
+            .append("points: ").append(points)
+            .append('}')
+            .toString();
     }
 }
