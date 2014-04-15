@@ -21,7 +21,7 @@ import mx.udlap.is522.tedroid.util.Identifiers;
 import mx.udlap.is522.tedroid.util.Typefaces;
 import mx.udlap.is522.tedroid.view.GameBoardView;
 import mx.udlap.is522.tedroid.view.NextTetrominoView;
-import mx.udlap.is522.tedroid.view.model.Tetromino;
+import mx.udlap.is522.tedroid.view.Tetromino;
 
 /**
  * Actividad principal del juego donde se puede jugar realmente.
@@ -57,8 +57,8 @@ public class GameActivity extends Activity {
         setUpMediaPlayer();
         initViews();
         setUpFont();
-        setUpScoreTextViews();
         setUpGameBoardView();
+        setUpScoreTextViews();
         setUpRestartDialog();
         setUpExitDialog();
     }
@@ -126,13 +126,13 @@ public class GameActivity extends Activity {
                 totalScore += gridSpaces * 2;
                 setUpScoreTextViews();
             }
-            
+
             @Override
             public void onSoftDropped(int gridSpaces) {
                 totalScore += gridSpaces;
                 setUpScoreTextViews();
             }
-            
+
             public void onClearedLines(int linesCleared) {
                 if (updateLevelIfNeeded(linesCleared)) gameBoardView.levelUp();
                 updateScoreWhenClearLines(linesCleared);
@@ -150,9 +150,10 @@ public class GameActivity extends Activity {
                 newScore.setLevel(level);
                 newScore.setLines(totalLines);
                 newScore.setPoints(totalScore);
-                new ScoreSaver(GameActivity.this).execute(newScore);
+                new ScoreSaver(getApplicationContext()).execute(newScore);
             }
         });
+        gameBoardView.startGame();
     }
 
     /** Inicializa el dialog de reinicio */
@@ -160,7 +161,7 @@ public class GameActivity extends Activity {
         restartDialog = new AlertDialog.Builder(this)
             .setMessage(R.string.restart_message)
             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-    
+
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     resetCounters();
@@ -168,7 +169,6 @@ public class GameActivity extends Activity {
                     pauseTextView.setVisibility(View.GONE);
                     gameOverTextView.setVisibility(View.GONE);
                     gameBoardView.setVisibility(View.VISIBLE);
-                    gameBoardView.setLevel(GameBoardView.DEFAULT_LEVEL); // TODO: resetear al nivel seleccionado
                     gameBoardView.restartGame();
                     pauseButton.setImageResource(R.drawable.ic_action_pause);
                     pauseButton.setContentDescription(getString(R.string.pause_text));
@@ -207,12 +207,13 @@ public class GameActivity extends Activity {
                 }
             })
             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-
+    
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     onCancelDialogs(dialog);
                 }
-            }).setOnCancelListener(new DialogInterface.OnCancelListener() {
+            })
+            .setOnCancelListener(new DialogInterface.OnCancelListener() {
     
                 @Override
                 public void onCancel(DialogInterface dialog) {
@@ -229,8 +230,7 @@ public class GameActivity extends Activity {
      */
     private void onCancelDialogs(DialogInterface dialog) {
         dialog.dismiss();
-        if (pauseTextView.getVisibility() == View.GONE && 
-                !gameBoardView.isGameOver()) {
+        if (pauseTextView.getVisibility() == View.GONE && !gameBoardView.isGameOver()) {
             gameBoardView.resumeGame();
             if (mediaPlayer != null && !mediaPlayer.isPlaying()) mediaPlayer.start();
         }
@@ -240,9 +240,7 @@ public class GameActivity extends Activity {
     protected void onResume() {
         super.onResume();
         if (!gameBoardView.isGameOver() && gameBoardView.isPaused()) {
-            if (pauseTextView.getVisibility() == View.GONE && 
-                    !exitDialog.isShowing() &&
-                    !restartDialog.isShowing()) {
+            if (pauseTextView.getVisibility() == View.GONE && !exitDialog.isShowing() && !restartDialog.isShowing()) {
                 gameBoardView.resumeGame();
                 if (mediaPlayer != null && !mediaPlayer.isPlaying()) mediaPlayer.start();
             }
@@ -275,6 +273,7 @@ public class GameActivity extends Activity {
         restartDialog.show();
     }
 
+    @Override
     protected void onPause() {
         super.onPause();
         if (!gameBoardView.isGameOver()) {
@@ -317,7 +316,7 @@ public class GameActivity extends Activity {
             case 4: factor = 1200; break;
             default: factor = 1; break;
         }
-        
+
         totalScore += factor * (level + 1);
     }
 
@@ -338,18 +337,14 @@ public class GameActivity extends Activity {
         return false;
     }
 
-    /**
-     * Resetea todos los contadores.
-     */
+    /** Resetea todos los contadores. */
     private void resetCounters() {
         totalScore = 0;
-        level = 0;
+        level = gameBoardView.getInitialLevel();
         totalLines = 0;
     }
 
-    /**
-     * @return el id de la música seleccionada o {@link Identifiers#NOT_FOUND}.
-     */
+    /** @return el id de la música seleccionada o {@link Identifiers#NOT_FOUND}. */
     private int getSelectedMusicType() {
         String resIdName = PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(getString(R.string.music_type_key), getString(R.string.default_music_type));
@@ -357,9 +352,8 @@ public class GameActivity extends Activity {
     }
 
     /**
-     * Tarea asíncrona para guardar puntajes. 
-     * (TODO: debe estar en otro lado esta clase)
-     *  
+     * Tarea asíncrona para guardar puntajes.
+     * 
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
@@ -372,13 +366,13 @@ public class GameActivity extends Activity {
          * 
          * @param context el contexto de la aplicación.
          */
-        public ScoreSaver(Context context) {
-            scoreDAO = new DAOFactory(context.getApplicationContext()).get(ScoreDAO.class);
+        private ScoreSaver(Context context) {
+            scoreDAO = new DAOFactory(context).get(ScoreDAO.class);
         }
 
         @Override
         protected Void doInBackground(Score... params) {
-            for (Score score : params) scoreDAO.save(score);
+            scoreDAO.save(params[0]);
             return null;
         }
     }

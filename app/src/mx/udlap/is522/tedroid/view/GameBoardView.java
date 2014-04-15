@@ -8,20 +8,15 @@ import android.media.SoundPool;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
 import mx.udlap.is522.tedroid.R;
-import mx.udlap.is522.tedroid.view.model.DefaultShape;
-import mx.udlap.is522.tedroid.view.model.Direction;
-import mx.udlap.is522.tedroid.view.model.Tetromino;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -34,7 +29,7 @@ public class GameBoardView extends View {
 
     public static final int DEFAULT_LEVEL = 0;
     public static final int MAX_LEVEL = 9;
-    
+
     private static final long DEFAULT_SPEED = 1000L;
     private static final int SPEED_FACTOR = 6;
     private static final int DEFAULT_COLUMNS = 10;
@@ -45,26 +40,25 @@ public class GameBoardView extends View {
     private static final int LINE_CLEAR_SOUND = 3;
     private static final int PAUSE_SOUND = 4;
     private static final int ROTATE_SOUND = 5;
-    private static final String TAG = GameBoardView.class.getSimpleName();
 
     private Tetromino currentTetromino;
     private Tetromino nextTetromino;
     private int[][] boardMatrix;
     private int rows;
     private int columns;
+    private int initialLevel;
     private int repeatedTetromino;
     private long currentSpeed;
     private float boardColumnWidth;
     private float boardRowHeight;
-    private boolean startDropingTetrominos;
     private boolean isPaused;
     private boolean isGameOver;
+    private boolean isGameStarted;
     private GestureListener gestureListener;
     private GestureDetector gestureDetector;
     private MoveDownCurrentTetrominoTask moveDownCurrentTetrominoTask;
     private Paint tetrominoBorder;
     private Paint tetrominoForeground;
-    private Paint background;
     private OnCommingNextTetrominoListener commingNextTetrominoListener;
     private OnPointsAwardedListener pointsAwardedListener;
     private OnGameOverListener gameOverListener;
@@ -112,19 +106,10 @@ public class GameBoardView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        if (!startDropingTetrominos) {
-            startDropingTetrominos = true;
-            stopDropingTaskIfNeeded();
-            setUpCurrentAndNextTetrominos();
-            setAnotherRandomTetrominoIfNeeded();
-            if (commingNextTetrominoListener != null) commingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
-            startDropingTask(currentSpeed);
+        if (!isInEditMode()) {
+            currentTetromino.drawOn(canvas);
+            drawBoardMatrix(canvas);
         }
-
-        drawBackground(canvas);
-        currentTetromino.drawOn(canvas);
-        drawBoardMatrix(canvas);
     }
 
     @Override
@@ -132,33 +117,29 @@ public class GameBoardView extends View {
         return gestureDetector.onTouchEvent(event);
     }
 
-    /**
-     * Inicializa el layout de este tablero.
-     */
+    /** Inicializa el layout de este tablero y las variables con su valor por default. */
     protected void setUp() {
-        if (rows == 0 || columns == 0) {
-            rows = DEFAULT_ROWS;
-            columns = DEFAULT_COLUMNS;
-        }
+        setUpDefaultValues();
+        setUpSounds();
+        setUpGestures();
+        setUpTetrominosStyle();
+    }
 
-        buildBoardMatrix();
-        setLevel(DEFAULT_LEVEL);
-        random = new Random(System.nanoTime());
+    /** Inicializa las variables con su valor por default. */
+    private void setUpDefaultValues() {
+        currentSpeed = DEFAULT_SPEED;
+        initialLevel = DEFAULT_LEVEL;
+        setUpBoardMatrix();
+    }
+
+    /** Inicializa los objetos encargados de manejar los gestos de esta vista. */
+    private void setUpGestures() {
         gestureListener = new GestureListener();
         gestureDetector = new GestureDetector(getContext(), gestureListener);
         gestureDetector.setIsLongpressEnabled(false);
-        tetrominoBorder = new Paint();
-        tetrominoBorder.setStyle(Paint.Style.STROKE);
-        tetrominoBorder.setColor(getContext().getResources().getColor(android.R.color.black));
-        tetrominoForeground = new Paint();
-        tetrominoForeground.setStyle(Paint.Style.FILL);
-        background = new Paint();
-        background.setStyle(Paint.Style.STROKE);
-        background.setStrokeWidth(2);
-        background.setColor(getContext().getResources().getColor(android.R.color.black));
-        setUpSounds();
     }
-    
+
+    /** Inicializa los sonidos a reproducir. */
     private void setUpSounds() {
         if (isSoundEnabled()) {
             soundPool = new SoundPool(6, AudioManager.STREAM_MUSIC, 0);
@@ -172,55 +153,63 @@ public class GameBoardView extends View {
         }
     }
 
-    protected void setUpCurrentAndNextTetrominos() {
-        if (nextTetromino == null) currentTetromino = getRandomTetromino();
+    /** Inicializa el estilo para pintar los tetrominos que ya son parte del piso. */
+    private void setUpTetrominosStyle() {
+        tetrominoForeground = new Paint();
+        tetrominoForeground.setStyle(Paint.Style.FILL); // El color se toma de la matriz
+        tetrominoBorder = new Paint();
+        tetrominoBorder.setStyle(Paint.Style.STROKE); // Por ahora siempre es negro
+        tetrominoBorder.setColor(getContext().getResources().getColor(android.R.color.black));
+    }
+
+    /**
+     * Inicializa el tetromino actual, lo centra en el esta vista e inicializa el próximo tetromino
+     * en cola. Si no puede centrar el tetromino actual, el juego habrá terminado.
+     */
+    protected void setUpNewTetrominos() {
+        if (nextTetromino == null) currentTetromino = randomTetromino();
         else currentTetromino = nextTetromino;
-        nextTetromino = getRandomTetromino();
-        
-        // Si no puede colocar el tetromino en el centro del tablero
-        // es que el juego ya no puede continuar
-        if (!currentTetromino.centerOnGameBoardView()) {
-            Log.i(TAG, "Game over");
-            stopGame();
-            isGameOver = true;
-            invalidate();
-            play(GAME_OVER_SOUND);
-            if (gameOverListener != null) gameOverListener.onGameOver();
-        }
+        do nextTetromino = randomTetromino(); while (shouldGetAnotherRandomTetromino());
+        if (commingNextTetrominoListener != null) commingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
+        if (!currentTetromino.centerOnGameBoardView()) onGameOver();
     }
-         
 
-    /**
-     * Saca otro tetromino al azar para el siguiente en caer si es que se repite
-     * más de 2 veces seguidas.
-     */
-    private void setAnotherRandomTetrominoIfNeeded() {
-        while (shouldGetAnotherRandomTetromino()) {
-            Log.w(TAG, "Should get another random tetromino because Java randoms are dumb");
-            nextTetromino = getRandomTetromino();
-        }
+    /** @return tetromino escogiendo al azar una de las figuras predefinadas. */
+    protected Tetromino randomTetromino() {
+        if (random == null) random = new Random();
+        int randomIndex = random.nextInt(TetrominoShape.values().length);
+        TetrominoShape randomShape = TetrominoShape.values()[randomIndex];
+        return new Tetromino.Builder(this).use(randomShape).build();
     }
 
     /**
-     * Construye la matriz y la llena de color transparente.
-     */
-    private void buildBoardMatrix() {
-        boardMatrix = new int[rows][columns];
-        for (int[] row: boardMatrix) Arrays.fill(row, android.R.color.transparent);
-    }
-
-    /**
-     * Dibuja el fondo del tablero.
+     * Revisa que no haya más de 3 tetrominos repetidos uno tras otro.
      * 
-     * @param canvas un canvas para dibujar.
+     * @return si ya se repitio 3 veces o más.
      */
-    private void drawBackground(Canvas canvas) {
-        canvas.drawRect(0, 0, getWidth(), getHeight(), background);
+    private boolean shouldGetAnotherRandomTetromino() {
+        if (currentTetromino.equals(nextTetromino)) {
+            if (repeatedTetromino == 0) repeatedTetromino = 2;
+            else repeatedTetromino++;
+        } else repeatedTetromino = 0;
+
+        return repeatedTetromino >= 3;
     }
 
     /**
-     * Actualiza la matriz del tablero con los valores del tetromino actual.
+     * Detiene el juego, reproduce el sonido de game over y ejecuta
+     * {@link OnGameOverListener#onGameOver()}.
      */
+    private void onGameOver() {
+        stopDropingTaskIfNeeded();
+        invalidate();
+        isGameOver = true;
+        isGameStarted = false;
+        play(GAME_OVER_SOUND);
+        if (gameOverListener != null) gameOverListener.onGameOver();
+    }
+
+    /** Actualiza la matriz del tablero con los valores del tetromino actual. */
     private void updateBoardMatrix() {
         int[][] shapeMatrix = currentTetromino.getShapeMatrix();
         for (int row = 0; row < shapeMatrix.length; row++) {
@@ -258,10 +247,9 @@ public class GameBoardView extends View {
     /**
      * Checa si hay lineas completas para borrar.
      * 
-     * @return la lista con los indicies de las filas completas o una lista
-     *         vacia.
+     * @return la lista con los indicies de las filas completas o una lista vacia.
      */
-    private List<Integer> lookForCompletedLines() {
+    private ArrayList<Integer> lookForCompletedLines() {
         ArrayList<Integer> rowsToClear = new ArrayList<Integer>(4);
         for (int row = 0; row < boardMatrix.length; row++) {
             boolean isComplete = true;
@@ -278,137 +266,106 @@ public class GameBoardView extends View {
         return rowsToClear;
     }
 
-    /**
-     * Limpia las lineas completas y baja las lineas arriba de las lineas
-     * completas.
-     * 
-     * @param rowsToClear los indicies de las filas que hay que limpiar.
-     */
-    private void clearCompletedLines(List<Integer> rowsToClear) {
-        for (int rowToClear : rowsToClear) {
-            for (int row = rowToClear; row >= 0; row--) {
-                boardMatrix[row] = new int[boardMatrix[row].length];
-                if (row == 0) Arrays.fill(boardMatrix[0], android.R.color.transparent);
-                else System.arraycopy(boardMatrix[row - 1], 0, boardMatrix[row], 0, boardMatrix[row].length);
+    /** Limpia las lineas completas y baja las lineas arriba de las lineas completas. */
+    private void clearAnyCompletedLines() {
+        ArrayList<Integer> rowsToClear = lookForCompletedLines();
+        if (!rowsToClear.isEmpty()) {
+            for (int rowToClear : rowsToClear) {
+                for (int row = rowToClear; row >= 0; row--) {
+                    boardMatrix[row] = new int[boardMatrix[row].length];
+                    if (row == 0) Arrays.fill(boardMatrix[0], android.R.color.transparent);
+                    else System.arraycopy(boardMatrix[row - 1], 0, boardMatrix[row], 0, boardMatrix[row].length);
+                }
             }
+
+            play(LINE_CLEAR_SOUND);
+            if (pointsAwardedListener != null) pointsAwardedListener.onClearedLines(rowsToClear.size());
         }
     }
 
-    /**
-     * Detiene la caida del tetromino actual si esta callendo.
-     */
+    /** Detiene la caida del tetromino actual si esta callendo. */
     private void stopDropingTaskIfNeeded() {
-        if (moveDownCurrentTetrominoTask != null && moveDownCurrentTetrominoTask.getStatus() == AsyncTask.Status.RUNNING) {
+        if (moveDownCurrentTetrominoTask != null && 
+                moveDownCurrentTetrominoTask.getStatus() == AsyncTask.Status.RUNNING) {
             moveDownCurrentTetrominoTask.cancel(true);
             moveDownCurrentTetrominoTask = null;
         }
     }
 
-    /**
-     * Inicia la caida del tetromino actual.
-     */
+    /** Inicia la caida del tetromino actual. */
     private void startDropingTask(long speed) {
         moveDownCurrentTetrominoTask = new MoveDownCurrentTetrominoTask();
         moveDownCurrentTetrominoTask.execute(speed);
     }
 
-    /**
-     * @return tetromino escogiendo al azar una de las figuras predefinadas.
-     */
-    protected Tetromino getRandomTetromino() {
-        int randomIndex = random.nextInt(DefaultShape.values().length);
-        DefaultShape randomShape = DefaultShape.values()[randomIndex];
-        return new Tetromino.Builder(this)
-            .use(randomShape)
-            .build();
-    }
-
-    /**
-     * @return si los sonidos estan habilitados o no la configuración.
-     */
-    protected boolean isSoundEnabled() {
-        return PreferenceManager.getDefaultSharedPreferences(
-                getContext()).getBoolean(getContext().getString(R.string.sounds_switch_key),
-                getContext().getResources().getBoolean(R.bool.default_sounds_switch_value));
-    }
-
-    /**
-     * Revisa que no haya más de 3 tetrominos repetidos uno tras otro.
-     * 
-     * @return si ya se repitio 3 veces o más.
-     */
-    protected boolean shouldGetAnotherRandomTetromino() {
-        if (currentTetromino.equals(nextTetromino)) {
-            if (repeatedTetromino == 0) repeatedTetromino = 2;
-            else repeatedTetromino++;
-        } else {
-            repeatedTetromino = 0;
+    /** @return si los sonidos estan habilitados o no la configuración. */
+    private boolean isSoundEnabled() {
+        if (!isInEditMode()) {
+            return PreferenceManager.getDefaultSharedPreferences(getContext())
+                    .getBoolean(
+                            getContext().getString(R.string.sounds_switch_key), 
+                            getContext().getResources().getBoolean(R.bool.default_sounds_switch_value));
         }
 
-        return repeatedTetromino >= 3;
-    }
-
-    protected void play(int sound) {
-        if (isSoundEnabled()) soundPool.play(soundPoolMap.get(sound), 1f, 1f, 1, 0, 1f); 
+        return false;
     }
 
     /**
-     * Reinicia el juego.
+     * Reproduce el sonido asociado con el id del sonido proporcionado.
+     * 
+     * @param sound el id del sonido a reproducir.
      */
-    public void restartGame() {
-        stopDropingTaskIfNeeded();
-        buildBoardMatrix();
-        startDropingTetrominos = false;
-        isPaused = false;
-        isGameOver = false;
-        invalidate();
+    private void play(int sound) {
+        if (isSoundEnabled()) soundPool.play(soundPoolMap.get(sound), 1f, 1f, 1, 0, 1f);
     }
 
-    /**
-     * @return la matriz del tablero.
-     */
+    /** @return la matriz del tablero. */
     public int[][] getBoardMatrix() {
         return boardMatrix;
     }
 
-    /**
-     * @return la altura de las filas del tablero.
-     */
+    /** @return la altura de las filas del tablero. */
     public float getBoardRowHeight() {
         return boardRowHeight;
     }
 
-    /**
-     * @return la anchura de las columnas del tablero.
-     */
+    /** @return la anchura de las columnas del tablero. */
     public float getBoardColumnWidth() {
         return boardColumnWidth;
     }
 
-    /**
-     * @return si el juego esta pausado o no.
-     */
+    /** @return si el juego esta pausado o no. */
     public boolean isPaused() {
         return isPaused;
     }
 
-    /**
-     * @return si el juego esta detenido o no.
-     */
+    /** @return si el juego esta detenido o no. */
     public boolean isStopped() {
-        return moveDownCurrentTetrominoTask == null || moveDownCurrentTetrominoTask.getStatus() != AsyncTask.Status.RUNNING;
+        return moveDownCurrentTetrominoTask == null || 
+                moveDownCurrentTetrominoTask.getStatus() != AsyncTask.Status.RUNNING;
     }
 
-    /**
-     * @return si el juego termino finalizo o no.
-     */
+    /** @return si el juego termino finalizo o no. */
     public boolean isGameOver() {
         return isGameOver;
     }
 
     /**
-     * Pausa el juego.
+     * Inicia el juego.
+     * 
+     * @throws IllegalStateException cuando el juego ya ha sido iniciado o cuando el juego ha
+     *         termindo.
      */
+    public void startGame() {
+        if (isGameStarted) throw new IllegalStateException("Game is already started!!");
+        if (isGameOver) throw new IllegalStateException("Call GameBoardView.restartGame()!!");
+        setUpNewTetrominos();
+        startDropingTask(currentSpeed);
+        isGameStarted = true;
+        invalidate();
+    }
+
+    /** Pausa el juego. */
     public void pauseGame() {
         if (!isGameOver && !isPaused) {
             isPaused = true;
@@ -416,30 +373,37 @@ public class GameBoardView extends View {
         }
     }
 
-    /**
-     * Reanuda el juego.
-     */
+    /** Reanuda el juego. */
     public void resumeGame() {
-        isPaused = false;
+        if (!isGameOver && isPaused) {
+            isPaused = false;
+            play(PAUSE_SOUND);
+        }
     }
 
-    /**
-     * Detiene el juego y no se podrá reinciar más
-     */
+    /** Detiene el juego y debe llamarse a {@link #restartGame()} para reiniciar el juego. */
     public void stopGame() {
         stopDropingTaskIfNeeded();
+        isGameStarted = false;
     }
 
-    /**
-     * @return el tetromino en juego.
-     */
+    /** Reinicia el juego. */
+    public void restartGame() {
+        isPaused = false;
+        isGameOver = false;
+        isGameStarted = false;
+        stopDropingTaskIfNeeded();
+        setInitialLevel(initialLevel);
+        setUpBoardMatrix();
+        startGame();
+    }
+
+    /** @return el tetromino en juego. */
     public Tetromino getCurrentTetromino() {
         return currentTetromino;
     }
 
-    /**
-     * @return el siguiente tetromino en caer.
-     */
+    /** @return el siguiente tetromino en caer. */
     public Tetromino getNextTetromino() {
         return nextTetromino;
     }
@@ -453,62 +417,63 @@ public class GameBoardView extends View {
     public void setCustomDimensions(int rows, int columns) {
         this.rows = rows;
         this.columns = columns;
-        buildBoardMatrix();
+        setUpBoardMatrix();
+    }
+
+    /** Inicializa la matriz y la llena de color transparente. */
+    private void setUpBoardMatrix() {
+        if (rows <= 0) rows = DEFAULT_ROWS;
+        if (columns <= 0) columns = DEFAULT_COLUMNS;
+        boardMatrix = new int[rows][columns];
+        for (int[] row : boardMatrix) Arrays.fill(row, android.R.color.transparent);
     }
 
     /**
-     * Cambia el nivel del juego.
+     * Cambia el nivel inicial del juego.
      * 
      * @param level {@link #DEFAULT_LEVEL} <= level <= {@link #MAX_LEVEL}.
      */
-    public void setLevel(int level) {
-        int realLevel = level <= DEFAULT_LEVEL ? DEFAULT_LEVEL : level >= MAX_LEVEL ? MAX_LEVEL : level;
+    public void setInitialLevel(int level) {
+        initialLevel = level <= DEFAULT_LEVEL ? DEFAULT_LEVEL : level >= MAX_LEVEL ? MAX_LEVEL : level;
         currentSpeed = DEFAULT_SPEED;
-        for (int i = 0; i < realLevel; i++) {
-            currentSpeed -= currentSpeed / SPEED_FACTOR;
-        }
-        
-        Log.d(TAG, "currentSpeed=" + currentSpeed);
+        for (int i = 0; i < initialLevel; i++) currentSpeed -= currentSpeed / SPEED_FACTOR;
     }
 
-    /**
-     * Aumenta la velocidad y el nivel de juego.
-     */
+    /** @return el nivel inicial del juego. */
+    public int getInitialLevel() {
+        return initialLevel;
+    }
+
+    /** Aumenta la velocidad y el nivel de juego. */
     public void levelUp() {
         currentSpeed -= currentSpeed / SPEED_FACTOR;
-        Log.d(TAG, "currentSpeed=" + currentSpeed);
         play(LEVEL_UP_SOUND);
         stopDropingTaskIfNeeded();
         startDropingTask(currentSpeed);
     }
 
-    /**
-     * @return la velocidad del juego actual.
-     */
+    /** @return la velocidad del juego actual. */
     public long getCurrentSpeed() {
         return currentSpeed;
     }
 
     /**
-     * @param commingNextTetrominoListener el listener que escuchará cuando
-     *        haya un nuevo tetromino listo.
+     * @param commingNextTetrominoListener el listener que escuchará cuando haya un nuevo tetromino
+     *        listo.
      */
     public void setOnCommingNextTetrominoListener(OnCommingNextTetrominoListener commingNextTetrominoListener) {
         this.commingNextTetrominoListener = commingNextTetrominoListener;
     }
 
     /**
-     * @param pointsAwardedListener listener que escuchará cuando caiga un
-     *        tetromino y cuando haya lineas completas.
+     * @param pointsAwardedListener listener que escuchará cuando caiga un tetromino y cuando haya
+     *        lineas completas.
      */
     public void setOnPointsAwardedListener(OnPointsAwardedListener pointsAwardedListener) {
         this.pointsAwardedListener = pointsAwardedListener;
     }
 
-    /**
-     * @param gameOverListener listener que escuchará cuando se acabe el
-     *        juego.
-     */
+    /** @param gameOverListener listener que escuchará cuando se acabe el juego. */
     public void setOnGameOverListener(OnGameOverListener gameOverListener) {
         this.gameOverListener = gameOverListener;
     }
@@ -552,8 +517,8 @@ public class GameBoardView extends View {
         void onHardDropped(int gridSpaces);
 
         /**
-         * Ejecuta este método cuando el tetromino actual cae al piso más rápido
-         * que la velocidad del nivel.
+         * Ejecuta este método cuando el tetromino actual cae al piso más rápido que la velocidad
+         * del nivel.
          * 
          * @param gridSpaces los espacios recorridos al caer.
          */
@@ -568,80 +533,61 @@ public class GameBoardView extends View {
      */
     public static interface OnGameOverListener {
 
-        /**
-         * Ejecuta este método cuando se termina el juego.
-         */
+        /** Ejecuta este método cuando se termina el juego. */
         void onGameOver();
     }
 
     /**
-     * @return si se pudo mover hacia abajo el tetromino actual o no.
+     * Cancela gestos, actualiza la matriz, limpia las lineas completas y reproduce
+     * {@link #DROP_SOUND}.
      */
-    private boolean moveDownCurrentTetrominoIfPossible() {
-        if (!currentTetromino.moveTo(Direction.DOWN)) {
-            gestureListener.shouldStopScrollEvent = true;
-            updateBoardMatrix();
-            List<Integer> rowsToClear = lookForCompletedLines();
-            if (!rowsToClear.isEmpty()) {
-                clearCompletedLines(rowsToClear);
-                play(LINE_CLEAR_SOUND);
-                if (pointsAwardedListener != null) pointsAwardedListener.onClearedLines(rowsToClear.size());
-            }
-            setUpCurrentAndNextTetrominos();
-            setAnotherRandomTetrominoIfNeeded();
-            if (commingNextTetrominoListener != null) commingNextTetrominoListener.onCommingNextTetromino(nextTetromino);
-            invalidate();
-            play(DROP_SOUND);
-            return false;
-        } else {
-            Log.d(TAG, "Move down tetromino");
-            invalidate();
-            return true;
-        }
-    }
-
-    /**
-     * Move el tetromino hasta el suelo del tablero en un tiempo.
-     */
-    private void hardDropCurrentTetromino() {
-        int gridSpaces;
-        for (gridSpaces = 0; moveDownCurrentTetrominoIfPossible(); gridSpaces++);
-        if (pointsAwardedListener != null) pointsAwardedListener.onHardDropped(gridSpaces);
+    private void onCurrentTetrominoOnFloor() {
+        gestureListener.shouldStopScrollEvent = true;
+        updateBoardMatrix();
+        clearAnyCompletedLines();
         invalidate();
         play(DROP_SOUND);
     }
 
+    /** Move el tetromino hasta el suelo del tablero en un tiempo. */
+    private void hardDropCurrentTetromino() {
+        int gridSpaces;
+        for (gridSpaces = 0; currentTetromino.moveTo(Tetromino.Direction.DOWN); gridSpaces++);
+        if (pointsAwardedListener != null) pointsAwardedListener.onHardDropped(gridSpaces);
+        onCurrentTetrominoOnFloor();
+        setUpNewTetrominos();
+    }
+
     /**
-     * Tarea que lleva la cuenta de la velocidad de caida del tetromino en
-     * juego.
+     * Tarea que lleva la cuenta de la velocidad de caida del tetromino en juego.
      * 
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
     private class MoveDownCurrentTetrominoTask extends AsyncTask<Long, Void, Void> {
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         protected Void doInBackground(Long... params) {
             while (!isCancelled()) {
                 try {
                     Thread.sleep(params[0]);
                     publishProgress();
-                } catch (InterruptedException e) { }
+                } catch (InterruptedException e) {
+                    // Se ignora y si no se ha cancelado esta tarea volverá a
+                    // intentar dormir.
+                }
             }
 
             return null;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         protected void onProgressUpdate(Void... values) {
             if (!isPaused && !isGameOver) {
-                moveDownCurrentTetrominoIfPossible();
+                if (!currentTetromino.moveTo(Tetromino.Direction.DOWN)) {
+                    onCurrentTetrominoOnFloor();
+                    setUpNewTetrominos();
+                } else invalidate();
             }
         }
     }
@@ -659,39 +605,37 @@ public class GameBoardView extends View {
         private float totalDistanceX;
         private float totalDistanceY;
 
-        /**
-         * {@inheritDoc}
-         */
-        @Override
+        @Override // TODO: Reducir la complejidad ciclomática de este método
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            if (!isPaused && !isGameOver && !shouldStopScrollEvent) {
-                if (Math.abs(distanceX) > Math.abs(distanceY)) { // Scroll a los lados pero se pudo haber ido chueco
+            if (isGameStarted && !isPaused && !isGameOver && !shouldStopScrollEvent) {
+                // Scroll a los lados
+                if (Math.abs(distanceX) > Math.abs(distanceY)) {
                     totalDistanceX += distanceX;
-                    if (distanceX < 0) { // Derecha
+                    // Derecha
+                    if (distanceX < 0) {
                         if (Math.abs(totalDistanceX) >= boardColumnWidth) {
                             totalDistanceX = 0;
-                            if (currentTetromino.moveTo(Direction.RIGHT)) {
-                                Log.d(TAG, "Move tetromino to the right");
-                                invalidate();
-                            }
+                            if (currentTetromino.moveTo(Tetromino.Direction.RIGHT)) invalidate();
                         }
-                    } else { // Izquierda
+                        // Izquierda
+                    } else {
                         if (Math.abs(totalDistanceX) >= boardColumnWidth) {
                             totalDistanceX = 0;
-                            if (currentTetromino.moveTo(Direction.LEFT)) {
-                                Log.d(TAG, "Move tetromino to the left");
-                                invalidate();
-                            }
+                            if (currentTetromino.moveTo(Tetromino.Direction.LEFT)) invalidate();
                         }
                     }
-                } else if (distanceY < 0) { // Scroll hacia abajo pero se pudo haber ido chueco
+                    // Scroll hacia abajo
+                } else if (distanceY < 0) {
                     totalDistanceY += distanceY;
                     if (Math.abs(totalDistanceY) >= boardRowHeight) {
                         totalDistanceY = 0;
-                        //Si no puede continuar abajo significa que bajo en modo SoftDrop
-                        if (!moveDownCurrentTetrominoIfPossible()) {
+                        // Si no puede continuar abajo significa que bajo en modo SoftDrop
+                        if (!currentTetromino.moveTo(Tetromino.Direction.DOWN)) {
+                            onCurrentTetrominoOnFloor();
+                            setUpNewTetrominos();
                             if (pointsAwardedListener != null) pointsAwardedListener.onSoftDropped(softDropGridSpaces);
                         } else {
+                            invalidate();
                             softDropGridSpaces++;
                         }
                     }
@@ -701,14 +645,10 @@ public class GameBoardView extends View {
             return true;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
-            if (!isPaused && !isGameOver) {
+            if (isGameStarted && !isPaused && !isGameOver) {
                 if (currentTetromino.rotate()) {
-                    Log.d(TAG, "Rotate tetromino");
                     invalidate();
                     play(ROTATE_SOUND);
                 }
@@ -717,20 +657,12 @@ public class GameBoardView extends View {
             return true;
         }
 
-        /**
-         * {@inheritDoc}
-         */
+        @Override
         public boolean onDoubleTap(MotionEvent e) {
-            if (!isPaused && !isGameOver) {
-                hardDropCurrentTetromino();
-            }
-
+            if (isGameStarted && !isPaused && !isGameOver) hardDropCurrentTetromino();
             return true;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean onDown(MotionEvent e) {
             shouldStopScrollEvent = false;

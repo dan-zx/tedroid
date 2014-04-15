@@ -1,9 +1,7 @@
-package mx.udlap.is522.tedroid.view.model;
+package mx.udlap.is522.tedroid.view;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
-import mx.udlap.is522.tedroid.view.GameBoardView;
 
 import java.util.Arrays;
 
@@ -15,33 +13,33 @@ import java.util.Arrays;
  */
 public class Tetromino {
 
-    private GameBoardView gameBoardView;
+    private final GameBoardView gameBoardView;
+    private final Paint foreground;
+    private final Paint border;
+    private final Position position;
+    private final boolean hasRotation;
+
     private int[][] shapeMatrix;
-    private Position position;
-    private boolean hasRotation;
-    private Paint foreground;
-    private Paint border;
 
     /**
      * Constructor. En realidad debe constuirse con un Tetromino.Builder
      * 
      * @param builder objeto para armar un nuevo tetromino.
      */
-    private Tetromino(Tetromino.Builder builder) {
+    private Tetromino(Builder builder) {
         gameBoardView = builder.gameBoardView;
         shapeMatrix = builder.shapeMatrix;
         hasRotation = builder.hasRotation;
         position = new Position();
-        border = new Paint();
         foreground = new Paint();
-        foreground.setStyle(Paint.Style.FILL);
-        border.setStyle(Paint.Style.STROKE);
+        foreground.setStyle(Paint.Style.FILL); // El color se toma de la matriz
+        border = new Paint();
+        border.setStyle(Paint.Style.STROKE); // Por ahora siempre es negro
         border.setColor(gameBoardView.getContext().getResources().getColor(android.R.color.black));
     }
 
     /**
-     * Dibuja este tetromino en un canvas con las dimensiones de su tablero de
-     * juego asosiado.
+     * Dibuja este tetromino en un canvas con las dimensiones de su tablero de juego asosiado.
      * 
      * @param canvas el objeto donde dibujar.
      */
@@ -64,8 +62,7 @@ public class Tetromino {
     /**
      * Mueve este tetromino un lugar tablero usado {@link Direction}.
      * 
-     * @param direction {@link Direction#LEFT}, {@link Direction#RIGHT} o
-     *        {@link Direction#DOWN}.
+     * @param direction {@link Direction#LEFT}, {@link Direction#RIGHT} o {@link Direction#DOWN}.
      * @return si se pudo mover o no.
      */
     public boolean moveTo(Direction direction) {
@@ -115,23 +112,19 @@ public class Tetromino {
         return false;
     }
 
-    /**
-     * @return una matriz de 0s y 1s con la forma de este tetromino.
-     */
+    /** @return una matriz de 0s y 1s con la forma de este tetromino. */
     public int[][] getShapeMatrix() {
         return shapeMatrix;
     }
 
-    /**
-     * @return si la figura tiene o no rotación este tetromino.
-     */
+    /** @return si la figura tiene o no rotación este tetromino. */
     public boolean hasRotation() {
         return hasRotation;
     }
 
     /**
-     * @return la posición en el tablero donde se encuentra la esquina superior
-     *         izquierda de la matriz de este tetromino
+     * @return la posición en el tablero donde se encuentra la esquina superior izquierda de la
+     *         matriz de este tetromino
      */
     public Position getPosition() {
         return position;
@@ -180,21 +173,22 @@ public class Tetromino {
     }
 
     /**
-     * Genera una predicción poniendo el tetromino en el lugar en el que
-     * quedaria después de rotarse.
+     * Genera una predicción poniendo el tetromino en el lugar en el que quedaria después de
+     * rotarse.
      * 
      * @param rotatedShape la matriz rotada.
      * @return si cupo o no después de moverse.
      */
     private boolean canFit(int[][] rotatedShape) {
         int[][] boardMatrix = gameBoardView.getBoardMatrix();
-
         for (int row = 0; row < rotatedShape.length; row++) {
             for (int column = 0; column < rotatedShape[0].length; column++) {
                 int boardMatrixRow = position.boardMatrixRow + row;
                 int boardMatrixColumn = position.boardMatrixColumn + column;
-                if (isRowOutOfBoundsOfBoard(boardMatrixRow) || isColumnOutOfBoundsOfBoard(boardMatrixColumn) || 
-                        (boardMatrix[boardMatrixRow][boardMatrixColumn] != android.R.color.transparent && rotatedShape[row][column] != android.R.color.transparent)) {
+                if (isRowOutOfBoundsOfBoard(boardMatrixRow) || 
+                        isColumnOutOfBoundsOfBoard(boardMatrixColumn) || 
+                        (boardMatrix[boardMatrixRow][boardMatrixColumn] != android.R.color.transparent && 
+                        rotatedShape[row][column] != android.R.color.transparent)) {
                     return false;
                 }
             }
@@ -204,17 +198,15 @@ public class Tetromino {
     }
 
     /**
-     * Genera una predicción poniendo el tetromino en el lugar en el que
-     * quedaria después de moverse.
+     * Genera una predicción poniendo el tetromino en el lugar en el que quedaria después de
+     * moverse.
      * 
-     * @param direction {@link Direction#LEFT}, {@link Direction#RIGHT} o
-     *        {@link Direction#DOWN}.
+     * @param direction {@link Direction#LEFT}, {@link Direction#RIGHT} o {@link Direction#DOWN}.
      * @return si cupo o no después de moverse.
      */
     private boolean canFit(Direction direction) {
         int[][] shape = getShapeMatrix();
         int[][] boardMatrix = gameBoardView.getBoardMatrix();
-
         for (int row = 0; row < shape.length; row++) {
             for (int column = 0; column < shape[0].length; column++) {
                 int boardMatrixRow = position.boardMatrixRow + row;
@@ -225,8 +217,10 @@ public class Tetromino {
                     case RIGHT: boardMatrixColumn++; break;
                     default: break;
                 }
-                if (isRowOutOfBoundsOfBoard(boardMatrixRow) || isColumnOutOfBoundsOfBoard(boardMatrixColumn) 
-                        || (boardMatrix[boardMatrixRow][boardMatrixColumn] != android.R.color.transparent && shape[row][column] != android.R.color.transparent)) {
+                if (isRowOutOfBoundsOfBoard(boardMatrixRow) || 
+                        isColumnOutOfBoundsOfBoard(boardMatrixColumn) || 
+                        (boardMatrix[boardMatrixRow][boardMatrixColumn] != android.R.color.transparent && 
+                        shape[row][column] != android.R.color.transparent)) {
                     return false;
                 }
             }
@@ -253,9 +247,6 @@ public class Tetromino {
         return column < 0 || column >= boardMatrix[0].length;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -265,9 +256,6 @@ public class Tetromino {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -290,9 +278,6 @@ public class Tetromino {
         private int boardMatrixColumn;
         private int boardMatrixRow;
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public int hashCode() {
             final int prime = 31;
@@ -302,9 +287,6 @@ public class Tetromino {
             return result;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean equals(Object obj) {
             if (this == obj) return true;
@@ -317,16 +299,16 @@ public class Tetromino {
         }
 
         /**
-         * @return la columna donde se encuentra la esquina superior izquierda
-         *         de la matriz de este tetromino.
+         * @return la columna donde se encuentra la esquina superior izquierda de la matriz de este
+         *         tetromino.
          */
         public int getBoardMatrixColumn() {
             return boardMatrixColumn;
         }
 
         /**
-         * @return la fila donde se encuentra la esquina superior izquierda de
-         *         la matriz de este tetromino.
+         * @return la fila donde se encuentra la esquina superior izquierda de la matriz de este
+         *         tetromino.
          */
         public int getBoardMatrixRow() {
             return boardMatrixRow;
@@ -337,11 +319,11 @@ public class Tetromino {
      * Constructor de tetrominos.
      * 
      * @author Daniel Pedraza-Arcega
+     * @since 1.0
      */
     public static class Builder {
 
-        public static final boolean DEFAULT_HAS_ROATATION = false;
-        public static final int[][] DEFAULT_SHAPE = { { android.R.color.black } };
+        public static final TetrominoShape DEFAULT_SHAPE = TetrominoShape.O;
 
         private int[][] shapeMatrix;
         private boolean hasRotation;
@@ -353,19 +335,19 @@ public class Tetromino {
          * @param gameBoardView el tablero donde crear el nuevo tetromino.
          */
         public Builder(GameBoardView gameBoardView) {
-            hasRotation = DEFAULT_HAS_ROATATION;
-            shapeMatrix = new int[DEFAULT_SHAPE.length][];
-            System.arraycopy(DEFAULT_SHAPE, 0, shapeMatrix, 0, DEFAULT_SHAPE.length);
+            hasRotation = DEFAULT_SHAPE.hasRotation();
+            shapeMatrix = new int[DEFAULT_SHAPE.getShapeMatrix().length][];
+            System.arraycopy(DEFAULT_SHAPE.getShapeMatrix(), 0, shapeMatrix, 0, DEFAULT_SHAPE.getShapeMatrix().length);
             this.gameBoardView = gameBoardView;
         }
 
         /**
          * Construira un nuevo tetromino usando una de las figuras predefinadas.
          * 
-         * @param shape un {@link DefaultShape}.
+         * @param shape un {@link TetrominoShape}.
          * @return este Builder.
          */
-        public Builder use(DefaultShape shape) {
+        public Builder use(TetrominoShape shape) {
             shapeMatrix = new int[shape.getShapeMatrix().length][];
             System.arraycopy(shape.getShapeMatrix(), 0, shapeMatrix, 0, shape.getShapeMatrix().length);
             hasRotation = shape.hasRotation();
@@ -400,5 +382,16 @@ public class Tetromino {
         public Tetromino build() {
             return new Tetromino(this);
         }
+    }
+
+    /**
+     * Constantes de dirección
+     * 
+     * @author Daniel Pedraza-Arcega
+     * @since 1.0
+     */
+    public static enum Direction {
+
+        RIGHT, LEFT, DOWN
     }
 }

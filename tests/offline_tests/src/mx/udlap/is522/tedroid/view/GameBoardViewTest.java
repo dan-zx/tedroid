@@ -1,6 +1,7 @@
 package mx.udlap.is522.tedroid.view;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -11,19 +12,17 @@ import android.content.SharedPreferences;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.shadows.ShadowPreferenceManager;
 
 import mx.udlap.is522.tedroid.R;
 
-import mx.udlap.is522.tedroid.view.model.DefaultShape;
-import mx.udlap.is522.tedroid.view.model.Tetromino;
-
 import java.util.LinkedList;
-import java.util.Queue;
 
 @RunWith(RobolectricTestRunner.class)
 public class GameBoardViewTest {
@@ -47,33 +46,30 @@ public class GameBoardViewTest {
         GameBoardView gameBoardViewMock = mock(GameBoardView.class, CALLS_REAL_METHODS);
         when(gameBoardViewMock.getContext()).thenReturn(dummyActivity);
         gameBoardViewMock.setUp();
-        gameBoardViewMock.setCustomDimensions(4, 4);
 
-        final Queue<Tetromino> expectedTetrominos = buildTestTetrominos(gameBoardViewMock);
-        when(gameBoardViewMock.getRandomTetromino()).thenAnswer(new Answer<Tetromino>() {
+        final LinkedList<Tetromino> tetrominoQueue = buildTestTetrominos(gameBoardViewMock);
+        when(gameBoardViewMock.randomTetromino()).thenAnswer(new Answer<Tetromino>() {
             @Override
             public Tetromino answer(InvocationOnMock invocation) {
-                return expectedTetrominos.poll();
+                return tetrominoQueue.poll();
             }
         });
 
-        gameBoardViewMock.setUpCurrentAndNextTetrominos();
-        assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isFalse();
-
-        gameBoardViewMock.setUpCurrentAndNextTetrominos();
-        assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isTrue();
-
-        gameBoardViewMock.setUpCurrentAndNextTetrominos();
-        assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isTrue();
-
-        gameBoardViewMock.setUpCurrentAndNextTetrominos();
-        assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isFalse();
-
-        gameBoardViewMock.setUpCurrentAndNextTetrominos();
-        assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isFalse();
-
-        gameBoardViewMock.setUpCurrentAndNextTetrominos();
-        assertThat(gameBoardViewMock.shouldGetAnotherRandomTetromino()).isTrue();
+        gameBoardViewMock.setUpNewTetrominos();
+        assertThat(gameBoardViewMock.getCurrentTetromino().getShapeMatrix()).isNotNull().isEqualTo(TetrominoShape.O.getShapeMatrix());
+        assertThat(gameBoardViewMock.getNextTetromino().getShapeMatrix()).isNotNull().isEqualTo(TetrominoShape.O.getShapeMatrix());
+        
+        gameBoardViewMock.setUpNewTetrominos();
+        assertThat(gameBoardViewMock.getCurrentTetromino().getShapeMatrix()).isNotNull().isEqualTo(TetrominoShape.O.getShapeMatrix());
+        assertThat(gameBoardViewMock.getNextTetromino().getShapeMatrix()).isNotNull().isEqualTo(TetrominoShape.T.getShapeMatrix());
+        
+        gameBoardViewMock.setUpNewTetrominos();
+        assertThat(gameBoardViewMock.getCurrentTetromino().getShapeMatrix()).isNotNull().isEqualTo(TetrominoShape.T.getShapeMatrix());
+        assertThat(gameBoardViewMock.getNextTetromino().getShapeMatrix()).isNotNull().isEqualTo(TetrominoShape.T.getShapeMatrix());
+        
+        gameBoardViewMock.setUpNewTetrominos();
+        assertThat(gameBoardViewMock.getCurrentTetromino().getShapeMatrix()).isNotNull().isEqualTo(TetrominoShape.T.getShapeMatrix());
+        assertThat(gameBoardViewMock.getNextTetromino().getShapeMatrix()).isNotNull().isEqualTo(TetrominoShape.J.getShapeMatrix());
     }
 
     @Test
@@ -82,7 +78,7 @@ public class GameBoardViewTest {
         long previousSpeed = gameBoardView.getCurrentSpeed();
 
         for (int level = GameBoardView.DEFAULT_LEVEL + 1; level <= GameBoardView.MAX_LEVEL; level++) {
-            gameBoardView.setLevel(level);
+            gameBoardView.setInitialLevel(level);
             long actualSpeed = gameBoardView.getCurrentSpeed();
 
             assertThat(actualSpeed).isLessThan(previousSpeed).isNotNegative().isNotZero();
@@ -91,28 +87,28 @@ public class GameBoardViewTest {
         }
     }
 
-    private Queue<Tetromino> buildTestTetrominos(GameBoardView gameBoardView) {
-        Queue<Tetromino> tetrominos = new LinkedList<Tetromino>();
+    private LinkedList<Tetromino> buildTestTetrominos(GameBoardView gameBoardView) {
+        LinkedList<Tetromino> tetrominos = new LinkedList<Tetromino>();
         tetrominos.add(new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.O)
+            .use(TetrominoShape.O)
             .build());
         tetrominos.add(new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.O)
+            .use(TetrominoShape.O)
             .build());
         tetrominos.add(new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.O)
+            .use(TetrominoShape.O)
             .build());
         tetrominos.add(new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.O)
+            .use(TetrominoShape.O)
             .build());
         tetrominos.add(new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.T)
+            .use(TetrominoShape.T)
             .build());
         tetrominos.add(new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.T)
+            .use(TetrominoShape.T)
             .build());
         tetrominos.add(new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.T)
+            .use(TetrominoShape.J)
             .build());
         return tetrominos;
     }
