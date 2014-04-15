@@ -33,6 +33,8 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
     private TableRow.LayoutParams layoutParams;
     private TableLayout scoreTable;
     private Typeface twobitTypeface;
+    private float primaryTextSize;
+    private float secondaryTextSize;
     private int primaryColor;
     private int secondaryColor;
 
@@ -40,19 +42,20 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scores);
-        twobitTypeface = Typefaces.get(this, Typefaces.Font.TWOBIT);
         scoreTable = (TableLayout) findViewById(R.id.score_table);
         layoutParams = new TableRow.LayoutParams();
         layoutParams.rightMargin = dpToPixel(10);
         layoutParams.topMargin = dpToPixel(10);
+        twobitTypeface = Typefaces.get(this, Typefaces.Font.TWOBIT);
+        primaryTextSize = getResources().getDimension(R.dimen.primary_text_size);
+        secondaryTextSize = getResources().getDimension(R.dimen.secondary_text_size);
         primaryColor = getResources().getColor(R.color.primary_for_background);
         secondaryColor = getResources().getColor(R.color.secondary_for_background);
         getSupportLoaderManager().initLoader(0, null, this).forceLoad();
     }
 
     /**
-     * Setea los valores de los objetos Score proporcionados o manda un mensaje
-     * si no hay datos.
+     * Setea los valores de los objetos Score proporcionados o manda un mensaje si no hay datos.
      * 
      * @param scores objetos Score.
      */
@@ -89,27 +92,20 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
         TableRow row = new TableRow(this);
         TextView pointsText = new TextView(this);
         pointsText.setText(String.valueOf(score.getPoints()));
-        pointsText.setTextColor(secondaryColor);
-        pointsText.setTypeface(twobitTypeface);
+        applySecondaryStyleTo(pointsText);
         pointsText.setLayoutParams(layoutParams);
         TextView levelText = new TextView(this);
         levelText.setText(String.valueOf(score.getLevel()));
-        levelText.setTextColor(secondaryColor);
-        levelText.setTypeface(twobitTypeface);
-        levelText.setLayoutParams(layoutParams);
+        applySecondaryStyleTo(levelText);
         TextView linesText = new TextView(this);
         linesText.setText(String.valueOf(score.getLines()));
-        linesText.setTextColor(secondaryColor);
-        linesText.setTypeface(twobitTypeface);
-        linesText.setLayoutParams(layoutParams);
+        applySecondaryStyleTo(linesText);
         TextView dateText = new TextView(this);
         String dateStr = getString(R.string.datetime_format, 
-                DateFormat.getDateFormat(getApplicationContext()).format(score.getObtainedAt()),
+                DateFormat.getDateFormat(getApplicationContext()).format(score.getObtainedAt()), 
                 DateFormat.getTimeFormat(getApplicationContext()).format(score.getObtainedAt()));
         dateText.setText(dateStr);
-        dateText.setTextColor(secondaryColor);
-        dateText.setTypeface(twobitTypeface);
-        dateText.setLayoutParams(layoutParams);
+        applySecondaryStyleTo(dateText);
         row.addView(pointsText);
         row.addView(levelText);
         row.addView(linesText);
@@ -117,36 +113,42 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
         return row;
     }
 
-    /**
-     * @return la fila de encabezados de la tabla.
-     */
+    /** Aplica el tema estilo secundario */
+    private void applySecondaryStyleTo(TextView textView) {
+        textView.setTextColor(secondaryColor);
+        textView.setTextSize(secondaryTextSize);
+        textView.setTypeface(twobitTypeface);
+        textView.setLayoutParams(layoutParams);
+    }
+
+    /** @return la fila de encabezados de la tabla. */
     private TableRow createHeaderRow() {
         TableRow headerRow = new TableRow(this);
         TextView pointsHeaderText = new TextView(this);
         pointsHeaderText.setText(R.string.points_header);
-        pointsHeaderText.setTextColor(primaryColor);
-        pointsHeaderText.setTypeface(twobitTypeface);
-        pointsHeaderText.setLayoutParams(layoutParams);
+        applyPrimaryStyleTo(pointsHeaderText);
         TextView levelHeaderText = new TextView(this);
         levelHeaderText.setText(R.string.level_header);
-        levelHeaderText.setTextColor(primaryColor);
-        levelHeaderText.setTypeface(twobitTypeface);
-        levelHeaderText.setLayoutParams(layoutParams);
+        applyPrimaryStyleTo(levelHeaderText);
         TextView linesHeaderText = new TextView(this);
         linesHeaderText.setText(R.string.lines_header);
-        linesHeaderText.setTextColor(primaryColor);
-        linesHeaderText.setTypeface(twobitTypeface);
-        linesHeaderText.setLayoutParams(layoutParams);
+        applyPrimaryStyleTo(linesHeaderText);
         TextView dateHeaderText = new TextView(this);
         dateHeaderText.setText(R.string.date_header);
-        dateHeaderText.setTextColor(primaryColor);
-        dateHeaderText.setTypeface(twobitTypeface);
-        dateHeaderText.setLayoutParams(layoutParams);
+        applyPrimaryStyleTo(dateHeaderText);
         headerRow.addView(pointsHeaderText);
         headerRow.addView(levelHeaderText);
         headerRow.addView(linesHeaderText);
         headerRow.addView(dateHeaderText);
         return headerRow;
+    }
+
+    /** Aplica el tema estilo primario. */
+    private void applyPrimaryStyleTo(TextView textView) {
+        textView.setTextColor(primaryColor);
+        textView.setTextSize(primaryTextSize);
+        textView.setTypeface(twobitTypeface);
+        textView.setLayoutParams(layoutParams);
     }
 
     /**
@@ -161,7 +163,7 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
 
     @Override
     public Loader<List<Score>> onCreateLoader(int id, Bundle args) {
-        return new ScoreLoader(this);
+        return new ScoreLoader(getApplicationContext());
     }
 
     @Override
@@ -175,9 +177,8 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
     }
 
     /**
-     * Tarea asíncrona para recuperar todos los puntajes. 
-     * (TODO: debe estar en otro lado esta clase)
-     *  
+     * Tarea asíncrona para recuperar todos los puntajes.
+     * 
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
@@ -190,9 +191,9 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
          * 
          * @param context el contexto de la aplicación.
          */
-        public ScoreLoader(Context context) {
+        private ScoreLoader(Context context) {
             super(context);
-            scoreDAO = new DAOFactory(context.getApplicationContext()).get(ScoreDAO.class);
+            scoreDAO = new DAOFactory(context).get(ScoreDAO.class);
         }
 
         @Override
