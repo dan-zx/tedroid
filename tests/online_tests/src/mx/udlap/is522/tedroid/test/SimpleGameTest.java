@@ -8,7 +8,7 @@ import com.robotium.solo.Solo;
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.activity.MockGameActivity;
 import mx.udlap.is522.tedroid.view.GameBoardView;
-import mx.udlap.is522.tedroid.view.model.Tetromino;
+import mx.udlap.is522.tedroid.view.Tetromino;
 
 import java.util.Arrays;
 
