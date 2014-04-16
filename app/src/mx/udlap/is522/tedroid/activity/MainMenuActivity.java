@@ -1,8 +1,8 @@
 package mx.udlap.is522.tedroid.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +17,7 @@ import mx.udlap.is522.tedroid.util.Typefaces;
  * @author Alejandro Díaz-Torres, Wassim Lima-Saad, Daniel Pedraza-Arcega
  * @since 1.0
  */
-public class MainMenuActivity extends Activity {
+public class MainMenuActivity extends ActivityWithMusic {
 
     private TextView appTitle;
     private Button playButton;
@@ -47,6 +47,32 @@ public class MainMenuActivity extends Activity {
         playButton.setTypeface(typeface);
         scoresButton.setTypeface(typeface);
         settingsButton.setTypeface(typeface);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected MediaPlayer setUpMediaPlayer() {
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.music_intro);
+        mediaPlayer.setLooping(true);
+        return mediaPlayer;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        replayTrack();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pauseTrack();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        stopPlayback();
     }
 
     public void onPlayButtonClick(View view) {
