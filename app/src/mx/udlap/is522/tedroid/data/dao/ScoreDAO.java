@@ -17,7 +17,8 @@ public interface ScoreDAO extends GenericDAO<Integer, Score> {
     List<Score> readAllOrderedByPointsDesc();
 
     /**
-     * @return la suma de lineas con la llave "lines_sum" y la suma de puntos con la llave "points_sum".
+     * @return la suma de lineas con la llave "lines_sum" y la suma de puntos con la llave
+     *         "points_sum".
      */
     Map<String, Integer> readSumOfLinesAndPoints();
 

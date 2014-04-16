@@ -54,9 +54,7 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DAOSupport implements ScoreDA
                 });
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public void save(Score score) {
         getSQLiteTemplate().execute(getSqlString(R.string.score_insert_sql), 
