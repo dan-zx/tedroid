@@ -13,7 +13,6 @@ import java.io.InputStream;
 
 /**
  * Crea/maneja la base datos usada por Tedroid y provee acceso a ella.
- * TODO: encriptar esta base de datos.
  * 
  * @author Daniel Pedraza-Arcega
  * @since 1.0
@@ -42,23 +41,18 @@ public class TedroidSQLiteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase database) {
         try {
-            Log.v(TAG, "Creating database version " + version + "...");
             InputStream fileStream = context.getAssets().open(String.format(SCHEMA_FILE_FORMAT, version));
             String[] statements = SQLFileParser.getSqlStatements(fileStream);
-            for (String statement : statements) {
-                Log.d(TAG, statement);
-                database.execSQL(statement);
-            }
+            for (String statement : statements) database.execSQL(statement);
         } catch (IOException ex) {
-            Log.e(TAG, "Unable read schema", ex);
+            Log.e(TAG, "Unable to execute schema", ex);
         } catch (SQLException ex) {
-            Log.e(TAG, "Incorrect SQL statement", ex);
+            Log.e(TAG, "Unable to execute schema", ex);
         }
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-        Log.v(TAG, "Destroying version " + oldVersion + "...");
         destroyDb(context);
         onCreate(database);
     }

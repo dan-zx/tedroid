@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="tedroid_github_url">https://github.com/dan-zx/tedroid</string>
+    <string name="tedroid_manual_url">https://github.com/dan-zx/tedroid</string>
+    <string name="open_source_licenses_url">file:///android_asset/licenses.html</string>
+
+</resources>

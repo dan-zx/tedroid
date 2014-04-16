@@ -8,14 +8,10 @@ package mx.udlap.is522.tedroid.util;
  */
 public final class Strings {
 
-    /**
-     * Un objeto String vacio.
-     */
+    /** Un objeto String vacio. */
     public static final String EMPTY = "";
 
-    /**
-     * NO INVOCAR.
-     */
+    /** NO INVOCAR. */
     private Strings() {
         throw new IllegalAccessError("This class cannot be instantiated nor extended");
     }

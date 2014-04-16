@@ -98,7 +98,8 @@ public class MainMenuActivity extends BaseGameActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     gotoGame();
                 }
-            }).setNegativeButton(R.string.offline_warn_sign_in, new DialogInterface.OnClickListener() {
+            })
+            .setNegativeButton(R.string.offline_warn_sign_in, new DialogInterface.OnClickListener() {
     
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

@@ -22,9 +22,7 @@ public final class SQLFileParser {
     private static final String STATEMENT_DELIMITER = ";";
     private static final Pattern COMMENT_PATTERN = Pattern.compile("(?:/\\*[^;]*?\\*/)|(?:--[^;]*?$)", Pattern.DOTALL | Pattern.MULTILINE);
 
-    /**
-     * NO INVOCAR.
-     */
+    /** NO INVOCAR. */
     private SQLFileParser() {
         throw new IllegalAccessError("This class cannot be instantiated nor extended");
     }

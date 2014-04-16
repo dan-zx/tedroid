@@ -13,10 +13,7 @@ import java.util.Map;
  */
 public interface ScoreDAO extends GenericDAO<Integer, Score> {
 
-    /**
-     * @return todos los objetos Score de fuente datos ordenados puntos en orden
-     *         descendente.
-     */
+    /** @return todos los objetos Score de fuente datos ordenados puntos en orden descendente. */
     List<Score> readAllOrderedByPointsDesc();
 
     /**
@@ -31,8 +28,6 @@ public interface ScoreDAO extends GenericDAO<Integer, Score> {
      */
     void save(Score score);
 
-    /**
-     * Borra todos los objetos de la fuente datos.
-     */
+    /** Borra todos los objetos de la fuente datos. */
     void deleteAll();
 }

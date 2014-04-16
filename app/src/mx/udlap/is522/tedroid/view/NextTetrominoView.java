@@ -5,8 +5,6 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 
-import mx.udlap.is522.tedroid.view.model.Tetromino;
-
 /**
  * Vista que muestra el siguiente tetromino en caer.
  * 
@@ -47,13 +45,12 @@ public class NextTetrominoView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        if (tetromino != null) tetromino.drawOn(canvas);
+        if (!isInEditMode()) {
+            if (tetromino != null) tetromino.drawOn(canvas);
+        }
     }
 
-    /**
-     * @param tetromino el tetromino a dibujar.
-     */
+    /** @param tetromino el tetromino a dibujar. */
     public void setTetromino(Tetromino tetromino) {
         this.tetromino = tetromino;
         invalidate();
