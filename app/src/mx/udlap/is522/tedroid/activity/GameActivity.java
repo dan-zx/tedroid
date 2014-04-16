@@ -162,7 +162,7 @@ public class GameActivity extends BaseGameActivity {
         restartDialog = new AlertDialog.Builder(this)
             .setMessage(R.string.restart_message)
             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-    
+
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     resetCounters();

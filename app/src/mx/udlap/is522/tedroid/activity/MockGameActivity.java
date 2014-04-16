@@ -22,6 +22,7 @@ public class MockGameActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mockgame);
         gameBoardView = (MockGameBoardView) findViewById(R.id.mock_game_board);
+        gameBoardView.startGame();
     }
 
     @Override
