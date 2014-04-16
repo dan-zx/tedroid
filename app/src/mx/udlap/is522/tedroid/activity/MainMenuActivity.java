@@ -56,7 +56,7 @@ public class MainMenuActivity extends BaseGameActivity {
         playButton = (Button) findViewById(R.id.play_button);
         scoresButton = (Button) findViewById(R.id.scores_button);
         achievementsButton = (Button) findViewById(R.id.achievements_button);
-        settingsButton = (Button) findViewById(R.id.settings_button);        
+        settingsButton = (Button) findViewById(R.id.settings_button);
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInLayout = (LinearLayout) findViewById(R.id.sign_in_layout);
     }
@@ -90,12 +90,13 @@ public class MainMenuActivity extends BaseGameActivity {
             .setTitle(R.string.offline_warn_title)
             .setMessage(R.string.offline_warn_message)
             .setPositiveButton(R.string.offline_warn_understand, new DialogInterface.OnClickListener() {
-
+    
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     gotoGame();
                 }
-            }).setNegativeButton(R.string.offline_warn_sign_in, new DialogInterface.OnClickListener() {
+            })
+            .setNegativeButton(R.string.offline_warn_sign_in, new DialogInterface.OnClickListener() {
     
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

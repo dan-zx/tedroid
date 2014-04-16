@@ -38,6 +38,37 @@
     <string name="exit_message">¿De verdad quieres salir del juego?</string>
     <string name="restart_message">¿De verdad quieres reiniciar el juego?</string>
 
+    <!-- SETTINGS ACTIVITY -->
+    <string name="sfx_category_title">Audio</string>
+    <string name="data_category_title">Datos</string>
+    <string name="about_category_title">Acerca de</string>
+    <string name="music_type_pref_title">Tipo de música</string>
+    <string name="music_type_pref_summary">Tipo: %s</string>
+    <string-array name="music_type_entries">
+        <item>Música A</item>
+        <item>Música B</item>
+        <item>Música C</item>
+        <item>Sin música</item>
+    </string-array>
+    <string name="sounds_pref_title">Sonidos</string>
+    <string name="sounds_pref_on">Activados</string>
+    <string name="sounds_pref_off">Desactivados</string>
+    <string name="delete_scores_pref_title">Borrar puntajes</string>
+    <string name="delete_scores_warn_title">¿Seguro que quieres borrar tus puntajes?</string>
+    <string name="delete_scores_warn_message">Si borras tus puntajes, no podrás recuperarlos y puede que afecte tu progreso en los logros que te faltan por desbloquear</string>
+    <string name="done_delete_scores_message">Puntajes borrados</string>
+    <string name="restore_settings_pref_title">Restaurar configuración</string>
+    <string name="restore_settings_warn_title">¿Seguro que quieres restaurar la configuración?</string>
+    <string name="restore_settings_warn_message">Si restauras a la configuración inicial, todas tus modificaciones seran descartadas y no se podrán recuperar</string>
+    <string name="done_restore_settings_message">Configuración inicial restaurada</string>
+    <string name="manual_pref_title">Manual de Tedroid</string>
+    <string name="manual_pref_summary">Como jugar, Logros, FAQs</string>
+    <string name="github_site_pref_title">Tedroid en GitHub</string>
+    <string name="github_site_pref_summary">Código, wikis, problemas conocidos</string>
+    <string name="open_source_licenses_pref_title">Licencias de código abierto</string>
+    <string name="open_source_licenses_pref_summary">Detalles de las licencias de software de código abierto</string>
+    <string name="version_pref_title">Versión de la aplicación</string>
+
     <!-- GAME HELPER -->
     <string name="gamehelper_sign_in_failed">No se pudo iniciar sesión. Por favor revise la conexión a internet y vuelva a intentarlo</string>
     <string name="gamehelper_app_misconfigured">La aplicación no esta configurada correctamente. Compruebe que el nombre del paquete y el certificado coinciden con el ID de cliente creado en la Consola de Google Play para desarrolladores. Además, si la aplicación aún no se publica, compruebe que la cuenta con la que está intentando iniciar sesión con aparece como una cuenta de tester. Consulte los registros para obtener más información</string>

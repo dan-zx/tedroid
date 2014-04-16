@@ -10,6 +10,7 @@ import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import mx.udlap.is522.tedroid.data.Score;
+import mx.udlap.is522.tedroid.data.dao.impl.DAOFactory;
 
 import java.util.Arrays;
 import java.util.Comparator;

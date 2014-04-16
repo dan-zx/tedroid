@@ -1,8 +1,9 @@
-package mx.udlap.is522.tedroid.view.model;
+package mx.udlap.is522.tedroid.view;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,9 +11,9 @@ import org.junit.runner.RunWith;
 
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.shadows.ShadowPreferenceManager;
 
 import mx.udlap.is522.tedroid.R;
-import mx.udlap.is522.tedroid.view.GameBoardView;
 
 @RunWith(RobolectricTestRunner.class)
 public class TetrominoTest {
@@ -23,18 +24,24 @@ public class TetrominoTest {
     public void setUp() throws Exception {
         dummyActivity = Robolectric.buildActivity(Activity.class).create().get();
         assertThat(dummyActivity).isNotNull();
+        
+        SharedPreferences sharedPreferences = ShadowPreferenceManager.getDefaultSharedPreferences(Robolectric.application.getApplicationContext());
+        sharedPreferences
+            .edit()
+            .putBoolean(Robolectric.application.getString(R.string.sounds_switch_key), false)
+            .commit();
     }
 
     @Test
     public void shouldBuildWithDefaultShape() throws Exception {
         GameBoardView gameBoardView = new GameBoardView(dummyActivity);
         Tetromino tetrominoZ = new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.Z)
+            .use(TetrominoShape.Z)
             .build();
 
         assertThat(tetrominoZ).isNotNull();
-        assertThat(tetrominoZ.getShapeMatrix()).isNotNull().isEqualTo(DefaultShape.Z.getShapeMatrix());
-        assertThat(tetrominoZ.hasRotation()).isNotEqualTo(Tetromino.Builder.DEFAULT_HAS_ROATATION).isEqualTo(DefaultShape.Z.hasRotation());
+        assertThat(tetrominoZ.getShapeMatrix()).isNotNull().isEqualTo(TetrominoShape.Z.getShapeMatrix());
+        assertThat(tetrominoZ.hasRotation()).isNotEqualTo(Tetromino.Builder.DEFAULT_SHAPE.hasRotation()).isEqualTo(TetrominoShape.Z.hasRotation());
     }
 
     @Test
@@ -51,7 +58,7 @@ public class TetrominoTest {
 
         assertThat(newTetromino).isNotNull();
         assertThat(newTetromino.getShapeMatrix()).isNotNull().isEqualTo(shape);
-        assertThat(newTetromino.hasRotation()).isNotEqualTo(Tetromino.Builder.DEFAULT_HAS_ROATATION).isTrue();
+        assertThat(newTetromino.hasRotation()).isNotEqualTo(Tetromino.Builder.DEFAULT_SHAPE.hasRotation()).isTrue();
     }
 
     @Test
@@ -69,7 +76,7 @@ public class TetrominoTest {
 
         GameBoardView gameBoardView = new GameBoardView(dummyActivity);
         Tetromino tetrominoT = new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.T)
+            .use(TetrominoShape.T)
             .build();
 
         assertThat(tetrominoT.rotate()).isTrue();
@@ -79,7 +86,7 @@ public class TetrominoTest {
         assertThat(tetrominoT.rotate()).isTrue();
         assertThat(tetrominoT.getShapeMatrix()).isEqualTo(rotatedShape3);
         assertThat(tetrominoT.rotate()).isTrue();
-        assertThat(tetrominoT.getShapeMatrix()).isEqualTo(DefaultShape.T.getShapeMatrix());
+        assertThat(tetrominoT.getShapeMatrix()).isEqualTo(TetrominoShape.T.getShapeMatrix());
         assertThat(tetrominoT.rotate()).isTrue();
         assertThat(tetrominoT.getShapeMatrix()).isEqualTo(rotatedShape1);
     }
@@ -88,15 +95,15 @@ public class TetrominoTest {
     public void shouldMove() throws Exception {
         GameBoardView gameBoardView = new GameBoardView(dummyActivity);
         Tetromino tetrominoO = new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.O)
+            .use(TetrominoShape.O)
             .build();
 
-        assertThat(tetrominoO.moveTo(Direction.RIGHT)).isTrue();
-        assertThat(tetrominoO.moveTo(Direction.RIGHT)).isTrue();
-        assertThat(tetrominoO.moveTo(Direction.LEFT)).isTrue();
-        assertThat(tetrominoO.moveTo(Direction.DOWN)).isTrue();
-        assertThat(tetrominoO.moveTo(Direction.DOWN)).isTrue();
-        assertThat(tetrominoO.moveTo(Direction.DOWN)).isTrue();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.RIGHT)).isTrue();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.RIGHT)).isTrue();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.LEFT)).isTrue();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.DOWN)).isTrue();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.DOWN)).isTrue();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.DOWN)).isTrue();
         assertThat(tetrominoO.getPosition()).isNotNull();
         assertThat(tetrominoO.getPosition().getBoardMatrixColumn()).isEqualTo(1);
         assertThat(tetrominoO.getPosition().getBoardMatrixRow()).isEqualTo(3);
@@ -113,12 +120,12 @@ public class TetrominoTest {
         };
 
         Tetromino tetrominoO = new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.O)
+            .use(TetrominoShape.O)
             .build();
 
-        assertThat(tetrominoO.moveTo(Direction.RIGHT)).isFalse();
-        assertThat(tetrominoO.moveTo(Direction.LEFT)).isFalse();
-        assertThat(tetrominoO.moveTo(Direction.DOWN)).isFalse();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.RIGHT)).isFalse();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.LEFT)).isFalse();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.DOWN)).isFalse();
 
         gameBoardView = new GameBoardView(dummyActivity) {
             @Override
@@ -131,15 +138,15 @@ public class TetrominoTest {
         };
 
         tetrominoO = new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.O)
+            .use(TetrominoShape.O)
             .build();
 
-        assertThat(tetrominoO.moveTo(Direction.RIGHT)).isTrue();
-        assertThat(tetrominoO.moveTo(Direction.RIGHT)).isTrue();
-        assertThat(tetrominoO.moveTo(Direction.RIGHT)).isTrue();
-        assertThat(tetrominoO.moveTo(Direction.DOWN)).isTrue();
-        assertThat(tetrominoO.moveTo(Direction.LEFT)).isFalse();
-        assertThat(tetrominoO.moveTo(Direction.DOWN)).isFalse();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.RIGHT)).isTrue();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.RIGHT)).isTrue();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.RIGHT)).isTrue();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.DOWN)).isTrue();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.LEFT)).isFalse();
+        assertThat(tetrominoO.moveTo(Tetromino.Direction.DOWN)).isFalse();
     }
 
     @Test
@@ -155,7 +162,7 @@ public class TetrominoTest {
         };
 
         Tetromino tetrominoL = new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.L)
+            .use(TetrominoShape.L)
             .build();
 
         assertThat(tetrominoL.rotate()).isFalse();
@@ -170,10 +177,10 @@ public class TetrominoTest {
         };
 
         tetrominoL = new Tetromino.Builder(gameBoardView)
-            .use(DefaultShape.L)
+            .use(TetrominoShape.L)
             .build();
 
-        assertThat(tetrominoL.moveTo(Direction.DOWN)).isTrue();
+        assertThat(tetrominoL.moveTo(Tetromino.Direction.DOWN)).isTrue();
         assertThat(tetrominoL.rotate()).isFalse();
     }
 }

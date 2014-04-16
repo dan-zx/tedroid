@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="music_type_key">music_type</string>
+    <string-array name="music_type_values">
+        <item>@string/default_music_type</item>
+        <item>music_b_type</item>
+        <item>music_c_type</item>
+        <item>null</item>
+    </string-array>
+    <string name="default_music_type">music_a_type</string>
+    <string name="sounds_switch_key">sounds_switch</string>
+    <bool name="default_sounds_switch_value">true</bool>
+    <string name="delete_scores_key">delete_scores</string>
+    <string name="restore_settings_key">restore_settings</string>
+    <string name="manual_key">manual</string>
+    <string name="github_site_key">github_site</string>
+    <string name="version_key">version</string>
+    <string name="open_source_licenses_key">open_source_licenses</string>
+    <string name="unknown_version">\?\?\?\?</string>
+
+</resources>
