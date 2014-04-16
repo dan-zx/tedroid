@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,7 @@ public class MainMenuActivity extends BaseGameActivity {
     private Button achievementsButton;
     private Button leaderboardsButton;
     private Button settingsButton;
+    private MediaPlayer mediaPlayer;
     private SignInButton signInButton;
     private LinearLayout signInLayout;
     private AlertDialog offlineAlertDialog;
@@ -47,6 +49,57 @@ public class MainMenuActivity extends BaseGameActivity {
         setUpSignInButton();
         setUpFont();
         setUpOfflineAlertDialog();
+        setUpMediaPlayer();
+    }
+
+    /** Inicializa el media player que toca la música */
+    private void setUpMediaPlayer() {
+        mediaPlayer = MediaPlayer.create(this, R.raw.music_intro);
+        mediaPlayer.setLooping(true);
+    }
+    
+    /** Pausa la pista que estaba tocando el MediaPlayer. */
+    private void pauseTrack() {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) mediaPlayer.pause();
+    }
+
+    /**
+     * Pausa la pista que estaba tocando el MediaPlayer y rebobina hasta el inicio para volver a
+     * tocar la pista que tiene el MediaPlayer.
+     */
+    private void replayTrack() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) mediaPlayer.pause();
+            mediaPlayer.seekTo(0);
+            mediaPlayer.start();
+        }
+    }
+
+    /** Detiene la reproducción de la pista tiene el MediaPlayer y libera su memoria. */
+    private void stopPlayback() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        replayTrack();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pauseTrack();
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        stopPlayback();
     }
 
     /** Inicializa las vistas */

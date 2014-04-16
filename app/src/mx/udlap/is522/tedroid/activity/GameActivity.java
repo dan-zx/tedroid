@@ -73,6 +73,37 @@ public class GameActivity extends BaseGameActivity {
             mediaPlayer.start();
         }
     }
+    
+    /** Pausa la pista que estaba tocando el MediaPlayer. */
+    private void pauseTrack() {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) mediaPlayer.pause();
+    }
+
+    /** Toca la pista que tiene el MediaPlayer. */
+    private void playOrResumeTrack() {
+        if (mediaPlayer != null && !mediaPlayer.isPlaying()) mediaPlayer.start();
+    }
+
+    /**
+     * Pausa la pista que estaba tocando el MediaPlayer y rebobina hasta el inicio para volver a
+     * tocar la pista que tiene el MediaPlayer.
+     */
+    private void replayTrack() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) mediaPlayer.pause();
+            mediaPlayer.seekTo(0);
+            mediaPlayer.start();
+        }
+    }
+
+    /** Detiene la reproducción de la pista tiene el MediaPlayer y libera su memoria. */
+    private void stopPlayback() {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
 
     /** Inicializa las vistas */
     private void initViews() {
@@ -173,10 +204,7 @@ public class GameActivity extends BaseGameActivity {
                     gameBoardView.restartGame();
                     pauseButton.setImageResource(R.drawable.ic_action_pause);
                     pauseButton.setContentDescription(getString(R.string.pause_text));
-                    if (mediaPlayer != null && !mediaPlayer.isPlaying()) {
-                        mediaPlayer.seekTo(0);
-                        mediaPlayer.start();
-                    }
+                    replayTrack();
                 }
             })
             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -201,7 +229,7 @@ public class GameActivity extends BaseGameActivity {
         exitDialog = new AlertDialog.Builder(this)
             .setMessage(R.string.exit_message)
             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-    
+
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     finish();
@@ -234,7 +262,7 @@ public class GameActivity extends BaseGameActivity {
         if (pauseTextView.getVisibility() == View.GONE &&
                 !gameBoardView.isGameOver()) {
             gameBoardView.resumeGame();
-            if (mediaPlayer != null && !mediaPlayer.isPlaying()) mediaPlayer.start();
+            playOrResumeTrack();
         }
     }
 
@@ -246,7 +274,7 @@ public class GameActivity extends BaseGameActivity {
                     !exitDialog.isShowing() &&
                     !restartDialog.isShowing()) {
                 gameBoardView.resumeGame();
-                if (mediaPlayer != null && !mediaPlayer.isPlaying()) mediaPlayer.start();
+                playOrResumeTrack();
             }
         }
     }
@@ -257,14 +285,14 @@ public class GameActivity extends BaseGameActivity {
                 pauseTextView.setVisibility(View.GONE);
                 gameBoardView.setVisibility(View.VISIBLE);
                 gameBoardView.resumeGame();
-                if (mediaPlayer != null && !mediaPlayer.isPlaying()) mediaPlayer.start();
+                playOrResumeTrack();
                 pauseButton.setImageResource(R.drawable.ic_action_pause);
                 pauseButton.setContentDescription(getString(R.string.pause_text));
             } else {
                 gameBoardView.setVisibility(View.GONE);
                 pauseTextView.setVisibility(View.VISIBLE);
                 gameBoardView.pauseGame();
-                if (mediaPlayer != null) mediaPlayer.pause();
+                pauseTrack();
                 pauseButton.setImageResource(R.drawable.ic_action_play);
                 pauseButton.setContentDescription(getString(R.string.resume_text));
             }
@@ -274,7 +302,7 @@ public class GameActivity extends BaseGameActivity {
     public void onRestartButtonClick(View view) {
         if (!gameBoardView.isGameOver()) {
             gameBoardView.pauseGame();
-            if (mediaPlayer != null) mediaPlayer.pause();
+            pauseTrack();
         }
         restartDialog.show();
     }
@@ -283,7 +311,7 @@ public class GameActivity extends BaseGameActivity {
     protected void onPause() {
         super.onPause();
         if (!gameBoardView.isGameOver()) {
-            if (mediaPlayer != null && mediaPlayer.isPlaying()) mediaPlayer.pause();
+            pauseTrack();
             if (!gameBoardView.isPaused()) gameBoardView.pauseGame();
         }
     }
@@ -292,7 +320,7 @@ public class GameActivity extends BaseGameActivity {
     public void onBackPressed() {
         if (!gameBoardView.isGameOver()) {
             gameBoardView.pauseGame();
-            if (mediaPlayer != null) mediaPlayer.pause();
+            pauseTrack();
         }
         exitDialog.show();
     }
@@ -301,11 +329,7 @@ public class GameActivity extends BaseGameActivity {
     public void finish() {
         super.finish();
         if (!gameBoardView.isGameOver()) gameBoardView.stopGame();
-        if (mediaPlayer != null) {
-            mediaPlayer.stop();
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
+        stopPlayback();
     }
 
     /**
