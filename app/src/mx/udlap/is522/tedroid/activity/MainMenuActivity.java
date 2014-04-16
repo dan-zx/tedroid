@@ -24,7 +24,7 @@ import mx.udlap.is522.tedroid.util.Typefaces;
  * @author Alejandro Díaz-Torres, Wassim Lima-Saad, Daniel Pedraza-Arcega
  * @since 1.0
  */
-public class MainMenuActivity extends BaseGameActivity {
+public class MainMenuActivity extends BaseGoogleGamesActivity {
 
     private static final int UNUSED_REQUEST_CODE = 5471;
 

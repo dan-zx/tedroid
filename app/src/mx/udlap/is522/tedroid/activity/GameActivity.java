@@ -30,7 +30,7 @@ import java.util.Map;
  * @author Daniel Pedraza-Arcega, Andrés Peña-Peralta, Alejandro Díaz-Torres
  * @since 1.0
  */
-public class GameActivity extends BaseGameActivity {
+public class GameActivity extends BaseGoogleGamesActivity {
 
     private int totalLines;
     private int totalScore;

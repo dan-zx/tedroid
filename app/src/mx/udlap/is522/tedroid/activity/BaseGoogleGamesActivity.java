@@ -1,7 +1,9 @@
 package mx.udlap.is522.tedroid.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -9,17 +11,16 @@ import com.google.android.gms.games.Games;
 
 import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.gms.GameHelper;
-import mx.udlap.is522.tedroid.util.Settings;
 
 /**
- * Base para actividades que usan GoogleApiClient. En esta clase se manejan la
- * incialización y los ciclos de vida de GoogleApiClient. Esta basado en la
- * clase del mismo nombre creada por Bruno Oliveira (Google).
+ * Base para actividades que usan GoogleApiClient. En esta clase se manejan la incialización y los
+ * ciclos de vida de GoogleApiClient. Esta basado en la clase BaseGameActivity creada por Bruno
+ * Oliveira (Google).
  * 
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public abstract class BaseGameActivity extends FragmentActivity implements GameHelper.GameHelperListener {
+public abstract class BaseGoogleGamesActivity extends FragmentActivity implements GameHelper.GameHelperListener {
 
     private GameHelper gameHelper;
 
@@ -47,9 +48,7 @@ public abstract class BaseGameActivity extends FragmentActivity implements GameH
         gameHelper.onActivityResult(request, response, data);
     }
 
-    /**
-     * Inicializa GameHelper.
-     */
+    /** Inicializa GameHelper. */
     private void initGameHelper() {
         if (gameHelper == null) {
             gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
@@ -63,8 +62,7 @@ public abstract class BaseGameActivity extends FragmentActivity implements GameH
     @Override
     public void onSignInFailed() {
         if (isSignedIn()) {
-            Settings.getPreferences(getApplicationContext())
-                .edit()
+            getPreferences().edit()
                 .putBoolean(getString(R.string.is_signed_in), false)
                 .commit();
         }
@@ -73,51 +71,36 @@ public abstract class BaseGameActivity extends FragmentActivity implements GameH
     @Override
     public void onSignInSucceeded() {
         if (!isSignedIn()) {
-            Settings.getPreferences(getApplicationContext())
-                .edit()
+            getPreferences().edit()
                 .putBoolean(getString(R.string.is_signed_in), true)
                 .commit();
         }
     }
 
-    /**
-     * @return si ya completado el proceso de inciar sesión o no.
-     */
+    /** @return si ya completado el proceso de inciar sesión o no. */
     protected boolean isSignedIn() {
-        return Settings.getPreferences(getApplicationContext())
-                .getBoolean(getString(R.string.is_signed_in), false);
+        return getPreferences().getBoolean(getString(R.string.is_signed_in), false);
     }
 
-    /**
-     * @return un objeto GameHelper. Llamar después de 
-     *         {@link #onCreate(Bundle)}.
-     */
+    /** @return un objeto GameHelper. Llamar después de {@link #onCreate(Bundle)}. */
     protected GameHelper getGameHelper() {
         return gameHelper;
     }
 
-    /**
-     * @return un objeto GoogleApiClient. Llamar después de
-     *         {@link #onCreate(Bundle)}.
-     */
+    /** @return un objeto GoogleApiClient. Llamar después de {@link #onCreate(Bundle)}. */
     protected GoogleApiClient getApiClient() {
         return gameHelper.getApiClient();
     }
 
-    /**
-     * Inicia el proceso de iniciar sesión.
-     */
+    /** Inicia el proceso de iniciar sesión. */
     protected void beginUserInitiatedSignIn() {
         gameHelper.beginUserInitiatedSignIn();
     }
 
-    /**
-     * Inicia el proceso de cerrar sesión.
-     */
+    /** Inicia el proceso de cerrar sesión. */
     protected void signOut() {
         gameHelper.signOut();
-        Settings.getPreferences(getApplicationContext())
-            .edit()
+        getPreferences().edit()
             .putBoolean(getString(R.string.is_signed_in), false)
             .commit();
     }
@@ -143,5 +126,10 @@ public abstract class BaseGameActivity extends FragmentActivity implements GameH
         if (isSignedIn()) {
             Games.Leaderboards.submitScore(getApiClient(), getString(id), points);
         }
+    }
+
+    /** @return el objeto SharedPreferences que contiene las configuraciones de la aplicación */
+    protected SharedPreferences getPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     }
 }
