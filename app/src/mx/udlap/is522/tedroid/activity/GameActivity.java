@@ -62,6 +62,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
         setUpScoreTextViews();
         setUpRestartDialog();
         setUpExitDialog();
+        doNotConnectOnStart();
     }
 
     /** Inicializa el media player que toca la música */
@@ -224,7 +225,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
             .create();
     }
 
-    /** Inicializa el dialogo de salida */
+    /** Inicializa el diálogo de salida */
     private void setUpExitDialog() {
         exitDialog = new AlertDialog.Builder(this)
             .setMessage(R.string.exit_message)
@@ -255,7 +256,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
     /**
      * Cierra el dialog provisto y reinicia el juego donde se quedó.
      * 
-     * @param dialog que dialogo llamó este método.
+     * @param dialog que diálogo llamó este método.
      */
     private void onCancelDialogs(DialogInterface dialog) {
         dialog.dismiss();
@@ -417,7 +418,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
         protected ArrayList<Integer> doInBackground(Score... score) {
             awardedScore = score[0];
             scoreDAO.save(awardedScore);
-            ArrayList<Integer> unlockedAchievements = new ArrayList<Integer>();
+            ArrayList<Integer> unlockedAchievements = new ArrayList<>();
             Map<String, Integer> sums = scoreDAO.readSumOfLinesAndPoints();
             int linesSum = sums.get("lines_sum");
             int pointsSum = sums.get("points_sum");

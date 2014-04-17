@@ -46,7 +46,7 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DAOSupport implements ScoreDA
 
                     @Override
                     public Map<String, Integer> mapRow(Cursor cursor, int rowNum) {
-                        HashMap<String, Integer> row = new HashMap<String, Integer>(2);
+                        HashMap<String, Integer> row = new HashMap<>(2);
                         row.put("lines_sum", SQLiteUtils.getInteger(cursor, "lines_sum"));
                         row.put("points_sum", SQLiteUtils.getInteger(cursor, "points_sum"));
                         return row;

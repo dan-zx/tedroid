@@ -44,9 +44,7 @@ public class TedroidSQLiteOpenHelper extends SQLiteOpenHelper {
             InputStream fileStream = context.getAssets().open(String.format(SCHEMA_FILE_FORMAT, version));
             String[] statements = SQLFileParser.getSqlStatements(fileStream);
             for (String statement : statements) database.execSQL(statement);
-        } catch (IOException ex) {
-            Log.e(TAG, "Unable to execute schema", ex);
-        } catch (SQLException ex) {
+        } catch (IOException | SQLException ex) {
             Log.e(TAG, "Unable to execute schema", ex);
         }
     }

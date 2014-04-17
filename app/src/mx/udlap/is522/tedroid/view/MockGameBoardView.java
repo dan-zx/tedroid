@@ -53,7 +53,7 @@ public class MockGameBoardView extends GameBoardView {
         super.setUp();
         setCustomDimensions(10, 5);
         setInitialLevel(4);
-        expectedTetrominos = new LinkedList<Tetromino>();
+        expectedTetrominos = new LinkedList<>();
         expectedTetrominos.add(new Tetromino.Builder(this).use(TetrominoShape.Z).build());
         expectedTetrominos.add(new Tetromino.Builder(this).use(TetrominoShape.J).build());
         expectedTetrominos.add(new Tetromino.Builder(this).use(TetrominoShape.T).build());

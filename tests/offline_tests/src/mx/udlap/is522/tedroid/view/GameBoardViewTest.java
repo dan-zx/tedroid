@@ -88,7 +88,7 @@ public class GameBoardViewTest {
     }
 
     private LinkedList<Tetromino> buildTestTetrominos(GameBoardView gameBoardView) {
-        LinkedList<Tetromino> tetrominos = new LinkedList<Tetromino>();
+        LinkedList<Tetromino> tetrominos = new LinkedList<>();
         tetrominos.add(new Tetromino.Builder(gameBoardView)
             .use(TetrominoShape.O)
             .build());

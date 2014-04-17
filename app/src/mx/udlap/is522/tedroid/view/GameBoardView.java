@@ -250,7 +250,7 @@ public class GameBoardView extends View {
      * @return la lista con los indicies de las filas completas o una lista vacia.
      */
     private ArrayList<Integer> lookForCompletedLines() {
-        ArrayList<Integer> rowsToClear = new ArrayList<Integer>(4);
+        ArrayList<Integer> rowsToClear = new ArrayList<>(4);
         for (int row = 0; row < boardMatrix.length; row++) {
             boolean isComplete = true;
             for (int color : boardMatrix[row]) {

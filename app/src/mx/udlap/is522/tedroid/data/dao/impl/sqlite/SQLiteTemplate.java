@@ -100,11 +100,11 @@ class SQLiteTemplate {
     <T> List<T> queryForList(String sql, String[] args, RowMapper<T> rowMapper) {
         SQLiteDatabase database = null;
         Cursor cursor = null;
-        List<T> list = null;
+        ArrayList<T> list = null;
         try {
             database = databaseHelper.getReadableDatabase();
             cursor = database.rawQuery(sql, args);
-            list = new ArrayList<T>(cursor.getCount());
+            list = new ArrayList<>(cursor.getCount());
             int rowNum = 0;
             while (cursor.moveToNext()) list.add(rowMapper.mapRow(cursor, ++rowNum));
         } catch (Exception ex) {
@@ -314,7 +314,7 @@ class SQLiteTemplate {
         @Override
         public Map<String, String> mapRow(Cursor cursor, int rowNum) {
             int columnCount = cursor.getColumnCount();
-            Map<String, String> row = new HashMap<String, String>(columnCount);
+            Map<String, String> row = new HashMap<>(columnCount);
             for (int columnIndex = 1; columnIndex <= columnCount; columnIndex++) {
                 row.put(cursor.getColumnName(columnIndex), cursor.getString(columnIndex));
             }
