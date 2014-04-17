@@ -4,18 +4,23 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.images.ImageManager;
 import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 
 import mx.udlap.is522.tedroid.R;
+import mx.udlap.is522.tedroid.util.Strings;
 import mx.udlap.is522.tedroid.util.Typefaces;
 
 /**
@@ -29,7 +34,9 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
     private static final int UNUSED_REQUEST_CODE = 5471;
 
     private TextView appTitle;
-    private TextView signedUser;
+    private RelativeLayout signedUserLayout;
+    private ImageView signedUserImageView;
+    private TextView signedUserTextView;
     private TextView signInWhy;
     private Button playButton;
     private Button scoresButton;
@@ -40,6 +47,7 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
     private SignInButton signInButton;
     private LinearLayout signInLayout;
     private AlertDialog offlineAlertDialog;
+    private AlertDialog signOutAlertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +58,7 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
         setUpFont();
         setUpOfflineAlertDialog();
         setUpMediaPlayer();
+        setUpSignOutAlertDialog();
     }
 
     /** Inicializa el media player que toca la música */
@@ -105,7 +114,9 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
     /** Inicializa las vistas */
     private void initViews() {
         appTitle = (TextView) findViewById(R.id.app_title);
-        signedUser = (TextView) findViewById(R.id.signed_user);
+        signedUserLayout = (RelativeLayout) findViewById(R.id.signed_user_layout);
+        signedUserImageView = (ImageView) findViewById(R.id.signed_user_photo);
+        signedUserTextView = (TextView) findViewById(R.id.signed_user_name);
         signInWhy = (TextView) findViewById(R.id.sign_in_why_text);
         playButton = (Button) findViewById(R.id.play_button);
         scoresButton = (Button) findViewById(R.id.scores_button);
@@ -116,11 +127,11 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
         signInLayout = (LinearLayout) findViewById(R.id.sign_in_layout);
     }
 
-    /** Inicializa la fuente y la coloca en cada boton */
+    /** Inicializa la fuente y la coloca en cada botón. */
     private void setUpFont() {
         Typeface typeface = Typefaces.get(this, Typefaces.Font.TWOBIT);
         appTitle.setTypeface(typeface);
-        signedUser.setTypeface(typeface);
+        signedUserTextView.setTypeface(typeface);
         signInWhy.setTypeface(typeface);
         playButton.setTypeface(typeface);
         scoresButton.setTypeface(typeface);
@@ -129,7 +140,7 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
         settingsButton.setTypeface(typeface);
     }
 
-    /** Inicializa el boton de iniciar sesión en Google */
+    /** Inicializa el botón de iniciar sesión en Google. */
     private void setUpSignInButton() {
         signInButton.setOnClickListener(new View.OnClickListener() {
 
@@ -140,7 +151,7 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
         });
     }
 
-    /** Inicializa dialog de alerta de juego fuera de Google */
+    /** Inicializa el diálogo de alerta de juego fuera de Google. */
     private void setUpOfflineAlertDialog() {
         offlineAlertDialog = new AlertDialog.Builder(this)
             .setTitle(R.string.offline_warn_title)
@@ -157,6 +168,22 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     beginUserInitiatedSignIn();
+                }
+            })
+            .create();
+    }
+
+    /** Inicializa el diálogo de alerta de cerrar sesión en Google. */
+    private void setUpSignOutAlertDialog() {
+        signOutAlertDialog = new AlertDialog.Builder(this)
+            .setTitle(R.string.sign_out_title)
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    signOut();
+                    showSignInLayout();
                 }
             })
             .create();
@@ -187,6 +214,24 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
         startActivity(intent);
     }
 
+    public void onSignedUserClick(View view) {
+        signOutAlertDialog.show();
+    }
+
+    /**
+     * Esconde los menus para ver los logros y marcadores, el layout del usuario firmado se resetea
+     * y se escode y el layout de inicio de sesión se muestra.
+     */
+    private void showSignInLayout() {
+        signInLayout.setVisibility(View.VISIBLE);
+        achievementsButton.setVisibility(View.GONE);
+        leaderboardsButton.setVisibility(View.GONE);
+        signedUserLayout.setVisibility(View.GONE);
+        signedUserTextView.setText(Strings.EMPTY);
+        signedUserImageView.setImageResource(R.drawable.no_profile_image);
+    }
+
+    /** Inicia la actividad del juego principal. */
     private void gotoGame() {
         Intent intent = new Intent(MainMenuActivity.this, GameActivity.class);
         startActivity(intent);
@@ -195,9 +240,7 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
     @Override
     public void onSignInFailed() {
         super.onSignInFailed();
-        signInLayout.setVisibility(View.VISIBLE);
-        achievementsButton.setVisibility(View.GONE);
-        leaderboardsButton.setVisibility(View.GONE);
+        showSignInLayout();
     }
 
     @Override
@@ -206,7 +249,20 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
         signInLayout.setVisibility(View.GONE);
         achievementsButton.setVisibility(View.VISIBLE);
         leaderboardsButton.setVisibility(View.VISIBLE);
+        signedUserLayout.setVisibility(View.VISIBLE);
         Player currentPlayer = Games.Players.getCurrentPlayer(getApiClient());
-        signedUser.setText(currentPlayer.getDisplayName());
+        signOutAlertDialog.setMessage(getString(R.string.sign_out_message, currentPlayer.getDisplayName()));
+        signedUserTextView.setText(currentPlayer.getDisplayName());
+        if (!isUserPhoto(signedUserImageView.getDrawable())) ImageManager.create(this).loadImage(signedUserImageView, currentPlayer.getIconImageUri());
+    }
+
+    /**
+     * @param drawable el Drawable a revisar
+     * @return {@code true} si el Drawable dado no es {@code null} y tampoco
+     *         R.drawable.no_profile_image; {@code false} en otro caso.
+     */
+    private boolean isUserPhoto(Drawable drawable) {
+        return drawable != null && 
+                !getResources().getDrawable(R.drawable.no_profile_image).getConstantState().equals(drawable.getConstantState());
     }
 }

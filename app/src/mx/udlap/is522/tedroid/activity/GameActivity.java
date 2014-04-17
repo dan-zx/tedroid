@@ -62,7 +62,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
         setUpScoreTextViews();
         setUpRestartDialog();
         setUpExitDialog();
-        doNotConnectOnStart();
+        connectOnStartIfSignedIn();
     }
 
     /** Inicializa el media player que toca la música */

@@ -14,11 +14,14 @@
     <string name="leaderboards_button_label">MARCADORES</string>
     <string name="achievements_button_label">LOGROS</string>
     <string name="settings_button_label">CONFIGURACIÓN</string>
-    <string name="offline_warn_title">Importante</string>
-    <string name="offline_warn_message">Si juegas sin inciar sesión en Google no podrás compartir puntajes con amigos y ni conseguir logros en el juego</string>
+    <string name="offline_warn_title">Jugar sin iniciar sesión en Google</string>
+    <string name="offline_warn_message">Si juegas sin inciar sesión no podrás compartir puntajes con amigos y ni conseguir logros en el juego</string>
     <string name="offline_warn_understand">Entiendo y jugaré así</string>
-    <string name="offline_warn_sign_in">Iniciar sesión en Google</string>
+    <string name="offline_warn_sign_in">Iniciar sesión</string>
     <string name="sign_in_why">Inicia sesión en Google para poder compartir tus puntajes y logros</string>
+    <string name="signed_user_photo_description">Mi foto</string>
+    <string name="sign_out_title">Confirmar cierre de sesión en Google</string>
+    <string name="sign_out_message">Vas a cerrar sesión como %s en Tedroid</string>
 
     <!-- SCORES ACTIVITY -->
     <string name="points_header">Puntos</string>

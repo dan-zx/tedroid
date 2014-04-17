@@ -18,5 +18,6 @@
     <string name="version_key">version</string>
     <string name="open_source_licenses_key">open_source_licenses</string>
     <string name="unknown_version">\?\?\?\?</string>
+    <string name="is_signed_in_key">is_signed_in</string>
 
 </resources>

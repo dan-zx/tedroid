@@ -1,7 +1,6 @@
 package mx.udlap.is522.tedroid.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
@@ -27,81 +26,78 @@ public abstract class BaseGoogleGamesActivity extends FragmentActivity implement
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initGameHelper();
+        if (gameHelper == null) getGameHelper();
+        gameHelper.setup(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        gameHelper.onStart(this);
+        getGameHelper().onStart(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        gameHelper.onStop();
+        getGameHelper().onStop();
     }
 
     @Override
     protected void onActivityResult(int request, int response, Intent data) {
         super.onActivityResult(request, response, data);
-        gameHelper.onActivityResult(request, response, data);
-    }
-
-    /** Inicializa GameHelper. */
-    private void initGameHelper() {
-        if (gameHelper == null) {
-            gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
-            gameHelper.enableDebugLog(true);
-            gameHelper.setConnectOnStart(isSignedIn());
-        }
-
-        gameHelper.setup(this);
+        getGameHelper().onActivityResult(request, response, data);
     }
 
     @Override
-    public void onSignInFailed() {
-        if (isSignedIn()) {
-            getPreferences().edit()
-                .putBoolean(getString(R.string.is_signed_in), false)
-                .commit();
-        }
+    public void onSignInFailed() { 
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+            .edit()
+            .putBoolean(getString(R.string.is_signed_in_key), false)
+            .commit();
     }
 
     @Override
-    public void onSignInSucceeded() {
-        if (!isSignedIn()) {
-            getPreferences().edit()
-                .putBoolean(getString(R.string.is_signed_in), true)
-                .commit();
-        }
+    public void onSignInSucceeded() { 
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+            .edit()
+            .putBoolean(getString(R.string.is_signed_in_key), true)
+            .commit();
+    }
+
+    /** Impide la conexión a Google al inicio si el usuario no ha iniciado sesión. */
+    protected void connectOnStartIfSignedIn() {
+        boolean isSigned = PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+            .getBoolean(getString(R.string.is_signed_in_key), false);
+        getGameHelper().setConnectOnStart(isSigned);
     }
 
     /** @return si ya completado el proceso de inciar sesión o no. */
     protected boolean isSignedIn() {
-        return getPreferences().getBoolean(getString(R.string.is_signed_in), false);
+        return getGameHelper().isSignedIn();
     }
 
     /** @return un objeto GameHelper. Llamar después de {@link #onCreate(Bundle)}. */
     protected GameHelper getGameHelper() {
+        if (gameHelper == null) gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
         return gameHelper;
     }
 
     /** @return un objeto GoogleApiClient. Llamar después de {@link #onCreate(Bundle)}. */
     protected GoogleApiClient getApiClient() {
-        return gameHelper.getApiClient();
+        return getGameHelper().getApiClient();
     }
 
     /** Inicia el proceso de iniciar sesión. */
     protected void beginUserInitiatedSignIn() {
-        gameHelper.beginUserInitiatedSignIn();
+        getGameHelper().beginUserInitiatedSignIn();
     }
 
     /** Inicia el proceso de cerrar sesión. */
     protected void signOut() {
-        gameHelper.signOut();
-        getPreferences().edit()
-            .putBoolean(getString(R.string.is_signed_in), false)
+        getGameHelper().signOut();
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+            .edit()
+            .putBoolean(getString(R.string.is_signed_in_key), false)
             .commit();
     }
 
@@ -111,9 +107,7 @@ public abstract class BaseGoogleGamesActivity extends FragmentActivity implement
      * @param id el id del logro a desbloquear.
      */
     protected void unlockAchievement(int id) {
-        if (isSignedIn()) {
-            Games.Achievements.unlock(getApiClient(), getString(id));
-        }
+        if (isSignedIn()) Games.Achievements.unlock(getApiClient(), getString(id));
     }
 
     /**
@@ -123,13 +117,6 @@ public abstract class BaseGoogleGamesActivity extends FragmentActivity implement
      * @param points los puntos a enviar.
      */
     protected void submitScore(int id, long points) {
-        if (isSignedIn()) {
-            Games.Leaderboards.submitScore(getApiClient(), getString(id), points);
-        }
-    }
-
-    /** @return el objeto SharedPreferences que contiene las configuraciones de la aplicación */
-    protected SharedPreferences getPreferences() {
-        return PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (isSignedIn()) Games.Leaderboards.submitScore(getApiClient(), getString(id), points);
     }
 }

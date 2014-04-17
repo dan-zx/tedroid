@@ -7,24 +7,45 @@
     android:gravity="center|center_vertical"
     tools:context=".activity.MainMenuActivity" >
 
-    <TextView
-        android:id="@+id/signed_user"
+    <RelativeLayout
+        android:id="@+id/signed_user_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/menu_layout"
         android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/menu_layout"
         android:layout_marginBottom="15dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:gravity="right"
-        android:paddingRight="18dp"
-        android:textColor="@android:color/white"
-        android:textStyle="bold|italic" />
+        android:onClick="onSignedUserClick"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/signed_user_photo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="8dp"
+            android:contentDescription="@string/signed_user_photo_description"
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_profile_image" />
+
+        <TextView
+            android:id="@+id/signed_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/signed_user_photo"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/signed_user_photo"
+            android:gravity="center_vertical|right"
+            android:textColor="@android:color/white"
+            android:textStyle="bold|italic" />
+    </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/menu_layout"
+        android:id="@id/menu_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/signed_user"
+        android:layout_below="@id/signed_user_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
