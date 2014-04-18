@@ -38,6 +38,7 @@
             android:layout_toLeftOf="@+id/signed_user_photo"
             android:gravity="center_vertical|right"
             android:textColor="@android:color/white"
+            android:textSize="@dimen/secondary_text_size"
             android:textStyle="bold|italic" />
     </RelativeLayout>
 
@@ -144,7 +145,8 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="@string/sign_in_why"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/secondary_text_size" />
     </LinearLayout>
 
 </RelativeLayout>
