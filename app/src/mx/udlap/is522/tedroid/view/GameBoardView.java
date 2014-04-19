@@ -136,7 +136,6 @@ public class GameBoardView extends View {
     private void setUpGestures() {
         gestureListener = new GestureListener();
         gestureDetector = new GestureDetector(getContext(), gestureListener);
-        gestureDetector.setIsLongpressEnabled(false);
     }
 
     /** Inicializa los sonidos a reproducir. */
@@ -658,9 +657,8 @@ public class GameBoardView extends View {
         }
 
         @Override
-        public boolean onDoubleTap(MotionEvent e) {
+        public void onLongPress(MotionEvent e) {
             if (isGameStarted && !isPaused && !isGameOver) hardDropCurrentTetromino();
-            return true;
         }
 
         @Override
