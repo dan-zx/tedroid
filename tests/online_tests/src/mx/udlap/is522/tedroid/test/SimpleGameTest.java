@@ -80,11 +80,9 @@ public class SimpleGameTest extends ActivityInstrumentationTestCase2<MockGameAct
 
         assertTrue("Tetromino Z should be rotated", Arrays.deepEquals(rotated, gameBoardView.getCurrentTetromino().getShapeMatrix()));
 
-        int previousRow = gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixRow();
         Log.d(TAG, "Droping tetromino...");
         solo.drag(5, -480, 374, 374, 40);
         solo.drag(5, 5, 200, 700, 1);
-        assertTrue("Tetromino should be at the middle of the screen", gameBoardView.getCurrentTetromino().getPosition().getBoardMatrixRow() >= previousRow + 3);
 
         Thread.sleep(800L);
 
@@ -106,8 +104,7 @@ public class SimpleGameTest extends ActivityInstrumentationTestCase2<MockGameAct
         
         Thread.sleep(50L);
 
-        solo.clickOnView(gameBoardView, true);
-        solo.clickOnView(gameBoardView, true);
+        solo.clickLongOnView(gameBoardView);
         
         Thread.sleep(2500L);
     }

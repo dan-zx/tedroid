@@ -62,10 +62,9 @@ public class ScorePersistenceTest extends ActivityInstrumentationTestCase2<MainM
         TextView levelText = (TextView) solo.getView(R.id.levels);
         TextView linesTextView = (TextView) solo.getView(R.id.lines);
         
-        for (int i = 0; i < 20; i++) {
-            Log.d(TAG, "Double tap");
-            solo.clickOnView(gameBoardView, true);
-            solo.clickOnView(gameBoardView, true);
+        for (int i = 0; i < 15; i++) {
+            Log.d(TAG, "Long press");
+            solo.clickLongOnView(gameBoardView);
             Thread.sleep(100L);
         }
         
