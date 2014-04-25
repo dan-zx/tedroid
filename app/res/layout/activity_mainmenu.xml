@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/photo"
+    android:background="@drawable/tedroid_repeatable_background"
     android:gravity="center|center_vertical"
     tools:context=".activity.MainMenuActivity" >
 
@@ -37,10 +37,10 @@
             android:layout_marginBottom="15dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="@drawable/tedroid_blue_rounded_background"
             android:gravity="center"
             android:padding="8dp"
             android:text="@string/tedroid_title"
+            android:textColor="@android:color/white"
             android:textSize="40sp" />
 
         <Button

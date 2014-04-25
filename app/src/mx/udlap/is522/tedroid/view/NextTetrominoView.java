@@ -46,7 +46,10 @@ public class NextTetrominoView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (!isInEditMode()) {
-            if (tetromino != null) tetromino.drawOn(canvas);
+            if (tetromino != null) {
+                canvas.translate(10, 10);
+                tetromino.drawOn(canvas);
+            }
         }
     }
 

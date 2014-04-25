@@ -31,6 +31,7 @@ public class GameBoardView extends View {
     public static final int MAX_LEVEL = 9;
 
     private static final long DEFAULT_SPEED = 1000L;
+    private static final int HEIGHT_ASPECT = 2;
     private static final int SPEED_FACTOR = 6;
     private static final int DEFAULT_COLUMNS = 10;
     private static final int DEFAULT_ROWS = 20;
@@ -44,8 +45,6 @@ public class GameBoardView extends View {
     private Tetromino currentTetromino;
     private Tetromino nextTetromino;
     private int[][] boardMatrix;
-    private int rows;
-    private int columns;
     private int initialLevel;
     private int repeatedTetromino;
     private long currentSpeed;
@@ -59,6 +58,7 @@ public class GameBoardView extends View {
     private MoveDownCurrentTetrominoTask moveDownCurrentTetrominoTask;
     private Paint tetrominoBorder;
     private Paint tetrominoForeground;
+    private Paint gridBackground;
     private OnCommingNextTetrominoListener commingNextTetrominoListener;
     private OnPointsAwardedListener pointsAwardedListener;
     private OnGameOverListener gameOverListener;
@@ -104,12 +104,31 @@ public class GameBoardView extends View {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (widthMeasureSpec > 0 && heightMeasureSpec > 0) super.onMeasure(widthMeasureSpec, widthMeasureSpec*HEIGHT_ASPECT); 
+        else super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        
+        drawBackgroundGrid(canvas);
+
         if (!isInEditMode()) {
             currentTetromino.drawOn(canvas);
             drawBoardMatrix(canvas);
+        } else {
+            currentTetromino = randomTetromino();
+            currentTetromino.centerOnGameBoardView();
+            currentTetromino.drawOn(canvas);
         }
+    }
+
+    /** Pinta el fondo de la cuadrilla del tablero. */
+    private void drawBackgroundGrid(Canvas canvas) {
+        for (int i = 0; i < boardMatrix[0].length; i++) canvas.drawLine(i * boardColumnWidth, 0, i * boardColumnWidth, getHeight(), gridBackground);
+        for (int i = 0; i < boardMatrix.length; i++) canvas.drawLine(0, i * boardRowHeight, getWidth(), i * boardRowHeight, gridBackground);
     }
 
     @Override
@@ -120,16 +139,22 @@ public class GameBoardView extends View {
     /** Inicializa el layout de este tablero y las variables con su valor por default. */
     protected void setUp() {
         setUpDefaultValues();
+        setUpBoardMatrix();
         setUpSounds();
         setUpGestures();
-        setUpTetrominosStyle();
+        setUpStyle();
     }
 
     /** Inicializa las variables con su valor por default. */
     private void setUpDefaultValues() {
         currentSpeed = DEFAULT_SPEED;
         initialLevel = DEFAULT_LEVEL;
-        setUpBoardMatrix();
+    }
+
+    /** Inicializa la matriz y la llena de color transparente. */
+    private void setUpBoardMatrix() {
+        boardMatrix = new int[DEFAULT_ROWS][DEFAULT_COLUMNS];
+        for (int[] row : boardMatrix) Arrays.fill(row, android.R.color.transparent);
     }
 
     /** Inicializa los objetos encargados de manejar los gestos de esta vista. */
@@ -152,13 +177,16 @@ public class GameBoardView extends View {
         }
     }
 
-    /** Inicializa el estilo para pintar los tetrominos que ya son parte del piso. */
-    private void setUpTetrominosStyle() {
+    /** Inicializa el estilo para pintar. */
+    private void setUpStyle() {
         tetrominoForeground = new Paint();
         tetrominoForeground.setStyle(Paint.Style.FILL); // El color se toma de la matriz
         tetrominoBorder = new Paint();
-        tetrominoBorder.setStyle(Paint.Style.STROKE); // Por ahora siempre es negro
-        tetrominoBorder.setColor(getContext().getResources().getColor(android.R.color.black));
+        tetrominoBorder.setStyle(Paint.Style.STROKE);
+        tetrominoBorder.setColor(getContext().getResources().getColor(android.R.color.white));
+        gridBackground = new Paint();
+        gridBackground.setStyle(Paint.Style.STROKE);
+        gridBackground.setColor(getContext().getResources().getColor(android.R.color.black));
     }
 
     /**
@@ -408,26 +436,6 @@ public class GameBoardView extends View {
     }
 
     /**
-     * Inicializa las dimensiones del tablero de juego.
-     * 
-     * @param rows cuantas filas.
-     * @param columns cuantas columnas.
-     */
-    public void setCustomDimensions(int rows, int columns) {
-        this.rows = rows;
-        this.columns = columns;
-        setUpBoardMatrix();
-    }
-
-    /** Inicializa la matriz y la llena de color transparente. */
-    private void setUpBoardMatrix() {
-        if (rows <= 0) rows = DEFAULT_ROWS;
-        if (columns <= 0) columns = DEFAULT_COLUMNS;
-        boardMatrix = new int[rows][columns];
-        for (int[] row : boardMatrix) Arrays.fill(row, android.R.color.transparent);
-    }
-
-    /**
      * Cambia el nivel inicial del juego.
      * 
      * @param level {@link #DEFAULT_LEVEL} <= level <= {@link #MAX_LEVEL}.
@@ -645,7 +653,7 @@ public class GameBoardView extends View {
         }
 
         @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
+        public boolean onSingleTapUp(MotionEvent e) {
             if (isGameStarted && !isPaused && !isGameOver) {
                 if (currentTetromino.rotate()) {
                     invalidate();

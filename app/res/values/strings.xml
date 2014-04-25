@@ -29,15 +29,15 @@
 
     <!-- GAME ACTIVITY -->
     <string name="score_text">Puntaje:</string>
-    <string name="level_text">Nivel:</string>
+    <string name="level_text">Nivel %s</string>
     <string name="lines_text">Lineas:</string>
     <string name="next_tetromino_text">Siguiente:</string>
     <string name="pause_text">Pausa</string>
     <string name="resume_text">Resumir</string>
     <string name="restart_text">Reiniciar</string>
     <string name="game_over_text">Game Over</string>
-    <string name="exit_message">¿De verdad quieres salir del juego?</string>
-    <string name="restart_message">¿De verdad quieres reiniciar el juego?</string>
+    <string name="exit_message">Tu avance en el juego se perderá si regresas al menu principal ¿De verdad quieres hacerlo?</string>
+    <string name="restart_message">¿De verdad quieres reiniciar la partida?</string>
 
     <!-- SETTINGS ACTIVITY -->
     <string name="sfx_category_title">Audio</string>

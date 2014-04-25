@@ -10,6 +10,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.text.format.DateFormat;
+import android.util.TypedValue;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -142,7 +143,7 @@ public class ScoresActivity extends ActivityWithMusic implements LoaderManager.L
     /** Aplica el tema estilo secundario */
     private void applySecondaryStyleTo(TextView textView) {
         textView.setTextColor(secondaryColor);
-        textView.setTextSize(secondaryTextSize);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, secondaryTextSize);
         textView.setTypeface(twobitTypeface);
         textView.setLayoutParams(layoutParams);
     }
@@ -172,7 +173,7 @@ public class ScoresActivity extends ActivityWithMusic implements LoaderManager.L
     /** Aplica el tema estilo primario. */
     private void applyPrimaryStyleTo(TextView textView) {
         textView.setTextColor(primaryColor);
-        textView.setTextSize(primaryTextSize);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, primaryTextSize);
         textView.setTypeface(twobitTypeface);
         textView.setLayoutParams(layoutParams);
     }
