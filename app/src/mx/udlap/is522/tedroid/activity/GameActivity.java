@@ -7,6 +7,10 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerTabStrip;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,6 +19,7 @@ import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.Score;
 import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
 import mx.udlap.is522.tedroid.data.dao.impl.DAOFactory;
+import mx.udlap.is522.tedroid.fragment.InstructionsFragment;
 import mx.udlap.is522.tedroid.util.Identifiers;
 import mx.udlap.is522.tedroid.util.Typefaces;
 import mx.udlap.is522.tedroid.view.GameBoardView;
@@ -37,7 +42,6 @@ public class GameActivity extends BaseGoogleGamesActivity {
     private int level;
     private NextTetrominoView nextTetrominoView;
     private GameBoardView gameBoardView;
-    private TextView pauseTextView;
     private TextView gameOverTextView;
     private TextView scoreTextView;
     private TextView levelTextView;
@@ -49,6 +53,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
     private MediaPlayer mediaPlayer;
     private AlertDialog restartDialog;
     private AlertDialog exitDialog;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
         setUpMediaPlayer();
         initViews();
         setUpFont();
+        setUpInstructionsFragment();
         setUpGameBoardView();
         setUpScoreTextViews();
         setUpRestartDialog();
@@ -109,7 +115,6 @@ public class GameActivity extends BaseGoogleGamesActivity {
         scoreTextTextView = (TextView) findViewById(R.id.score_text);
         linesTextTextView = (TextView) findViewById(R.id.lines_text);
         nextTetrominoTextTextView = (TextView) findViewById(R.id.next_tetromino_text);
-        pauseTextView = (TextView) findViewById(R.id.pause_text);
         gameOverTextView = (TextView) findViewById(R.id.game_over_text);
         scoreTextView = (TextView) findViewById(R.id.score);
         levelTextView = (TextView) findViewById(R.id.levels);
@@ -117,6 +122,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
         nextTetrominoView = (NextTetrominoView) findViewById(R.id.next_tetromino);
         pauseButton = (ImageButton) findViewById(R.id.pause_button);
         gameBoardView = (GameBoardView) findViewById(R.id.game_board);
+        viewPager = (ViewPager) findViewById(R.id.pager);
     }
 
     /** Inicializa el valor de cada textview del puntaje del usuario */
@@ -132,11 +138,23 @@ public class GameActivity extends BaseGoogleGamesActivity {
         scoreTextTextView.setTypeface(typeface);
         linesTextTextView.setTypeface(typeface);
         nextTetrominoTextTextView.setTypeface(typeface);
-        pauseTextView.setTypeface(typeface);
         gameOverTextView.setTypeface(typeface);
         scoreTextView.setTypeface(typeface);
         levelTextView.setTypeface(typeface);
         linesTextView.setTypeface(typeface);
+        PagerTabStrip strip = (PagerTabStrip) viewPager.findViewById(R.id.pager_tab_strip);
+        for (int i = 0; i < strip.getChildCount(); i++) {
+            View nextChild = strip.getChildAt(i);
+            if (nextChild instanceof TextView) {
+                TextView textViewToConvert = (TextView) nextChild;
+                textViewToConvert.setTypeface(typeface);
+            }
+        }
+    }
+
+    /** Inicializa el layout de instrucciones en la pausa */
+    private void setUpInstructionsFragment() {
+        viewPager.setAdapter(new InstructionsSlidePagerAdapter());
     }
 
     /** Inicializa el tablero de juego */
@@ -195,7 +213,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     resetCounters();
                     setUpScoreTextViews();
-                    pauseTextView.setVisibility(View.GONE);
+                    viewPager.setVisibility(View.GONE);
                     gameOverTextView.setVisibility(View.GONE);
                     gameBoardView.setVisibility(View.VISIBLE);
                     gameBoardView.restartGame();
@@ -256,8 +274,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
      */
     private void onCancelDialogs(DialogInterface dialog) {
         dialog.dismiss();
-        if (pauseTextView.getVisibility() == View.GONE &&
-                !gameBoardView.isGameOver()) {
+        if (viewPager.getVisibility() == View.GONE && !gameBoardView.isGameOver()) {
             gameBoardView.resumeGame();
             playOrResumeTrack();
         }
@@ -267,9 +284,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
     protected void onResume() {
         super.onResume();
         if (!gameBoardView.isGameOver() && gameBoardView.isPaused()) {
-            if (pauseTextView.getVisibility() == View.GONE && 
-                    !exitDialog.isShowing() &&
-                    !restartDialog.isShowing()) {
+            if (viewPager.getVisibility() == View.GONE && !exitDialog.isShowing() && !restartDialog.isShowing()) {
                 gameBoardView.resumeGame();
                 playOrResumeTrack();
             }
@@ -279,7 +294,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
     public void onPauseButtonClick(View view) {
         if (!gameBoardView.isGameOver()) {
             if (gameBoardView.isPaused()) {
-                pauseTextView.setVisibility(View.GONE);
+                viewPager.setVisibility(View.GONE);
                 gameBoardView.setVisibility(View.VISIBLE);
                 gameBoardView.resumeGame();
                 playOrResumeTrack();
@@ -287,7 +302,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
                 pauseButton.setContentDescription(getString(R.string.pause_text));
             } else {
                 gameBoardView.setVisibility(View.GONE);
-                pauseTextView.setVisibility(View.VISIBLE);
+                viewPager.setVisibility(View.VISIBLE);
                 gameBoardView.pauseGame();
                 pauseTrack();
                 pauseButton.setImageResource(R.drawable.ic_action_play);
@@ -392,6 +407,40 @@ public class GameActivity extends BaseGoogleGamesActivity {
         String resIdName = PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(getString(R.string.music_type_key), getString(R.string.default_music_type));
         return Identifiers.getFrom(resIdName, Identifiers.ResourceType.RAW, this);
+    }
+
+    /**
+     * Clase para hacer el slide en el layout de la pusa para ver instrucciones.
+     * 
+     * @author Daniel Pedraza-Arcega
+     * @since 1.0
+     */
+    private class InstructionsSlidePagerAdapter extends FragmentStatePagerAdapter {
+
+        private InstructionsSlidePagerAdapter() {
+            super(getSupportFragmentManager());
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return InstructionsFragment.create(position);
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0: return getString(R.string.drag_instruction_title);
+                case 1: return getString(R.string.long_press_instruction_title);
+                case 2: return getString(R.string.single_tap_instruction_title);
+                default: return null;
+            }
+        }
+        
     }
 
     /**
