@@ -128,19 +128,24 @@
                 android:layout_margin="8dp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/pause_text"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
             android:layout_margin="10dp"
             android:layout_weight="1.3"
-            android:gravity="center"
-            android:text="@string/pause_text"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:visibility="gone" >
+
+            <android.support.v4.view.PagerTabStrip
+                android:id="@+id/pager_tab_strip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@android:color/transparent"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:textColor="@android:color/white" />
+        </android.support.v4.view.ViewPager>
 
         <TextView
             android:id="@+id/game_over_text"

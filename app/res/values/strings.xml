@@ -31,6 +31,13 @@
     <string name="game_over_text">Game Over</string>
     <string name="exit_message">Tu avance en el juego se perderá si regresas al menu principal ¿De verdad quieres hacerlo?</string>
     <string name="restart_message">¿De verdad quieres reiniciar la partida?</string>
+    <string name="instruction_image_description">Imagen de ejemplo</string>
+    <string name="drag_instruction_title">Jalar</string>
+    <string name="drag_instruction_text">Jala la pieza para moverla hacia los lados o hacia abajo</string>
+    <string name="long_press_instruction_title">Presionar</string>
+    <string name="long_press_instruction_text">Presiona para dejar caer la pieza fuerte hacia abajo</string>
+    <string name="single_tap_instruction_title">Tocar</string>
+    <string name="single_tap_instruction_text">Toca para rotar la pieza</string>
 
     <!-- SETTINGS ACTIVITY -->
     <string name="sfx_category_title">Audio</string>
