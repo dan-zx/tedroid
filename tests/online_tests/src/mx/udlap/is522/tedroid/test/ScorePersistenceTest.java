@@ -11,6 +11,7 @@ import mx.udlap.is522.tedroid.activity.GameActivity;
 import mx.udlap.is522.tedroid.activity.MainMenuActivity;
 import mx.udlap.is522.tedroid.activity.ScoresActivity;
 import mx.udlap.is522.tedroid.data.source.TedroidSQLiteOpenHelper;
+import mx.udlap.is522.tedroid.util.Strings;
 import mx.udlap.is522.tedroid.view.GameBoardView;
 
 public class ScorePersistenceTest extends ActivityInstrumentationTestCase2<MainMenuActivity> {
@@ -68,9 +69,9 @@ public class ScorePersistenceTest extends ActivityInstrumentationTestCase2<MainM
         Log.d(TAG, "Game should be over by now");
         solo.waitForText(solo.getString(R.string.game_over_text));
         
-        String score = scoreTextView.getText().toString();
-        String levels = levelText.getText().toString();
-        String lines = linesTextView.getText().toString();
+        String score = Integer.valueOf(scoreTextView.getText().toString()).toString();
+        String levels = Integer.valueOf(levelText.getText().toString().replaceAll("[^0-9]", Strings.EMPTY)).toString();
+        String lines = Integer.valueOf(linesTextView.getText().toString()).toString();
         
         Log.d(TAG, "score=" + score + ", levels=" + levels + ", lines=" + lines);
         
