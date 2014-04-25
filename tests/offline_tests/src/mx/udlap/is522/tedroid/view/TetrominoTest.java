@@ -63,16 +63,16 @@ public class TetrominoTest {
 
     @Test
     public void shouldRotate() throws Exception {
-        final int[][] rotatedShape1 = { { android.R.color.transparent, R.color.brown, }, 
-                                        { R.color.brown, R.color.brown, }, 
-                                        { android.R.color.transparent, R.color.brown, } };
+        final int[][] rotatedShape1 = { { android.R.color.transparent, R.color.tetromino_t, }, 
+                                        { R.color.tetromino_t, R.color.tetromino_t, }, 
+                                        { android.R.color.transparent, R.color.tetromino_t, } };
 
-        final int[][] rotatedShape2 = { { android.R.color.transparent, R.color.brown, android.R.color.transparent }, 
-                                        { R.color.brown, R.color.brown, R.color.brown } };
+        final int[][] rotatedShape2 = { { android.R.color.transparent, R.color.tetromino_t, android.R.color.transparent }, 
+                                        { R.color.tetromino_t, R.color.tetromino_t, R.color.tetromino_t } };
 
-        final int[][] rotatedShape3 = { { R.color.brown, android.R.color.transparent, }, 
-                                        { R.color.brown, R.color.brown, }, 
-                                        { R.color.brown, android.R.color.transparent, } };
+        final int[][] rotatedShape3 = { { R.color.tetromino_t, android.R.color.transparent, }, 
+                                        { R.color.tetromino_t, R.color.tetromino_t, }, 
+                                        { R.color.tetromino_t, android.R.color.transparent, } };
 
         GameBoardView gameBoardView = new GameBoardView(dummyActivity);
         Tetromino tetrominoT = new Tetromino.Builder(gameBoardView)
