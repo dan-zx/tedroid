@@ -2,14 +2,14 @@
 <resources>
 
     <!-- TETROMINOS -->
-    <color name="red">#ffaa0000</color>
-    <color name="gray">#ffc0c0c0</color>
-    <color name="magenta">#ffaa00aa</color>
-    <color name="blue">#ff0000aa</color>
-    <color name="green">#ff00aa00</color>
-    <color name="brown">#ffaa5500</color>
-    <color name="cyan">#ff00ffff</color>
-    
+    <color name="tetromino_o">#ffffd400</color>
+    <color name="tetromino_i">#ff00aee7</color>
+    <color name="tetromino_t">#ffad46ad</color>
+    <color name="tetromino_l">#ffff8f00</color>
+    <color name="tetromino_j">#ff0079ce</color>
+    <color name="tetromino_s">#ff71c603</color>
+    <color name="tetromino_z">#fffe463a</color>
+
     <!-- COLORS FOR BACKGROUND -->
     <color name="primary_for_background">#ff32c89A</color>
     <color name="secondary_for_background">#fff3f72c</color>

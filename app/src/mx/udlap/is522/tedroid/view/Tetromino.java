@@ -34,8 +34,8 @@ public class Tetromino {
         foreground = new Paint();
         foreground.setStyle(Paint.Style.FILL); // El color se toma de la matriz
         border = new Paint();
-        border.setStyle(Paint.Style.STROKE); // Por ahora siempre es negro
-        border.setColor(gameBoardView.getContext().getResources().getColor(android.R.color.black));
+        border.setStyle(Paint.Style.STROKE);
+        border.setColor(gameBoardView.getContext().getResources().getColor(android.R.color.white));
     }
 
     /**

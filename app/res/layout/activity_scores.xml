@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/photo" >
+    android:background="@drawable/tedroid_repeatable_background" >
 
     <TableLayout
         android:id="@+id/score_table"

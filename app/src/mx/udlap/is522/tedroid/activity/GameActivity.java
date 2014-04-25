@@ -41,7 +41,6 @@ public class GameActivity extends ActivityWithMusic {
     private TextView levelTextView;
     private TextView linesTextView;
     private TextView scoreTextTextView;
-    private TextView levelTextTextView;
     private TextView linesTextTextView;
     private TextView nextTetrominoTextTextView;
     private ImageButton pauseButton;
@@ -77,7 +76,6 @@ public class GameActivity extends ActivityWithMusic {
     /** Inicializa las vistas */
     private void initViews() {
         scoreTextTextView = (TextView) findViewById(R.id.score_text);
-        levelTextTextView = (TextView) findViewById(R.id.level_text);
         linesTextTextView = (TextView) findViewById(R.id.lines_text);
         nextTetrominoTextTextView = (TextView) findViewById(R.id.next_tetromino_text);
         pauseTextView = (TextView) findViewById(R.id.pause_text);
@@ -92,16 +90,15 @@ public class GameActivity extends ActivityWithMusic {
 
     /** Inicializa el valor de cada textview del puntaje del usuario */
     private void setUpScoreTextViews() {
-        linesTextView.setText(String.valueOf(totalLines));
-        scoreTextView.setText(String.valueOf(totalScore));
-        levelTextView.setText(String.valueOf(level));
+        linesTextView.setText(getString(R.string.scores_format, totalLines));
+        scoreTextView.setText(getString(R.string.scores_format, totalScore));
+        levelTextView.setText(getString(R.string.level_text, level));
     }
 
     /** Inicializa la fuente y la coloca en cada textview */
     private void setUpFont() {
         Typeface typeface = Typefaces.get(this, Typefaces.Font.TWOBIT);
         scoreTextTextView.setTypeface(typeface);
-        levelTextTextView.setTypeface(typeface);
         linesTextTextView.setTypeface(typeface);
         nextTetrominoTextTextView.setTypeface(typeface);
         pauseTextView.setTypeface(typeface);

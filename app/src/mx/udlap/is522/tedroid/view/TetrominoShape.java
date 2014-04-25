@@ -10,13 +10,13 @@ import mx.udlap.is522.tedroid.R;
  */
 public enum TetrominoShape {
 
-    I (new int[][] { { R.color.red, R.color.red, R.color.red, R.color.red } }, true),
-    J (new int[][] { { R.color.gray, R.color.gray, R.color.gray }, { android.R.color.transparent, android.R.color.transparent, R.color.gray } }, true), 
-    L (new int[][] { { R.color.magenta, R.color.magenta, R.color.magenta }, { R.color.magenta, android.R.color.transparent, android.R.color.transparent } }, true), 
-    O (new int[][] { { R.color.blue, R.color.blue }, { R.color.blue, R.color.blue } }, false), 
-    S (new int[][] { { android.R.color.transparent, R.color.green, R.color.green }, { R.color.green, R.color.green, android.R.color.transparent } }, true), 
-    T (new int[][] { { R.color.brown, R.color.brown, R.color.brown }, { android.R.color.transparent, R.color.brown, android.R.color.transparent } }, true), 
-    Z (new int[][] { { R.color.cyan, R.color.cyan, android.R.color.transparent }, { android.R.color.transparent, R.color.cyan, R.color.cyan } }, true);
+    I (new int[][] { { R.color.tetromino_i, R.color.tetromino_i, R.color.tetromino_i, R.color.tetromino_i } }, true),
+    J (new int[][] { { R.color.tetromino_j, R.color.tetromino_j, R.color.tetromino_j }, { android.R.color.transparent, android.R.color.transparent, R.color.tetromino_j } }, true), 
+    L (new int[][] { { R.color.tetromino_l, R.color.tetromino_l, R.color.tetromino_l }, { R.color.tetromino_l, android.R.color.transparent, android.R.color.transparent } }, true), 
+    O (new int[][] { { R.color.tetromino_o, R.color.tetromino_o }, { R.color.tetromino_o, R.color.tetromino_o } }, false), 
+    S (new int[][] { { android.R.color.transparent, R.color.tetromino_s, R.color.tetromino_s }, { R.color.tetromino_s, R.color.tetromino_s, android.R.color.transparent } }, true), 
+    T (new int[][] { { R.color.tetromino_t, R.color.tetromino_t, R.color.tetromino_t }, { android.R.color.transparent, R.color.tetromino_t, android.R.color.transparent } }, true), 
+    Z (new int[][] { { R.color.tetromino_z, R.color.tetromino_z, android.R.color.transparent }, { android.R.color.transparent, R.color.tetromino_z, R.color.tetromino_z } }, true);
 
     private final int[][] shapeMatrix;
     private final boolean hasRotation;

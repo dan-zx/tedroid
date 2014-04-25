@@ -22,7 +22,7 @@
 
     <!-- GAME ACTIVITY -->
     <string name="score_text">Puntaje:</string>
-    <string name="level_text">Nivel:</string>
+    <string name="level_text">Nivel %s</string>
     <string name="lines_text">Lineas:</string>
     <string name="next_tetromino_text">Siguiente:</string>
     <string name="pause_text">Pausa</string>
