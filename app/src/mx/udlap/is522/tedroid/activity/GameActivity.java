@@ -318,8 +318,8 @@ public class GameActivity extends BaseGoogleGamesActivity {
         if (!gameBoardView.isGameOver()) {
             gameBoardView.pauseGame();
             pauseTrack();
-        }
-        exitDialog.show();
+            exitDialog.show();
+        } else super.onBackPressed();
     }
 
     @Override
