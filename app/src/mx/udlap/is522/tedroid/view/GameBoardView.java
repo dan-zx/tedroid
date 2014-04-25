@@ -653,7 +653,7 @@ public class GameBoardView extends View {
         }
 
         @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
+        public boolean onSingleTapUp(MotionEvent e) {
             if (isGameStarted && !isPaused && !isGameOver) {
                 if (currentTetromino.rotate()) {
                     invalidate();
