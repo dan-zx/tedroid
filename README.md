@@ -14,6 +14,10 @@ La información sobre descarga, instalación, construcción y depuración del pr
 
 Las versiones de la aplicación se pueden descargar [aquí](https://github.com/dan-zx/tedroid/releases).
 
+<a href="https://play.google.com/store/apps/details?id=mx.udlap.is522.tedroid">
+  <img alt="Get it on Google Play" src="https://developer.android.com/images/brand/es-419_generic_rgb_wo_45.png" />
+</a>
+
 ### Autores:
 * Daniel Pedraza Arcega [@dan-zx](https://github.com/dan-zx)
 * Andrés Peña Peralta [@andres-pena-peralta](https://github.com/andres-pena-peralta)
