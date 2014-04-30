@@ -20,6 +20,7 @@ import mx.udlap.is522.tedroid.util.Typefaces;
  */
 public class InstructionsFragment extends Fragment {
 
+    private static final int NOT_AN_ID = -1;
     private int pageNumber;
 
     /**
@@ -36,32 +37,43 @@ public class InstructionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_instructions, container, false);
         ImageView instructionImage = (ImageView) rootView.findViewById(R.id.instruction_image);
-        instructionImage.setContentDescription(getString(getTextByPageNumber()));
-        instructionImage.setImageResource(getDrawableByPageNumber());
         TextView instructionText = (TextView) rootView.findViewById(R.id.instruction_text);
-        Typeface typeface = Typefaces.get(getActivity(), Typefaces.Font.TWOBIT);
-        instructionText.setText(getTextByPageNumber());
-        instructionText.setTypeface(typeface);
+        int instructionImageContentDescriptionId = getTextByPageNumber();
+        if (instructionImageContentDescriptionId != NOT_AN_ID) {
+            Typeface typeface = Typefaces.get(getActivity(), Typefaces.Font.TWOBIT);
+            instructionText.setText(instructionImageContentDescriptionId);
+            instructionText.setTypeface(typeface);
+            instructionImage.setContentDescription(getString(instructionImageContentDescriptionId));
+        }
+
+        int instructionImageDrawableId = getDrawableByPageNumber();
+        if (instructionImageDrawableId != NOT_AN_ID) instructionImage.setImageResource(instructionImageDrawableId);
         return rootView;
     }
 
-    /** @return el id del text según la página seleccionada. */
+    /**
+     * @return el id del text según la página seleccionada o {@value #NOT_AN_ID} si no es una página
+     *         válida.
+     */
     private int getTextByPageNumber() {
         switch (pageNumber) {
             case 0: return R.string.drag_instruction_text;
             case 1: return R.string.long_press_instruction_text;
             case 2: return R.string.single_tap_instruction_text;
-            default: return -1;
+            default: return NOT_AN_ID;
         }
     }
 
-    /** @return el id del drawable según la página seleccionada. */
+    /**
+     * @return el id del drawable según la página seleccionada o {@value #NOT_AN_ID} si no es una
+     *         página válida.
+     */
     private int getDrawableByPageNumber() {
         switch (pageNumber) {
             case 0: return R.drawable.drag;
             case 1: return R.drawable.hard_drop;
             case 2: return R.drawable.rotate;
-            default: return -1;
+            default: return NOT_AN_ID;
         }
     }
 }
