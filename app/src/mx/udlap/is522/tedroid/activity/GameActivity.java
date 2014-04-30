@@ -376,23 +376,20 @@ public class GameActivity extends BaseGoogleGamesActivity {
         if (totalLines >= 9999) unlockAchievement(R.string.like_a_boss_achievement_id);
         if (shouldLevelUp && totalLines % 10 <= 3) {
             level++;
-            if (level >= 10) unlockAchievement(R.string.whats_next_achievement_id);
-            else {
-                switch (level) {
-                    case 1: unlockAchievement(R.string.for_dummies_achievement_id); break;
-                    case 2: unlockAchievement(R.string.as_easy_as_pie_achievement_id); break;
-                    case 3: unlockAchievement(R.string.beginner_achievement_id); break;
-                    case 4: unlockAchievement(R.string.amateur_achievement_id); break;
-                    case 5: unlockAchievement(R.string.expert_achievement_id); break;
-                    case 6: unlockAchievement(R.string.master_achievement_id); break;
-                    case 7: unlockAchievement(R.string.pro_achievement_id); break;
-                    case 8: unlockAchievement(R.string.pro_plus_plus_achievement_id); break;
-                    case 9: unlockAchievement(R.string.lucky_you_achievement_id); break;
-                }
+            switch (level) {
+                case 1: unlockAchievement(R.string.for_dummies_achievement_id); break;
+                case 2: unlockAchievement(R.string.as_easy_as_pie_achievement_id); break;
+                case 3: unlockAchievement(R.string.beginner_achievement_id); break;
+                case 4: unlockAchievement(R.string.amateur_achievement_id); break;
+                case 5: unlockAchievement(R.string.expert_achievement_id); break;
+                case 6: unlockAchievement(R.string.master_achievement_id); break;
+                case 7: unlockAchievement(R.string.pro_achievement_id); break;
+                case 8: unlockAchievement(R.string.pro_plus_plus_achievement_id); break;
+                case 9: unlockAchievement(R.string.lucky_you_achievement_id); break;
+                case 10: unlockAchievement(R.string.whats_next_achievement_id); break;
             }
             return true;
         }
-
         return false;
     }
 
