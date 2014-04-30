@@ -205,13 +205,9 @@ class SQLiteUtils {
      *         {@code null} entonces {@code null}.
      */
     static Boolean getBoolean(Cursor cursor, String columnName) {
-        Boolean value = null;
-        if (containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))) {
-            short intValue = cursor.getShort(cursor.getColumnIndex(columnName));
-            value = intValue == 1 ? true : intValue == 0 ? false : null;
-        }
-
-        return value;
+        Short value = getShort(cursor, columnName);
+        if (value != null) return value == 1 ? true : value == 0 ? false : null;
+        return null;
     }
 
     /**
@@ -221,9 +217,9 @@ class SQLiteUtils {
      *         {@code null} entonces {@code null}.
      */
     static Character getCharacter(Cursor cursor, String columnName) {
-        return containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
-                ? cursor.getString(cursor.getColumnIndex(columnName)).charAt(0)
-                : null;
+        String value = getString(cursor, columnName);
+        if (value != null) return value.charAt(0);
+        return null;
     }
 
     /**
@@ -257,9 +253,9 @@ class SQLiteUtils {
      *         {@code null} entonces {@code null}.
      */
     static Date getDateFromUnixTime(Cursor cursor, String columnName) {
-        return containsColumn(cursor, columnName) && !cursor.isNull(cursor.getColumnIndex(columnName))
-                ? new Date(cursor.getLong(cursor.getColumnIndex(columnName)) * 1000L)
-                : null;
+        Long value = getLong(cursor, columnName);
+        if (value != null) return new Date(value * 1000L);
+        return null;
     }
 
     /**
@@ -270,11 +266,11 @@ class SQLiteUtils {
      *         {@code null} entonces {@code null}.
      */
     static Date getDateFromString(Cursor cursor, String columnName, TimeString timeString) {
-        String dateString = getString(cursor, columnName);
-        if (!Strings.isNullOrBlank(dateString)) {
+        String value = getString(cursor, columnName);
+        if (!Strings.isNullOrBlank(value)) {
             for (String format : timeString.formats) {
                 try {
-                    return new SimpleDateFormat(format, Locale.ENGLISH).parse(dateString);
+                    return new SimpleDateFormat(format, Locale.ENGLISH).parse(value);
                 } catch (ParseException ex) {
                     // Si no es el formato correcto, se ignora y sigue con el siguiente formato.
                 }
