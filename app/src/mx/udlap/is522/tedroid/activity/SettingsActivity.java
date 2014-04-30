@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.webkit.WebView;
@@ -30,11 +29,9 @@ public class SettingsActivity extends PreferenceActivity {
 
     private ListPreference musicTypePreference;
     private Preference deleteScoresPreference;
-    private Preference restoreSettingsPreference;
     private Preference versionPreference;
     private Preference openSourceLicencesPreference;
     private AlertDialog deleteScoresWarnDialog;
-    private AlertDialog restoreSettingsWarnDialog;
     private AlertDialog openSourceLicencesDialog;
 
     @Override
@@ -46,7 +43,6 @@ public class SettingsActivity extends PreferenceActivity {
         findPreferences();
         setUpMusicTypePreference();
         setUpDeleteScoresPreference();
-        setUpRestoreSettingsPreference();
         setUpOpenSourceLicencesPreference();
         setUpVersionPreference();
     }
@@ -66,7 +62,6 @@ public class SettingsActivity extends PreferenceActivity {
     private void findPreferences() {
         musicTypePreference = (ListPreference) findPreference(getString(R.string.music_type_key));
         deleteScoresPreference = findPreference(getString(R.string.delete_scores_key));
-        restoreSettingsPreference = findPreference(getString(R.string.restore_settings_key));
         openSourceLicencesPreference = findPreference(getString(R.string.open_source_licenses_key));
         versionPreference = findPreference(getString(R.string.version_key));
     }
@@ -116,33 +111,6 @@ public class SettingsActivity extends PreferenceActivity {
         });
     }
 
-    /** Inicializa la configuración de restauración de configuración. */
-    private void setUpRestoreSettingsPreference() {
-        restoreSettingsWarnDialog = new AlertDialog.Builder(this)
-            .setTitle(R.string.restore_settings_warn_title)
-            .setMessage(R.string.restore_settings_warn_message)
-            .setIcon(android.R.drawable.ic_dialog_alert)
-            .setNegativeButton(android.R.string.no, null)
-            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-    
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    restoreSettings();
-                }
-            })
-            .create();
-
-        restoreSettingsPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                restoreSettingsWarnDialog.show();
-                return true;
-            }
-        });
-    }
-
     /** Inicializa la configuración del anuncio de licensias de código libre */
     private void setUpOpenSourceLicencesPreference() {
         WebView webView = new WebView(this);
@@ -178,22 +146,5 @@ public class SettingsActivity extends PreferenceActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void displayHomeAsUp() {
         getActionBar().setDisplayHomeAsUpEnabled(true);
-    }
-
-    /** Restaura las configuraciones a las premeditadas reiniciando esta actividad. */
-    private void restoreSettings() {
-        PreferenceManager.getDefaultSharedPreferences(this)
-            .edit()
-            .clear()
-            .commit();
-        PreferenceManager.setDefaultValues(this, R.xml.settings, true);
-        finish();
-        overridePendingTransition(0, 0);
-        startActivity(getIntent());
-        overridePendingTransition(0, 0);
-        Toast.makeText(getApplicationContext(), 
-                R.string.done_restore_settings_message, 
-                Toast.LENGTH_SHORT)
-                .show();
     }
 }

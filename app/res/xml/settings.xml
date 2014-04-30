@@ -21,9 +21,6 @@
         <Preference
             android:key="@string/delete_scores_key"
             android:title="@string/delete_scores_pref_title" />
-        <Preference
-            android:key="@string/restore_settings_key"
-            android:title="@string/restore_settings_pref_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/about_category_title" >
         <PreferenceScreen
