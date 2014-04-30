@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -15,7 +16,8 @@ import android.webkit.WebView;
 import android.widget.Toast;
 
 import mx.udlap.is522.tedroid.R;
-import mx.udlap.is522.tedroid.data.source.TedroidSQLiteOpenHelper;
+import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
+import mx.udlap.is522.tedroid.data.dao.impl.DAOFactory;
 
 /**
  * Actividad para modificar las opciones del juego.
@@ -92,12 +94,7 @@ public class SettingsActivity extends PreferenceActivity {
     
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    TedroidSQLiteOpenHelper.destroyDb(getApplicationContext());
-                    dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), 
-                            R.string.done_delete_scores_message, 
-                            Toast.LENGTH_SHORT)
-                            .show();
+                    new ScoreDeleter().execute();
                 }
             })
             .create();
@@ -146,5 +143,34 @@ public class SettingsActivity extends PreferenceActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void displayHomeAsUp() {
         getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    /**
+     * Tarea asyncrona para borrar todos los puntajes locales.
+     * 
+     * @author Daniel Pedraza-Arcega
+     * @since 1.0
+     */
+    private class ScoreDeleter extends AsyncTask<Void, Void, Void> {
+
+        private ScoreDAO scoreDAO;
+
+        private ScoreDeleter() {
+            scoreDAO = new DAOFactory(getApplicationContext()).get(ScoreDAO.class);
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            scoreDAO.deleteAll();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            Toast.makeText(getApplicationContext(), 
+                    R.string.done_delete_scores_message, 
+                    Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 }
