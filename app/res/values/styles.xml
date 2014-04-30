@@ -3,6 +3,7 @@
 
     <dimen name="primary_text_size">20sp</dimen>
     <dimen name="secondary_text_size">15sp</dimen>
+    <dimen name="score_table_margin">10dp</dimen>
     
     <style name="TedroidButton" parent="@android:style/Widget.Button">
         <item name="android:textSize">25sp</item>

@@ -45,8 +45,8 @@ public class ScoresActivity extends ActivityWithMusic implements LoaderManager.L
         setContentView(R.layout.activity_scores);
         scoreTable = (TableLayout) findViewById(R.id.score_table);
         layoutParams = new TableRow.LayoutParams();
-        layoutParams.rightMargin = dpToPixel(10);
-        layoutParams.topMargin = dpToPixel(10);
+        layoutParams.rightMargin = getResources().getDimensionPixelSize(R.dimen.score_table_margin);
+        layoutParams.topMargin = getResources().getDimensionPixelSize(R.dimen.score_table_margin);
         twobitTypeface = Typefaces.get(this, Typefaces.Font.TWOBIT);
         primaryTextSize = getResources().getDimension(R.dimen.primary_text_size);
         secondaryTextSize = getResources().getDimension(R.dimen.secondary_text_size);
@@ -176,16 +176,6 @@ public class ScoresActivity extends ActivityWithMusic implements LoaderManager.L
         textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, primaryTextSize);
         textView.setTypeface(twobitTypeface);
         textView.setLayoutParams(layoutParams);
-    }
-
-    /**
-     * Convierte dps a pixeles.
-     * 
-     * @param dp dps
-     * @return pixeles.
-     */
-    private int dpToPixel(int dp) {
-        return (int) ((float) dp * getResources().getDisplayMetrics().density);
     }
 
     @Override
