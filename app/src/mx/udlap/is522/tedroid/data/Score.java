@@ -94,10 +94,10 @@ public class Score implements Serializable {
     public String toString() {
         return new StringBuilder()
             .append('{')
-            .append("obtainedAt: ").append(obtainedAt).append(", ")
-            .append("level: ").append(level).append(", ")
-            .append("lines: ").append(lines).append(", ")
-            .append("points: ").append(points)
+            .append("\"obtainedAt\": ").append(obtainedAt).append(", ")
+            .append("\"level\": ").append(level).append(", ")
+            .append("\"lines\": ").append(lines).append(", ")
+            .append("\"points\": ").append(points)
             .append('}')
             .toString();
     }
