@@ -1,6 +1,8 @@
-package mx.udlap.is522.tedroid.util;
+package mx.udlap.is522.tedroid.data.source;
 
 import android.util.Log;
+
+import mx.udlap.is522.tedroid.util.Strings;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,7 +17,7 @@ import java.util.regex.Pattern;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public final class SQLFileParser {
+final class SQLFileParser {
     
     private static final int END_OF_STREAM = -1;
     private static final String TAG = SQLFileParser.class.getSimpleName();
@@ -32,7 +34,7 @@ public final class SQLFileParser {
      * @return un arreglo de objetos String solo con las sentencias válidas o
      *         {@code null} si hubo algún error.
      */
-    public static String[] getSqlStatements(InputStream stream) {
+    static String[] getSqlStatements(InputStream stream) {
         
         BufferedReader reader = null;
 

@@ -6,8 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import mx.udlap.is522.tedroid.util.SQLFileParser;
-
 import java.io.IOException;
 import java.io.InputStream;
 
