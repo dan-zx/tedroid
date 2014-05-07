@@ -2,7 +2,7 @@
 <resources>
 
     <string name="tedroid_github_url">https://github.com/dan-zx/tedroid</string>
-    <string name="tedroid_manual_url">https://github.com/dan-zx/tedroid</string>
+    <string name="tedroid_wiki_url">https://github.com/dan-zx/tedroid/wiki</string>
     <string name="open_source_licenses_url">file:///android_asset/licenses.html</string>
 
 </resources>

@@ -12,7 +12,7 @@
     <string name="sounds_switch_key">sounds_switch</string>
     <bool name="default_sounds_switch_value">true</bool>
     <string name="delete_scores_key">delete_scores</string>
-    <string name="manual_key">manual</string>
+    <string name="wiki_key">wiki</string>
     <string name="github_site_key">github_site</string>
     <string name="version_key">version</string>
     <string name="open_source_licenses_key">open_source_licenses</string>
