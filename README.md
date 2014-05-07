@@ -1,6 +1,6 @@
 <img src="https://raw2.github.com/dan-zx/tedroid/master/app/ic_launcher-web.png" height="100px" align="left" style="padding:5px;" />
 
-tedroid
+Tedroid
 =======
 
 Juego de **Tetris** para Android.
