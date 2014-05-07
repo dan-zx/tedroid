@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package mx.udlap.is522.tedroid.gms;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -675,6 +675,7 @@ public class GameHelper implements GoogleApiClient.ConnectionCallbacks,
     }
 
     // Reset the counter of how many times the user has cancelled the sign-in flow.
+    @SuppressLint("CommitPrefEdits")
     void resetSignInCancellations() {
         SharedPreferences.Editor editor = mAppContext.getSharedPreferences(GAMEHELPER_SHARED_PREFS,
                 Context.MODE_PRIVATE).edit();
