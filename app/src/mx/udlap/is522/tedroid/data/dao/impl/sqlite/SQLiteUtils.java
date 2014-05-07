@@ -279,4 +279,30 @@ class SQLiteUtils {
 
         return null;
     }
+
+    /**
+     * @param cursor un objeto Cursor.
+     * @param columnName el nombre de la columna.
+     * @param enumType el tipo de enumerado.
+     * @return el valor de la columna como enumerado. Si no existe la columna o el valor de la
+     *         columna es {@code null} entonces {@code null}.
+     */
+    static <E extends Enum<E>> E getEnumFromName(Cursor cursor, String columnName, Class<E> enumType) {
+        String value = getString(cursor, columnName);
+        if (!Strings.isNullOrBlank(value)) return Enum.valueOf(enumType, value);
+        return null;
+    }
+
+    /**
+     * @param cursor un objeto Cursor.
+     * @param columnName el nombre de la columna.
+     * @param enumType el tipo de enumerado.
+     * @return el valor de la columna como enumerado. Si no existe la columna o el valor de la
+     *         columna es {@code null} entonces {@code null}.
+     */
+    static <E extends Enum<E>> E getEnumFromOrdinal(Cursor cursor, String columnName, Class<E> enumType) {
+        Integer value = getInteger(cursor, columnName);
+        if (value != null) return enumType.getEnumConstants()[value];
+        return null;
+    }
 }
