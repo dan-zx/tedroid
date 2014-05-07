@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 
 import mx.udlap.is522.tedroid.R;
+import mx.udlap.is522.tedroid.util.Identifiers;
 import mx.udlap.is522.tedroid.util.Strings;
 import mx.udlap.is522.tedroid.util.Typefaces;
 
@@ -96,7 +98,7 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        replayTrack();
+        if (isMusicEnabled()) replayTrack();
     }
 
     @Override
@@ -264,5 +266,12 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
     private boolean isUserPhoto(Drawable drawable) {
         return drawable != null && 
                 !getResources().getDrawable(R.drawable.no_profile_image).getConstantState().equals(drawable.getConstantState());
+    }
+
+    /** @return si la musica esta habilitada o no. */
+    private boolean isMusicEnabled() {
+        String resIdName = PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(getString(R.string.music_type_key), getString(R.string.default_music_type));
+        return Identifiers.getFrom(resIdName, Identifiers.ResourceType.RAW, this) != Identifiers.NOT_FOUND;
     }
 }

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -19,6 +20,7 @@ import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.Score;
 import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
 import mx.udlap.is522.tedroid.data.dao.impl.DAOFactory;
+import mx.udlap.is522.tedroid.util.Identifiers;
 import mx.udlap.is522.tedroid.util.Typefaces;
 
 import java.util.List;
@@ -58,9 +60,11 @@ public class ScoresActivity extends ActivityWithMusic implements LoaderManager.L
     /** {@inheritDoc} */
     @Override
     protected MediaPlayer setUpMediaPlayer() {
-        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.music_score);
-        mediaPlayer.setLooping(true);
-        return mediaPlayer;
+        if (isMusicEnabled()) {
+            MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.music_score);
+            mediaPlayer.setLooping(true);
+            return mediaPlayer;
+        } else return null;
     }
 
     @Override
@@ -191,6 +195,13 @@ public class ScoresActivity extends ActivityWithMusic implements LoaderManager.L
     @Override
     public void onLoaderReset(Loader<List<Score>> loader) {
         setUpScores(null);
+    }
+
+    /** @return si la musica esta habilitada o no. */
+    private boolean isMusicEnabled() {
+        String resIdName = PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(getString(R.string.music_type_key), getString(R.string.default_music_type));
+        return Identifiers.getFrom(resIdName, Identifiers.ResourceType.RAW, this) != Identifiers.NOT_FOUND;
     }
 
     /**
