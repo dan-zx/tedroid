@@ -16,14 +16,10 @@
 -->
 <resources>
 
-    <!-- APP NAME -->
-    <string name="app_name">Tedroid</string>
-
     <!-- ACTIVITY TITLES -->
     <string name="settings_activity_title">Configuración</string>
 
     <!-- MAIN MENU ACTIVITY -->
-    <string name="tedroid_title">TEDROID</string>
     <string name="play_button_label">JUGAR</string>
     <string name="scores_button_label">PUNTAJES</string>
     <string name="leaderboards_button_label">MARCADORES</string>
