@@ -18,7 +18,7 @@ Las versiones de la aplicación se pueden descargar [aquí](https://github.com/d
   <img alt="Get it on Google Play" src="https://developer.android.com/images/brand/es-419_generic_rgb_wo_45.png" />
 </a>
 
-### Autores:
+### Desarrolladores:
 * Daniel Pedraza Arcega [@dan-zx](https://github.com/dan-zx)
 * Andrés Peña Peralta [@andres-pena-peralta](https://github.com/andres-pena-peralta)
 * Alejandro Díaz Torres [@alex9006](https://github.com/alex9006)
@@ -26,7 +26,7 @@ Las versiones de la aplicación se pueden descargar [aquí](https://github.com/d
 
 > Proyecto del curso Ingeniería de Software (IS 522)
 
-## Licencia
+### Licencia
 
     Copyright 2014 Tedroid developers
 
