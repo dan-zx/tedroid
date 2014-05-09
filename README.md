@@ -5,12 +5,13 @@ Tedroid
 
 Juego de **Tetris** para Android.
 
-Documentación
--------------
+### Documentación
 
 La documentación del proyecto puede ser consultada en [Google Drive](http://ow.ly/u6wU3) _*Solo visible para colaboradores_.
 
 La información sobre descarga, instalación, construcción y depuración del proyecto se encuentra en la [wiki](https://github.com/dan-zx/tedroid/wiki).
+
+### Descargas
 
 Las versiones de la aplicación se pueden descargar [aquí](https://github.com/dan-zx/tedroid/releases).
 
@@ -23,8 +24,6 @@ Las versiones de la aplicación se pueden descargar [aquí](https://github.com/d
 * Andrés Peña Peralta [@andres-pena-peralta](https://github.com/andres-pena-peralta)
 * Alejandro Díaz Torres [@alex9006](https://github.com/alex9006)
 * Wassim Lima Saad [@JohnDoe25](https://github.com/JohnDoe25)
-
-> Proyecto del curso Ingeniería de Software (IS 522)
 
 ### Licencia
 
