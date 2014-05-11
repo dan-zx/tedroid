@@ -16,7 +16,7 @@
 -->
 <resources>
 
-    <string name="datetime_format">%1$s %2$s</string>
-    <string name="scores_format">%06d</string>
+    <string name="datetime_format" translatable="false">%1$s %2$s</string>
+    <string name="scores_format" translatable="false">%06d</string>
 
 </resources>

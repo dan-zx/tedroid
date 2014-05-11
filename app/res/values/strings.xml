@@ -77,7 +77,7 @@
     <string name="sounds_pref_off">Disabled</string>
     <string name="delete_scores_pref_title">Delete scores</string>
     <string name="delete_scores_warn_title">Are you sure you want to delete your scores?</string>
-    <string name="delete_scores_warn_message">If you delete your scores, you cannot recover them and it may affect your progress in the achievements you haven't unlocked</string>
+    <string name="delete_scores_warn_message">If you delete your scores, you cannot recover them and it may affect your progress in the achievements you haven\'t unlocked</string>
     <string name="done_delete_scores_message">Scores deleted</string>
     <string name="wiki_pref_title">Tedroid Wiki</string>
     <string name="wiki_pref_summary">How to play?, achievements, FAQs, etc.</string>

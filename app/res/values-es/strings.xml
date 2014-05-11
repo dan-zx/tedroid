@@ -37,14 +37,14 @@
     <!-- SCORES ACTIVITY -->
     <string name="points_header">Puntos</string>
     <string name="level_header">Nivel</string>
-    <string name="lines_header">Lineas</string>
+    <string name="lines_header">Líneas</string>
     <string name="date_header">Fecha</string>
     <string name="no_scores_message">No tienes puntajes todavía</string>
 
     <!-- GAME ACTIVITY -->
     <string name="score_text">Puntaje:</string>
     <string name="level_text">Nivel %s</string>
-    <string name="lines_text">Lineas:</string>
+    <string name="lines_text">Líneas:</string>
     <string name="next_tetromino_text">Siguiente:</string>
     <string name="pause_text">Pausa</string>
     <string name="resume_text">Resumir</string>
