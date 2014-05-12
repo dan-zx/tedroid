@@ -14,161 +14,154 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/tedroid_repeatable_background"
+    android:gravity="center|center_vertical"
     tools:context=".activity.MainMenuActivity" >
 
     <RelativeLayout
+        android:id="@+id/signed_user_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/tedroid_repeatable_background"
-        android:gravity="center|center_vertical"
-        android:paddingBottom="20dp"
-        android:paddingTop="20dp" >
+        android:layout_alignLeft="@+id/menu_layout"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/menu_layout"
+        android:layout_marginBottom="15dp"
+        android:onClick="onSignedUserClick"
+        android:visibility="gone" >
 
-        <RelativeLayout
-            android:id="@+id/signed_user_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/menu_layout"
+        <ImageView
+            android:id="@+id/signed_user_photo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/menu_layout"
-            android:layout_marginBottom="15dp"
-            android:onClick="onSignedUserClick"
-            android:visibility="gone" >
-
-            <ImageView
-                android:id="@+id/signed_user_photo"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="8dp"
-                android:contentDescription="@string/signed_user_photo_description"
-                android:scaleType="centerCrop"
-                android:src="@drawable/no_profile_image" />
-
-            <TextView
-                android:id="@+id/signed_user_name"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignBottom="@+id/signed_user_photo"
-                android:layout_marginRight="8dp"
-                android:layout_toLeftOf="@+id/signed_user_photo"
-                android:gravity="center_vertical|right"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/secondary_text_size"
-                android:textStyle="bold|italic" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@id/menu_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/signed_user_layout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:orientation="vertical" >
+            android:contentDescription="@string/signed_user_photo_description"
+            android:scaleType="centerCrop"
+            android:src="@drawable/no_profile_image" />
 
-            <TextView
-                android:id="@+id/app_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="@string/app_title"
-                android:textColor="@android:color/white"
-                android:textSize="40sp" />
+        <TextView
+            android:id="@+id/signed_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/signed_user_photo"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/signed_user_photo"
+            android:gravity="center_vertical|right"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/secondary_text_size"
+            android:textStyle="bold|italic" />
+    </RelativeLayout>
 
-            <Button
-                android:id="@+id/play_button"
-                style="@style/TedroidYellowButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:onClick="onPlayButtonClick"
-                android:text="@string/play_button_label" />
+    <LinearLayout
+        android:id="@id/menu_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/signed_user_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="vertical" >
 
-            <Button
-                android:id="@+id/scores_button"
-                style="@style/TedroidYellowButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:onClick="onScoresButtonClick"
-                android:text="@string/scores_button_label" />
-
-            <Button
-                android:id="@+id/leaderboards_button"
-                style="@style/TedroidYellowButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:onClick="onLeaderboardsButtonClick"
-                android:text="@string/leaderboards_button_label"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/achievements_button"
-                style="@style/TedroidYellowButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="15dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:onClick="onAchievementsButtonClick"
-                android:text="@string/achievements_button_label"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/settings_button"
-                style="@style/TedroidYellowButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:onClick="onSettingsButtonClick"
-                android:text="@string/settings_button_label" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/sign_in_layout"
+        <TextView
+            android:id="@+id/app_title"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_below="@id/menu_layout"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="10dp" >
+            android:padding="8dp"
+            android:text="@string/app_title"
+            android:textColor="@android:color/white"
+            android:textSize="40sp" />
 
-            <com.google.android.gms.common.SignInButton
-                android:id="@+id/sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/play_button"
+            style="@style/TedroidYellowButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:onClick="onPlayButtonClick"
+            android:text="@string/play_button_label" />
 
-            <TextView
-                android:id="@+id/sign_in_why_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:text="@string/sign_in_why"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/secondary_text_size" />
-        </LinearLayout>
-    </RelativeLayout>
+        <Button
+            android:id="@+id/scores_button"
+            style="@style/TedroidYellowButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:onClick="onScoresButtonClick"
+            android:text="@string/scores_button_label" />
 
-</ScrollView>
+        <Button
+            android:id="@+id/leaderboards_button"
+            style="@style/TedroidYellowButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:onClick="onLeaderboardsButtonClick"
+            android:text="@string/leaderboards_button_label"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/achievements_button"
+            style="@style/TedroidYellowButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:onClick="onAchievementsButtonClick"
+            android:text="@string/achievements_button_label"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/settings_button"
+            style="@style/TedroidYellowButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:onClick="onSettingsButtonClick"
+            android:text="@string/settings_button_label" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sign_in_layout"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@id/menu_layout"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/sign_in_why_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="@string/sign_in_why"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/secondary_text_size" />
+    </LinearLayout>
+
+</RelativeLayout>
