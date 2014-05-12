@@ -66,14 +66,12 @@
     <string name="about_category_title">Acerca de</string>
     <string name="music_type_pref_title">Tipo de música</string>
     <string name="music_type_pref_summary">Tipo: %s</string>
-
     <string-array name="music_type_entries">
         <item>Música A</item>
         <item>Música B</item>
         <item>Música C</item>
         <item>Sin música</item>
     </string-array>
-
     <string name="sounds_pref_title">Sonidos</string>
     <string name="sounds_pref_on">Activados</string>
     <string name="sounds_pref_off">Desactivados</string>
