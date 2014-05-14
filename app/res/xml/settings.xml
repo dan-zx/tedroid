@@ -17,20 +17,18 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceCategory android:title="@string/sfx_category_title" >
-        <ListPreference
-            android:defaultValue="@string/default_music_type"
-            android:entries="@array/music_type_entries"
-            android:entryValues="@array/music_type_values"
-            android:key="@string/music_type_key"
-            android:summary="@string/music_type_pref_summary"
-            android:title="@string/music_type_pref_title" />
-
+        <CheckBoxPreference
+            android:defaultValue="@bool/default_music_switch_value"
+            android:key="@string/music_switch_key"
+            android:summaryOff="@string/music_switch_pref_off"
+            android:summaryOn="@string/music_switch_pref_on"
+            android:title="@string/music_switch_pref_title" />
         <CheckBoxPreference
             android:defaultValue="@bool/default_sounds_switch_value"
             android:key="@string/sounds_switch_key"
-            android:summaryOff="@string/sounds_pref_off"
-            android:summaryOn="@string/sounds_pref_on"
-            android:title="@string/sounds_pref_title" />
+            android:summaryOff="@string/sounds_switch_pref_off"
+            android:summaryOn="@string/sounds_switch_pref_on"
+            android:title="@string/sounds_switch_pref_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/data_category_title" >
         <Preference
@@ -59,6 +57,10 @@
             android:key="@string/open_source_licenses_key"
             android:summary="@string/open_source_licenses_pref_summary"
             android:title="@string/open_source_licenses_pref_title" />
+        <Preference
+            android:key="@string/sfx_licenses_key"
+            android:summary="@string/sfx_licenses_pref_summary"
+            android:title="@string/sfx_licenses_pref_title" />
         <Preference
             android:enabled="false"
             android:key="@string/version_key"

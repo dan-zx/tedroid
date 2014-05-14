@@ -18,6 +18,7 @@
 
     <string name="tedroid_github_url" translatable="false">https://github.com/dan-zx/tedroid</string>
     <string name="tedroid_wiki_url" translatable="false">https://github.com/dan-zx/tedroid/wiki</string>
-    <string name="open_source_licenses_url" translatable="false">file:///android_asset/licenses.html</string>
+    <string name="open_source_licenses_url" translatable="false">file:///android_asset/libs-licenses.html</string>
+    <string name="sfx_licenses_url" translatable="false">file:///android_asset/sfx-licenses.html</string>
 
 </resources>

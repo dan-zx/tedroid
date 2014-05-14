@@ -64,17 +64,12 @@
     <string name="sfx_category_title">Audio</string>
     <string name="data_category_title">Data</string>
     <string name="about_category_title">About</string>
-    <string name="music_type_pref_title">Music type</string>
-    <string name="music_type_pref_summary">Type: %s</string>
-    <string-array name="music_type_entries">
-        <item>Music A</item>
-        <item>Music B</item>
-        <item>Music C</item>
-        <item>No music</item>
-    </string-array>
-    <string name="sounds_pref_title">Sounds</string>
-    <string name="sounds_pref_on">Enabled</string>
-    <string name="sounds_pref_off">Disabled</string>
+    <string name="music_switch_pref_title">Music</string>
+    <string name="music_switch_pref_on">Enabled</string>
+    <string name="music_switch_pref_off">Disabled</string>
+    <string name="sounds_switch_pref_title">Sounds</string>
+    <string name="sounds_switch_pref_on">Enabled</string>
+    <string name="sounds_switch_pref_off">Disabled</string>
     <string name="delete_scores_pref_title">Delete scores</string>
     <string name="delete_scores_warn_title">Are you sure you want to delete your scores?</string>
     <string name="delete_scores_warn_message">If you delete your scores, you cannot recover them and it may affect your progress in the achievements you haven\'t unlocked</string>
@@ -85,6 +80,8 @@
     <string name="github_site_pref_summary">Source code, wikis, known issues, etc.</string>
     <string name="open_source_licenses_pref_title">Open Source Licenses</string>
     <string name="open_source_licenses_pref_summary">Details of open source licenses</string>
+    <string name="sfx_licenses_pref_title">SFX Licenses</string>
+    <string name="sfx_licenses_pref_summary">Details of SFX licenses</string>
     <string name="version_pref_title">App versión</string>
 
     <!-- GAME HELPER -->

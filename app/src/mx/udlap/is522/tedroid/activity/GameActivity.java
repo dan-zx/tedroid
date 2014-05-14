@@ -35,7 +35,6 @@ import mx.udlap.is522.tedroid.data.Score;
 import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
 import mx.udlap.is522.tedroid.data.dao.impl.DAOFactory;
 import mx.udlap.is522.tedroid.fragment.InstructionsFragment;
-import mx.udlap.is522.tedroid.util.Identifiers;
 import mx.udlap.is522.tedroid.util.Typefaces;
 import mx.udlap.is522.tedroid.view.GameBoardView;
 import mx.udlap.is522.tedroid.view.NextTetrominoView;
@@ -87,9 +86,8 @@ public class GameActivity extends BaseGoogleGamesActivity {
 
     /** Inicializa el media player que toca la música */
     private void setUpMediaPlayer() {
-        int musicId = getSelectedMusicType();
-        if (musicId != Identifiers.NOT_FOUND) {
-            mediaPlayer = MediaPlayer.create(this, musicId);
+        if (isMusicEnabled()) {
+            mediaPlayer = MediaPlayer.create(this, R.raw.the_distance);
             mediaPlayer.setLooping(true);
             mediaPlayer.start();
         }
@@ -415,11 +413,10 @@ public class GameActivity extends BaseGoogleGamesActivity {
         totalLines = 0;
     }
 
-    /** @return el id de la música seleccionada o {@link Identifiers#NOT_FOUND}. */
-    private int getSelectedMusicType() {
-        String resIdName = PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(getString(R.string.music_type_key), getString(R.string.default_music_type));
-        return Identifiers.getFrom(resIdName, Identifiers.ResourceType.RAW, this);
+    /** @return si la musica esta habilitada o no. */
+    private boolean isMusicEnabled() {
+        return PreferenceManager.getDefaultSharedPreferences(this)
+            .getBoolean(getString(R.string.music_switch_key), getResources().getBoolean(R.bool.default_music_switch_value));
     }
 
     /**

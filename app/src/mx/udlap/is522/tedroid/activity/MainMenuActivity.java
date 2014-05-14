@@ -36,7 +36,6 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.Player;
 
 import mx.udlap.is522.tedroid.R;
-import mx.udlap.is522.tedroid.util.Identifiers;
 import mx.udlap.is522.tedroid.util.Strings;
 import mx.udlap.is522.tedroid.util.Typefaces;
 
@@ -80,7 +79,7 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
 
     /** Inicializa el media player que toca la música */
     private void setUpMediaPlayer() {
-        mediaPlayer = MediaPlayer.create(this, R.raw.music_intro);
+        mediaPlayer = MediaPlayer.create(this, R.raw.tetris_a_music);
         mediaPlayer.setLooping(true);
     }
     
@@ -285,8 +284,7 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
 
     /** @return si la musica esta habilitada o no. */
     private boolean isMusicEnabled() {
-        String resIdName = PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(getString(R.string.music_type_key), getString(R.string.default_music_type));
-        return Identifiers.getFrom(resIdName, Identifiers.ResourceType.RAW, this) != Identifiers.NOT_FOUND;
+        return PreferenceManager.getDefaultSharedPreferences(this)
+            .getBoolean(getString(R.string.music_switch_key), getResources().getBoolean(R.bool.default_music_switch_value));
     }
 }

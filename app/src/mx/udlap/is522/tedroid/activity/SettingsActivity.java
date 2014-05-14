@@ -22,7 +22,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.util.Log;
@@ -44,12 +43,13 @@ public class SettingsActivity extends PreferenceActivity {
 
     private static final String TAG = SettingsActivity.class.getSimpleName();
 
-    private ListPreference musicTypePreference;
     private Preference deleteScoresPreference;
     private Preference versionPreference;
     private Preference openSourceLicencesPreference;
+    private Preference sfxLicencesPreference;
     private AlertDialog deleteScoresWarnDialog;
     private AlertDialog openSourceLicencesDialog;
+    private AlertDialog sfxLicencesDialog;
 
     @Override
     @SuppressWarnings("deprecation")
@@ -58,9 +58,9 @@ public class SettingsActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.settings);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) displayHomeAsUp();
         findPreferences();
-        setUpMusicTypePreference();
         setUpDeleteScoresPreference();
         setUpOpenSourceLicencesPreference();
+        setUpSfxLicencesPreference();
         setUpVersionPreference();
     }
 
@@ -77,25 +77,10 @@ public class SettingsActivity extends PreferenceActivity {
     /** Encuentra todas los Preferences en el esquema xml. */
     @SuppressWarnings("deprecation")
     private void findPreferences() {
-        musicTypePreference = (ListPreference) findPreference(getString(R.string.music_type_key));
         deleteScoresPreference = findPreference(getString(R.string.delete_scores_key));
         openSourceLicencesPreference = findPreference(getString(R.string.open_source_licenses_key));
+        sfxLicencesPreference = findPreference(getString(R.string.sfx_licenses_key));
         versionPreference = findPreference(getString(R.string.version_key));
-    }
-
-    /** Inicializa la configuración de música */
-    private void setUpMusicTypePreference() {
-        musicTypePreference.setSummary(getString(R.string.music_type_pref_summary, musicTypePreference.getEntry()));
-        musicTypePreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                ListPreference listPref = (ListPreference) preference;
-                listPref.setValue(newValue.toString());
-                listPref.setSummary(getString(R.string.music_type_pref_summary, listPref.getEntry()));
-                return true;
-            }
-        });
     }
 
     /** Inicializa la configuración de borrado de puntajes. */
@@ -136,6 +121,23 @@ public class SettingsActivity extends PreferenceActivity {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 openSourceLicencesDialog.show();
+                return true;
+            }
+        });
+    }
+    
+    private void setUpSfxLicencesPreference() {
+        WebView webView = new WebView(this);
+        webView.loadUrl(getString(R.string.sfx_licenses_url));
+        sfxLicencesDialog = new AlertDialog.Builder(this)
+            .setTitle(R.string.sfx_licenses_pref_title)
+            .setView(webView)
+            .create();
+        sfxLicencesPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                sfxLicencesDialog.show();
                 return true;
             }
         });
