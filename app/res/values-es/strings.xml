@@ -81,7 +81,7 @@
     <string name="open_source_licenses_pref_title">Licencias de código abierto</string>
     <string name="open_source_licenses_pref_summary">Detalles de las licencias de software de código abierto</string>
     <string name="sfx_licenses_pref_title">Licencias de sonidos y música</string>
-    <string name="sfx_licenses_pref_summary">>Detalles de las licencias de sonidos y música</string>
+    <string name="sfx_licenses_pref_summary">Detalles de las licencias de sonidos y música</string>
     <string name="version_pref_title">Versión de la aplicación</string>
 
     <!-- GAME HELPER -->
