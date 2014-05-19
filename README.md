@@ -1,23 +1,10 @@
-<img src="https://raw2.github.com/dan-zx/tedroid/master/app/ic_launcher-web.png" height="100px" align="left" style="padding:5px;" />
-
-Tedroid
-=======
-
-Juego de **Tetris** para Android.
-
-### Documentación
-
-La documentación del proyecto puede ser consultada en [Google Drive](http://ow.ly/u6wU3) _*Solo visible para colaboradores_.
-
-La información sobre descarga, instalación, construcción y depuración del proyecto se encuentra en la [wiki](https://github.com/dan-zx/tedroid/wiki).
+<a href="https://play.google.com/store/apps/details?id=mx.udlap.is522.tedroid">
+  <img alt="Disponible en Google Play" src="https://dl.dropboxusercontent.com/u/1995295/img/tedroid/promo.png" />
+</a>
 
 ### Descargas
 
-Las versiones de la aplicación se pueden descargar [aquí](https://github.com/dan-zx/tedroid/releases).
-
-<a href="https://play.google.com/store/apps/details?id=mx.udlap.is522.tedroid">
-  <img alt="Get it on Google Play" src="https://developer.android.com/images/brand/es-419_generic_rgb_wo_45.png" />
-</a>
+Todas las versión de la aplicación se pueden descargar [aquí](https://github.com/dan-zx/tedroid/releases).
 
 ### Testers
 
