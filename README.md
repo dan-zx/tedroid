@@ -2,10 +2,6 @@
   <img alt="Disponible en Google Play" src="https://dl.dropboxusercontent.com/u/1995295/img/tedroid/promo.png" />
 </a>
 
-### Descargas
-
-Todas las versión de la aplicación se pueden descargar [aquí](https://github.com/dan-zx/tedroid/releases).
-
 ### Testers
 
 Unete a la comunidad de Google+ -> [Tedroid testers](https://plus.google.com/communities/110136913607995746874)
