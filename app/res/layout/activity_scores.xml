@@ -17,14 +17,23 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/tedroid_repeatable_background" >
+    android:background="@drawable/tedroid_repeatable_background"
+    android:scrollbars="none" >
 
-    <TableLayout
-        android:id="@+id/score_table"
-        android:layout_width="match_parent"
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="8dp" />
+        android:scrollbars="none" >
+
+        <TableLayout
+            android:id="@+id/score_table"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="4dp" />
+
+    </HorizontalScrollView>
 
 </ScrollView>

@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:layout_margin="8dp"
             android:contentDescription="@string/pause_text"
             android:onClick="onPauseButtonClick"
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:layout_margin="8dp"
             android:contentDescription="@string/restart_text"
             android:onClick="onRestartButtonClick"
@@ -60,8 +60,8 @@
             android:gravity="center"
             android:padding="13dp"
             android:singleLine="true"
-            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white"
+            android:textSize="@dimen/secondary_text_size"
             android:textStyle="bold" />
     </RelativeLayout>
 
@@ -84,8 +84,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="@string/score_text"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/secondary_text_size"
                 android:textStyle="bold" />
 
             <TextView
@@ -98,8 +98,8 @@
                 android:gravity="center"
                 android:padding="10dp"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/secondary_text_size"
                 android:textStyle="bold" />
 
             <TextView
@@ -108,8 +108,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="@string/lines_text"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/secondary_text_size"
                 android:textStyle="bold" />
 
             <TextView
@@ -122,8 +122,8 @@
                 android:gravity="center"
                 android:padding="10dp"
                 android:singleLine="true"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/secondary_text_size"
                 android:textStyle="bold" />
 
             <TextView
@@ -132,8 +132,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="@string/next_tetromino_text"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white"
+                android:textSize="@dimen/secondary_text_size"
                 android:textStyle="bold" />
 
             <mx.udlap.is522.tedroid.view.NextTetrominoView
@@ -159,7 +159,8 @@
                 android:background="@android:color/transparent"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/secondary_text_size" />
         </android.support.v4.view.ViewPager>
 
         <TextView
@@ -171,8 +172,8 @@
             android:layout_weight="1.3"
             android:gravity="center"
             android:text="@string/game_over_text"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/white"
+            android:textSize="@dimen/primary_text_size"
             android:textStyle="bold"
             android:visibility="gone" />
 
