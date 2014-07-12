@@ -82,7 +82,7 @@
     <string name="open_source_licenses_pref_summary">Details of open source licenses</string>
     <string name="sfx_licenses_pref_title">SFX Licenses</string>
     <string name="sfx_licenses_pref_summary">Details of SFX licenses</string>
-    <string name="version_pref_title">App versión</string>
+    <string name="version_pref_title">App version</string>
 
     <!-- GAME HELPER -->
     <string name="gamehelper_sign_in_failed">Failed to sign in. Please check your network connection and try again</string>
