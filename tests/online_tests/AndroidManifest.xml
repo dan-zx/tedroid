@@ -17,7 +17,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="mx.udlap.is522.tedroid.test"
     android:versionCode="2"
-    android:versionName="1.1-SNAPSHOT" >
+    android:versionName="1.0.1" >
 
     <uses-sdk
         android:minSdkVersion="9"
