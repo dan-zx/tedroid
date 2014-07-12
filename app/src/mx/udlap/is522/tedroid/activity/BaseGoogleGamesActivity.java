@@ -41,8 +41,7 @@ public abstract class BaseGoogleGamesActivity extends FragmentActivity implement
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (gameHelper == null) getGameHelper();
-        gameHelper.setup(this);
+        getGameHelper().setup(this);
     }
 
     @Override
