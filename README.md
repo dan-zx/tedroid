@@ -4,9 +4,10 @@
 
 ### Testers
 
-Unete a la comunidad de Google+ -> [Tedroid testers](https://plus.google.com/communities/110136913607995746874)
+Unete a la comunidad de Google+ para probar las caracteristicas de versiones beta y alpha -> [Tedroid testers](https://plus.google.com/communities/110136913607995746874)
 
 ### Desarrolladores:
+
 * Daniel Pedraza Arcega [@dan-zx](https://github.com/dan-zx)
 * Andrés Peña Peralta [@andres-pena-peralta](https://github.com/andres-pena-peralta)
 * Alejandro Díaz Torres [@alex9006](https://github.com/alex9006)
