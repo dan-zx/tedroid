@@ -64,6 +64,7 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
     private LinearLayout signInLayout;
     private AlertDialog offlineAlertDialog;
     private AlertDialog signOutAlertDialog;
+    private AlertDialog gameChooserAlertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
         setUpOfflineAlertDialog();
         setUpMediaPlayer();
         setUpSignOutAlertDialog();
+        setUpGameChooserAlertDialog();
     }
 
     /** Inicializa el media player que toca la música */
@@ -176,7 +178,7 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    gotoGame();
+                    gameChooserAlertDialog.show();
                 }
             })
             .setNegativeButton(R.string.offline_warn_sign_in, new DialogInterface.OnClickListener() {
@@ -205,9 +207,32 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
             .create();
     }
 
+    /** Inicializa el diálogo de alerta de los tipos de juego. */
+    private void setUpGameChooserAlertDialog() {
+        gameChooserAlertDialog = new AlertDialog.Builder(this)
+            .setTitle(R.string.game_options_title)
+            .setItems(R.array.game_options, new DialogInterface.OnClickListener() {
+                
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent intent = null;
+                    switch (which) {
+                        case 0: 
+                            intent = GameActivity.makeIntent(MainMenuActivity.this, GameActivity.GameType.CLASSIC);
+                            break;
+                        case 1:
+                            intent = GameActivity.makeIntent(MainMenuActivity.this, GameActivity.GameType.SPECIAL);
+                            break;
+                    }
+                    startActivity(intent);
+                }
+            })
+            .create();
+    }
+
     public void onPlayButtonClick(View view) {
         if (!isSignedIn()) offlineAlertDialog.show();
-        else gotoGame();
+        else gameChooserAlertDialog.show();
     }
 
     public void onScoresButtonClick(View view) {
@@ -245,12 +270,6 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
         signedUserLayout.setVisibility(View.GONE);
         signedUserTextView.setText(Strings.EMPTY);
         signedUserImageView.setImageResource(R.drawable.no_profile_image);
-    }
-
-    /** Inicia la actividad del juego principal. */
-    private void gotoGame() {
-        Intent intent = new Intent(MainMenuActivity.this, GameActivity.class);
-        startActivity(intent);
     }
 
     @Override

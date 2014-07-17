@@ -127,9 +127,16 @@ public class GameBoardView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        
-        drawBackgroundGrid(canvas);
+        drawViewOnCanvas(canvas);
+    }
 
+    /**
+     * Dibuja este tablaro en el Canvas.
+     * 
+     * @param canvas el Canvas donde dibujar.
+     */
+    protected void drawViewOnCanvas(Canvas canvas) {
+        drawBackgroundGrid(canvas);
         if (!isInEditMode()) {
             currentTetromino.drawOn(canvas);
             drawBoardMatrix(canvas);
@@ -139,9 +146,9 @@ public class GameBoardView extends View {
             currentTetromino.drawOn(canvas);
         }
     }
-
+    
     /** Pinta el fondo de la cuadrilla del tablero. */
-    private void drawBackgroundGrid(Canvas canvas) {
+    protected void drawBackgroundGrid(Canvas canvas) {
         for (int i = 0; i < boardMatrix[0].length; i++) canvas.drawLine(i * boardColumnWidth, 0, i * boardColumnWidth, getHeight(), gridBackground);
         for (int i = 0; i < boardMatrix.length; i++) canvas.drawLine(0, i * boardRowHeight, getWidth(), i * boardRowHeight, gridBackground);
     }
@@ -198,7 +205,7 @@ public class GameBoardView extends View {
         tetrominoForeground.setStyle(Paint.Style.FILL); // El color se toma de la matriz
         tetrominoBorder = new Paint();
         tetrominoBorder.setStyle(Paint.Style.STROKE);
-        tetrominoBorder.setColor(getContext().getResources().getColor(android.R.color.white));
+        tetrominoBorder.setColor(getContext().getResources().getColor(Shape.BORDER_COLOR));
         gridBackground = new Paint();
         gridBackground.setStyle(Paint.Style.STROKE);
         gridBackground.setColor(getContext().getResources().getColor(android.R.color.black));
@@ -218,8 +225,7 @@ public class GameBoardView extends View {
 
     /** @return tetromino escogiendo al azar una de las figuras predefinadas. */
     protected Tetromino randomTetromino() {
-        if (random == null) random = new Random();
-        int randomIndex = random.nextInt(TetrominoShape.values().length);
+        int randomIndex = getRandom().nextInt(TetrominoShape.values().length);
         TetrominoShape randomShape = TetrominoShape.values()[randomIndex];
         return new Tetromino.Builder(this).use(randomShape).build();
     }
@@ -270,7 +276,7 @@ public class GameBoardView extends View {
      * 
      * @param canvas un Canvas donde dibujar.
      */
-    private void drawBoardMatrix(Canvas canvas) {
+    protected void drawBoardMatrix(Canvas canvas) {
         for (int row = 0; row < boardMatrix.length; row++) {
             for (int column = 0; column < boardMatrix[0].length; column++) {
                 if (boardMatrix[row][column] != android.R.color.transparent) {
@@ -352,6 +358,12 @@ public class GameBoardView extends View {
         return false;
     }
 
+    /** @return el objeto Random. */
+    public Random getRandom() {
+        if (random == null) random = new Random();
+        return random;
+    }
+
     /**
      * Reproduce el sonido asociado con el id del sonido proporcionado.
      * 
@@ -392,6 +404,18 @@ public class GameBoardView extends View {
         return isGameOver;
     }
 
+    public boolean isGameStarted() {
+        return isGameStarted;
+    }
+    
+    protected Paint getTetrominoBorder() {
+        return tetrominoBorder;
+    }
+
+    protected Paint getTetrominoForeground() {
+        return tetrominoForeground;
+    }
+    
     /**
      * Inicia el juego.
      * 
@@ -563,12 +587,20 @@ public class GameBoardView extends View {
      * Cancela gestos, actualiza la matriz, limpia las lineas completas y reproduce
      * {@link #DROP_SOUND}.
      */
-    private void onCurrentTetrominoOnFloor() {
-        gestureListener.shouldStopScrollEvent = true;
+    protected void onCurrentTetrominoOnFloor() {
         updateBoardMatrix();
         clearAnyCompletedLines();
         invalidate();
         play(DROP_SOUND);
+    }
+
+    protected void onTetrominoMoved() {
+        invalidate();
+    }
+
+    protected void onTetrominoRotated() {
+        invalidate();
+        play(ROTATE_SOUND);
     }
 
     /** Move el tetromino hasta el suelo del tablero en un tiempo. */
@@ -620,7 +652,7 @@ public class GameBoardView extends View {
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+    protected class GestureListener extends GestureDetector.SimpleOnGestureListener {
 
         private boolean shouldStopScrollEvent;
         private int softDropGridSpaces;
@@ -637,13 +669,13 @@ public class GameBoardView extends View {
                     if (distanceX < 0) {
                         if (Math.abs(totalDistanceX) >= boardColumnWidth) {
                             totalDistanceX = 0;
-                            if (currentTetromino.moveTo(Tetromino.Direction.RIGHT)) invalidate();
+                            if (currentTetromino.moveTo(Tetromino.Direction.RIGHT)) onTetrominoMoved();
                         }
                         // Izquierda
                     } else {
                         if (Math.abs(totalDistanceX) >= boardColumnWidth) {
                             totalDistanceX = 0;
-                            if (currentTetromino.moveTo(Tetromino.Direction.LEFT)) invalidate();
+                            if (currentTetromino.moveTo(Tetromino.Direction.LEFT)) onTetrominoMoved();
                         }
                     }
                     // Scroll hacia abajo
@@ -653,11 +685,12 @@ public class GameBoardView extends View {
                         totalDistanceY = 0;
                         // Si no puede continuar abajo significa que bajo en modo SoftDrop
                         if (!currentTetromino.moveTo(Tetromino.Direction.DOWN)) {
+                            shouldStopScrollEvent = true;
                             onCurrentTetrominoOnFloor();
                             setUpNewTetrominos();
                             if (pointsAwardedListener != null) pointsAwardedListener.onSoftDropped(softDropGridSpaces);
                         } else {
-                            invalidate();
+                            onTetrominoMoved();
                             softDropGridSpaces++;
                         }
                     }
@@ -670,10 +703,7 @@ public class GameBoardView extends View {
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             if (isGameStarted && !isPaused && !isGameOver) {
-                if (currentTetromino.rotate()) {
-                    invalidate();
-                    play(ROTATE_SOUND);
-                }
+                if (currentTetromino.rotate()) onTetrominoRotated();
             }
 
             return true;

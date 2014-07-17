@@ -16,7 +16,9 @@
 package mx.udlap.is522.tedroid.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -28,6 +30,7 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import mx.udlap.is522.tedroid.R;
@@ -38,6 +41,7 @@ import mx.udlap.is522.tedroid.fragment.InstructionsFragment;
 import mx.udlap.is522.tedroid.util.Typefaces;
 import mx.udlap.is522.tedroid.view.GameBoardView;
 import mx.udlap.is522.tedroid.view.NextTetrominoView;
+import mx.udlap.is522.tedroid.view.SpecialGameBoardView;
 import mx.udlap.is522.tedroid.view.Tetromino;
 
 import java.util.ArrayList;
@@ -51,6 +55,10 @@ import java.util.Map;
  */
 public class GameActivity extends BaseGoogleGamesActivity {
 
+    public static enum GameType { CLASSIC, SPECIAL };
+
+    private static final String GAME_TYPE_EXTRA = "GAME_TYPE";
+    
     private int totalLines;
     private int totalScore;
     private int level;
@@ -68,6 +76,13 @@ public class GameActivity extends BaseGoogleGamesActivity {
     private AlertDialog restartDialog;
     private AlertDialog exitDialog;
     private ViewPager viewPager;
+    private LinearLayout gameBoardLayout;
+
+    public static Intent makeIntent(Context context, GameType type) {
+        Intent intent = new Intent(context, GameActivity.class);
+        intent.putExtra(GAME_TYPE_EXTRA, type.name());
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,8 +150,8 @@ public class GameActivity extends BaseGoogleGamesActivity {
         linesTextView = (TextView) findViewById(R.id.lines);
         nextTetrominoView = (NextTetrominoView) findViewById(R.id.next_tetromino);
         pauseButton = (ImageButton) findViewById(R.id.pause_button);
-        gameBoardView = (GameBoardView) findViewById(R.id.game_board);
         viewPager = (ViewPager) findViewById(R.id.pager);
+        gameBoardLayout = (LinearLayout) findViewById(R.id.game_board_layout);
     }
 
     /** Inicializa el valor de cada textview del puntaje del usuario */
@@ -173,6 +188,16 @@ public class GameActivity extends BaseGoogleGamesActivity {
 
     /** Inicializa el tablero de juego */
     private void setUpGameBoardView() {
+        GameType type = GameType.valueOf(getIntent().getExtras().getString(GAME_TYPE_EXTRA));
+        switch (type) {
+            case CLASSIC:
+                gameBoardView = new GameBoardView(this);
+                break;
+            case SPECIAL:
+                gameBoardView = new SpecialGameBoardView(this);
+                break;
+        }
+        gameBoardView.setBackgroundResource(R.drawable.tedroid_gameboardview_background);
         gameBoardView.setOnCommingNextTetrominoListener(new GameBoardView.OnCommingNextTetrominoListener() {
 
             @Override
@@ -214,6 +239,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
                 new ScoresAsyncTask().execute(newScore);
             }
         });
+        gameBoardLayout.addView(gameBoardView);
         gameBoardView.startGame();
     }
 

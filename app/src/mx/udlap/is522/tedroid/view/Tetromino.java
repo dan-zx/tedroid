@@ -37,20 +37,22 @@ public class Tetromino {
     private int[][] shapeMatrix;
 
     /**
-     * Constructor. En realidad debe constuirse con un Tetromino.Builder
+     * Construye un nuevo tetromino.
      * 
-     * @param builder objeto para armar un nuevo tetromino.
+     * @param gameBoardView el GameBoardView donde será dibujado.
+     * @param shapeMatrix la forma que tendrá.
+     * @param hasRotation si rota o no.
      */
-    private Tetromino(Builder builder) {
-        gameBoardView = builder.gameBoardView;
-        shapeMatrix = builder.shapeMatrix;
-        hasRotation = builder.hasRotation;
-        position = new Position();
-        foreground = new Paint();
-        foreground.setStyle(Paint.Style.FILL); // El color se toma de la matriz
-        border = new Paint();
-        border.setStyle(Paint.Style.STROKE);
-        border.setColor(gameBoardView.getContext().getResources().getColor(android.R.color.white));
+    Tetromino(GameBoardView gameBoardView, int[][] shapeMatrix, boolean hasRotation) {
+        this.gameBoardView = gameBoardView;
+        this.shapeMatrix = shapeMatrix;
+        this.hasRotation = hasRotation;
+        this.position = new Position();
+        this.foreground = new Paint();
+        this.foreground.setStyle(Paint.Style.FILL); // El color se toma de la matriz
+        this.border = new Paint();
+        this.border.setStyle(Paint.Style.STROKE);
+        this.border.setColor(gameBoardView.getContext().getResources().getColor(Shape.BORDER_COLOR));
     }
 
     /**
@@ -58,7 +60,7 @@ public class Tetromino {
      * 
      * @param canvas el objeto donde dibujar.
      */
-    public void drawOn(Canvas canvas) {
+    void drawOn(Canvas canvas) {
         for (int row = 0; row < shapeMatrix.length; row++) {
             for (int column = 0; column < shapeMatrix[0].length; column++) {
                 if (shapeMatrix[row][column] != android.R.color.transparent) {
@@ -80,7 +82,7 @@ public class Tetromino {
      * @param direction {@link Direction#LEFT}, {@link Direction#RIGHT} o {@link Direction#DOWN}.
      * @return si se pudo mover o no.
      */
-    public boolean moveTo(Direction direction) {
+    boolean moveTo(Direction direction) {
         switch (direction) {
             case LEFT: return moveLeft();
             case RIGHT: return moveRight();
@@ -94,7 +96,7 @@ public class Tetromino {
      * 
      * @return si se traslapa con otras piezas o no.
      */
-    public boolean centerOnGameBoardView() {
+    boolean centerOnGameBoardView() {
         int[][] boardMatrix = gameBoardView.getBoardMatrix();
         int boardCenterX = boardMatrix[0].length / 2;
         int shapeCenterX = shapeMatrix[0].length / 2;
@@ -108,7 +110,7 @@ public class Tetromino {
      * 
      * @return si se pudo mover o no.
      */
-    public boolean rotate() {
+    boolean rotate() {
         if (hasRotation) {
             int[][] originalShapeMatrix = shapeMatrix;
             int[][] newShapeMatrix = new int[originalShapeMatrix[0].length][originalShapeMatrix.length];
@@ -128,12 +130,12 @@ public class Tetromino {
     }
 
     /** @return una matriz de 0s y 1s con la forma de este tetromino. */
-    public int[][] getShapeMatrix() {
+    int[][] getShapeMatrix() {
         return shapeMatrix;
     }
 
     /** @return si la figura tiene o no rotación este tetromino. */
-    public boolean hasRotation() {
+    boolean hasRotation() {
         return hasRotation;
     }
 
@@ -141,8 +143,23 @@ public class Tetromino {
      * @return la posición en el tablero donde se encuentra la esquina superior izquierda de la
      *         matriz de este tetromino
      */
-    public Position getPosition() {
+    Position getPosition() {
         return position;
+    }
+
+    /** @return el GameBoardView donde se encuentra. */
+    GameBoardView getGameBoardView() {
+        return gameBoardView;
+    }
+
+    /** @return el Paint con el que se pinta la superficie. */
+    Paint getForeground() {
+        return foreground;
+    }
+
+    /** @return el Paint con el que se pinta el borde. */
+    Paint getBorder() {
+        return border;
     }
 
     /**
@@ -262,6 +279,7 @@ public class Tetromino {
         return column < 0 || column >= boardMatrix[0].length;
     }
 
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -271,6 +289,7 @@ public class Tetromino {
         return result;
     }
 
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -288,10 +307,26 @@ public class Tetromino {
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    public static class Position {
+    static class Position {
 
         private int boardMatrixColumn;
         private int boardMatrixRow;
+
+        /**
+         * @return la columna donde se encuentra la esquina superior izquierda de la matriz de este
+         *         tetromino.
+         */
+        int getBoardMatrixColumn() {
+            return boardMatrixColumn;
+        }
+
+        /**
+         * @return la fila donde se encuentra la esquina superior izquierda de la matriz de este
+         *         tetromino.
+         */
+        int getBoardMatrixRow() {
+            return boardMatrixRow;
+        }
 
         @Override
         public int hashCode() {
@@ -312,22 +347,6 @@ public class Tetromino {
             if (boardMatrixRow != other.boardMatrixRow) return false;
             return true;
         }
-
-        /**
-         * @return la columna donde se encuentra la esquina superior izquierda de la matriz de este
-         *         tetromino.
-         */
-        public int getBoardMatrixColumn() {
-            return boardMatrixColumn;
-        }
-
-        /**
-         * @return la fila donde se encuentra la esquina superior izquierda de la matriz de este
-         *         tetromino.
-         */
-        public int getBoardMatrixRow() {
-            return boardMatrixRow;
-        }
     }
 
     /**
@@ -336,9 +355,9 @@ public class Tetromino {
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    public static class Builder {
+    static final class Builder {
 
-        public static final TetrominoShape DEFAULT_SHAPE = TetrominoShape.O;
+        static final Shape DEFAULT_SHAPE = TetrominoShape.O;
 
         private int[][] shapeMatrix;
         private boolean hasRotation;
@@ -349,7 +368,7 @@ public class Tetromino {
          * 
          * @param gameBoardView el tablero donde crear el nuevo tetromino.
          */
-        public Builder(GameBoardView gameBoardView) {
+        Builder(GameBoardView gameBoardView) {
             hasRotation = DEFAULT_SHAPE.hasRotation();
             shapeMatrix = new int[DEFAULT_SHAPE.getShapeMatrix().length][];
             System.arraycopy(DEFAULT_SHAPE.getShapeMatrix(), 0, shapeMatrix, 0, DEFAULT_SHAPE.getShapeMatrix().length);
@@ -362,7 +381,7 @@ public class Tetromino {
          * @param shape un {@link TetrominoShape}.
          * @return este Builder.
          */
-        public Builder use(TetrominoShape shape) {
+        Builder use(TetrominoShape shape) {
             shapeMatrix = new int[shape.getShapeMatrix().length][];
             System.arraycopy(shape.getShapeMatrix(), 0, shapeMatrix, 0, shape.getShapeMatrix().length);
             hasRotation = shape.hasRotation();
@@ -375,7 +394,7 @@ public class Tetromino {
          * @param shapeMatrix una matriz de 1s y 0s.
          * @return este Builder.
          */
-        public Builder setShape(int[][] shapeMatrix) {
+        Builder setShape(int[][] shapeMatrix) {
             this.shapeMatrix = new int[shapeMatrix.length][];
             System.arraycopy(shapeMatrix, 0, this.shapeMatrix, 0, shapeMatrix.length);
             return this;
@@ -386,7 +405,7 @@ public class Tetromino {
          * 
          * @return este Builder.
          */
-        public Builder hasRotation() {
+        Builder hasRotation() {
             this.hasRotation = true;
             return this;
         }
@@ -394,8 +413,8 @@ public class Tetromino {
         /**
          * @return un nuevo tetromino.
          */
-        public Tetromino build() {
-            return new Tetromino(this);
+        Tetromino build() {
+            return new Tetromino(gameBoardView, shapeMatrix, hasRotation);
         }
     }
 
@@ -405,7 +424,7 @@ public class Tetromino {
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    public static enum Direction {
+    static enum Direction {
 
         RIGHT, LEFT, DOWN
     }

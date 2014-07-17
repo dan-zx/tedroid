@@ -17,6 +17,7 @@ package mx.udlap.is522.tedroid.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
+import android.widget.LinearLayout;
 
 import com.robotium.solo.Solo;
 
@@ -52,7 +53,7 @@ public class StopGameTest extends ActivityInstrumentationTestCase2<GameActivity>
         solo.goBack();
         solo.waitForDialogToOpen();
 
-        GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.game_board);
+        GameBoardView gameBoardView = (GameBoardView) ((LinearLayout) solo.getView(R.id.game_board_layout)).getChildAt(0);
         assertNotNull("GameBoardView should not be null", gameBoardView);
         assertTrue("The game should be paused", gameBoardView.isPaused());
 

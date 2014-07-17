@@ -23,7 +23,7 @@ import mx.udlap.is522.tedroid.R;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public enum TetrominoShape {
+public enum TetrominoShape implements Shape {
 
     I (new int[][] { { R.color.tetromino_i, R.color.tetromino_i, R.color.tetromino_i, R.color.tetromino_i } }, true),
     J (new int[][] { { R.color.tetromino_j, R.color.tetromino_j, R.color.tetromino_j }, { android.R.color.transparent, android.R.color.transparent, R.color.tetromino_j } }, true), 
@@ -48,11 +48,13 @@ public enum TetrominoShape {
     }
 
     /** @return una matriz de android.R.color.transparent y R.color.ids con la forma de la figura. */
+    @Override
     public int[][] getShapeMatrix() {
         return shapeMatrix;
     }
 
     /** @return si la figura tiene o no rotación */
+    @Override
     public boolean hasRotation() {
         return hasRotation;
     }

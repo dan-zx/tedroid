@@ -33,6 +33,11 @@
     <string name="signed_user_photo_description">My photo</string>
     <string name="sign_out_title">Confirm log out from Google</string>
     <string name="sign_out_message">You\'ll log out as %s from Tedroid</string>
+    <string name="game_options_title">Choose game</string>
+    <string-array name="game_options">
+        <item>Classic</item>
+        <item>Special Challenge</item>
+    </string-array>
 
     <!-- SCORES ACTIVITY -->
     <string name="points_header">Points</string>

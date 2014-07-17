@@ -17,6 +17,7 @@ package mx.udlap.is522.tedroid.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.robotium.solo.Solo;
@@ -73,7 +74,7 @@ public class ScorePersistenceTest extends ActivityInstrumentationTestCase2<MainM
         solo.waitForDialogToClose();
         solo.waitForActivity(GameActivity.class);
         
-        GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.game_board);
+        GameBoardView gameBoardView = (GameBoardView) ((LinearLayout) solo.getView(R.id.game_board_layout)).getChildAt(0);
         TextView scoreTextView = (TextView) solo.getView(R.id.score);
         TextView levelText = (TextView) solo.getView(R.id.levels);
         TextView linesTextView = (TextView) solo.getView(R.id.lines);
