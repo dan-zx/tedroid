@@ -17,8 +17,6 @@ package mx.udlap.is522.tedroid.data.dao.impl;
 
 import android.content.Context;
 
-import mx.udlap.is522.tedroid.data.dao.GenericDAO;
-import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
 import mx.udlap.is522.tedroid.data.dao.impl.sqlite.ScoreSQLiteDAO;
 import mx.udlap.is522.tedroid.data.source.TedroidSQLiteOpenHelper;
 
@@ -41,19 +39,19 @@ public class DAOFactory {
         this.context = context;
     }
 
-    /**
-     * @param which que tipo de DAO (interfaz).
-     * @return un GenericDAO o {@code null} si no hay implementación de esa interfaz.
-     */
-    @SuppressWarnings("unchecked")
-    public <T extends GenericDAO<?, ?>> T get(Class<T> which) {
-        if (which == ScoreDAO.class) return (T) buildScoreDAO();
-        return null;
+    /** @return el ScoreSQLiteDAO correspondiente al juego clasico. */
+    public ScoreSQLiteDAO getScoreClassicDAO() {
+        return getScoreDAO(ScoreSQLiteDAO.Table.CLASSIC);
+    }
+
+    /** @return el ScoreSQLiteDAO correspondiente al reto especial. */
+    public ScoreSQLiteDAO getScoreSpecialDAO() {
+        return getScoreDAO(ScoreSQLiteDAO.Table.SPECIAL);
     }
 
     /** @return un ScoreSQLiteDAO. */
-    private ScoreSQLiteDAO buildScoreDAO() {
-        ScoreSQLiteDAO scoreSQLiteDAO = new ScoreSQLiteDAO();
+    private ScoreSQLiteDAO getScoreDAO(ScoreSQLiteDAO.Table which) {
+        ScoreSQLiteDAO scoreSQLiteDAO = new ScoreSQLiteDAO(which);
         scoreSQLiteDAO.setContext(context);
         scoreSQLiteDAO.setSQLiteOpenHelper(new TedroidSQLiteOpenHelper(context));
         return scoreSQLiteDAO;

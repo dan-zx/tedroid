@@ -15,9 +15,7 @@
  */
 package mx.udlap.is522.tedroid.activity;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -36,7 +34,9 @@ import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
 import mx.udlap.is522.tedroid.data.dao.impl.DAOFactory;
 import mx.udlap.is522.tedroid.util.Typefaces;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Actividad que muestra la lista de puntajes obtenidos en el juego.
@@ -44,10 +44,13 @@ import java.util.List;
  * @author Daniel Pedraza-Arcega
  * @since 1.0
  */
-public class ScoresActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<List<Score>> {
+public class ScoresActivity extends FragmentActivity implements LoaderManager.LoaderCallbacks<Map<String, List<Score>>> {
 
+    private TextView classicGameHeaderText;
+    private TextView specialGameHeaderText;
     private TableRow.LayoutParams layoutParams;
-    private TableLayout scoreTable;
+    private TableLayout scoreClassicTable;
+    private TableLayout scoreSpecialTable;
     private Typeface twobitTypeface;
     private float primaryTextSize;
     private float secondaryTextSize;
@@ -58,7 +61,22 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scores);
-        scoreTable = (TableLayout) findViewById(R.id.score_table);
+        findViews();
+        initConstants();
+        setupScoresHeaders();
+        getSupportLoaderManager().initLoader(0, null, this).forceLoad();
+    }
+
+    /** Ecuentra las vistas. */
+    private void findViews() {
+        classicGameHeaderText = (TextView) findViewById(R.id.classic_game_header_text);
+        specialGameHeaderText = (TextView) findViewById(R.id.special_game_header_text);
+        scoreClassicTable = (TableLayout) findViewById(R.id.score_classic_table);
+        scoreSpecialTable = (TableLayout) findViewById(R.id.score_special_table);
+    }
+
+    /** Inicializa las constantes a usar. */
+    private void initConstants() {
         layoutParams = new TableRow.LayoutParams();
         layoutParams.rightMargin = getResources().getDimensionPixelSize(R.dimen.score_table_margin);
         layoutParams.topMargin = getResources().getDimensionPixelSize(R.dimen.score_table_margin);
@@ -67,7 +85,12 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
         secondaryTextSize = getResources().getDimension(R.dimen.secondary_text_size);
         primaryColor = getResources().getColor(R.color.primary_for_background);
         secondaryColor = getResources().getColor(R.color.secondary_for_background);
-        getSupportLoaderManager().initLoader(0, null, this).forceLoad();
+    }
+
+    /** Setea estilos a los headers. */
+    private void setupScoresHeaders() {
+        classicGameHeaderText.setTypeface(twobitTypeface);
+        specialGameHeaderText.setTypeface(twobitTypeface);
     }
 
     /**
@@ -75,27 +98,25 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
      * 
      * @param scores objetos Score.
      */
-    private void setUpScores(List<Score> scores) {
+    private void setUpScores(List<Score> scores, TableLayout table) {
         if (scores != null && !scores.isEmpty()) {
-            scoreTable.removeAllViews();
-            scoreTable.addView(createHeaderRow());
-            for (Score score : scores) scoreTable.addView(toTableRow(score));
+            table.removeAllViews();
+            table.addView(createHeaderRow());
+            for (Score score : scores) table.addView(toTableRow(score));
         } else {
-            scoreTable.removeAllViews();
-            if (scores != null && scores.isEmpty()) {
-                new AlertDialog.Builder(this)
-                    .setMessage(R.string.no_scores_message)
-                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                        
-                        @Override
-                        public void onCancel(DialogInterface dialog) {
-                            dialog.dismiss();
-                            finish();
-                        }
-                    })
-                    .show();
-            }
+            table.removeAllViews();
+            table.addView(emptyScoresRow());
         }
+    }
+
+    /** @return una fila con el texto de que no hay puntajes. */
+    private TableRow emptyScoresRow() {
+        TableRow row = new TableRow(this);
+        TextView noScoresText = new TextView(this);
+        noScoresText.setText(R.string.no_scores_message);
+        applyPrimaryStyleTo(noScoresText);
+        row.addView(noScoresText);
+        return row;
     }
 
     /**
@@ -168,18 +189,25 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
     }
 
     @Override
-    public Loader<List<Score>> onCreateLoader(int id, Bundle args) {
+    public ScoreLoader onCreateLoader(int id, Bundle args) {
         return new ScoreLoader(getApplicationContext());
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Score>> loader, List<Score> data) {
-        setUpScores(data);
+    public void onLoadFinished(Loader<Map<String, List<Score>>> loader, Map<String, List<Score>> data) {
+        if (data != null && !data.isEmpty()) {
+            setUpScores(data.get("classic"), scoreClassicTable);
+            setUpScores(data.get("special"), scoreSpecialTable);
+        } else {
+            setUpScores(null, scoreClassicTable);
+            setUpScores(null, scoreSpecialTable);
+        }
     }
 
     @Override
-    public void onLoaderReset(Loader<List<Score>> loader) {
-        setUpScores(null);
+    public void onLoaderReset(Loader<Map<String, List<Score>>> loader) {
+        setUpScores(null, scoreClassicTable);
+        setUpScores(null, scoreSpecialTable);
     }
 
     /**
@@ -188,9 +216,10 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    private static class ScoreLoader extends AsyncTaskLoader<List<Score>> {
+    private static class ScoreLoader extends AsyncTaskLoader<Map<String, List<Score>>> {
 
-        private ScoreDAO scoreDAO;
+        private ScoreDAO scoreClassicDAO;
+        private ScoreDAO scoreSpecialDAO;
 
         /**
          * Crea una nueva tarea asíncrona.
@@ -199,12 +228,16 @@ public class ScoresActivity extends FragmentActivity implements LoaderManager.Lo
          */
         private ScoreLoader(Context context) {
             super(context);
-            scoreDAO = new DAOFactory(context).get(ScoreDAO.class);
+            scoreClassicDAO = new DAOFactory(context).getScoreClassicDAO();
+            scoreSpecialDAO = new DAOFactory(context).getScoreSpecialDAO();
         }
 
         @Override
-        public List<Score> loadInBackground() {
-            return scoreDAO.readAllOrderedByPointsDesc();
+        public Map<String, List<Score>> loadInBackground() {
+            HashMap<String, List<Score>> data = new HashMap<>(2);
+            data.put("classic", scoreClassicDAO.readAllOrderedByPointsDesc());
+            data.put("special", scoreSpecialDAO.readAllOrderedByPointsDesc());
+            return data;
         }
     }
 }

@@ -170,15 +170,18 @@ public class SettingsActivity extends PreferenceActivity {
      */
     private class ScoreDeleter extends AsyncTask<Void, Void, Void> {
 
-        private ScoreDAO scoreDAO;
+        private ScoreDAO scoreClassicDAO;
+        private ScoreDAO scoreSpecialDAO;
 
         private ScoreDeleter() {
-            scoreDAO = new DAOFactory(getApplicationContext()).get(ScoreDAO.class);
+            scoreClassicDAO = new DAOFactory(getApplicationContext()).getScoreClassicDAO();
+            scoreSpecialDAO = new DAOFactory(getApplicationContext()).getScoreSpecialDAO();
         }
 
         @Override
         protected Void doInBackground(Void... params) {
-            scoreDAO.deleteAll();
+            scoreClassicDAO.deleteAll();
+            scoreSpecialDAO.deleteAll();
             return null;
         }
 

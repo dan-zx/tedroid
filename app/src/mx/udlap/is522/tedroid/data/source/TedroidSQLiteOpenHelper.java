@@ -32,7 +32,7 @@ import java.io.InputStream;
  */
 public class TedroidSQLiteOpenHelper extends SQLiteOpenHelper {
 
-    private static final int CURRENT_VERSION = 1;
+    private static final int CURRENT_VERSION = 2;
     private static final String TAG = TedroidSQLiteOpenHelper.class.getSimpleName();
     private static final String SCHEMA_FILE_FORMAT = "db/schema-v%s.sql";
     private static final String NAME = "tedroid";
@@ -64,7 +64,6 @@ public class TedroidSQLiteOpenHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
-        destroyDb(context);
         onCreate(database);
     }
 

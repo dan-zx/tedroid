@@ -449,7 +449,7 @@ public class SpecialGameActivity extends BaseGoogleGamesActivity {
 
         @Override
         protected void onPreExecute() {
-            scoreDAO = new DAOFactory(getApplicationContext()).get(ScoreDAO.class);
+            scoreDAO = new DAOFactory(getApplicationContext()).getScoreSpecialDAO();
         }
 
         @Override

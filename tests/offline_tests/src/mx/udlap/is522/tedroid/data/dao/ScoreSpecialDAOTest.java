@@ -33,13 +33,13 @@ import java.util.List;
 import java.util.Map;
 
 @RunWith(RobolectricTestRunner.class)
-public class ScoreDAOTest {
+public class ScoreSpecialDAOTest {
 
     private ScoreDAO scoreDAO;
 
     @Before
     public void setUp() throws Exception {
-        scoreDAO = new DAOFactory(Robolectric.application).get(ScoreDAO.class);
+        scoreDAO = new DAOFactory(Robolectric.application).getScoreSpecialDAO();
         assertThat(scoreDAO).isNotNull();
     }
 

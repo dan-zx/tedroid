@@ -20,20 +20,72 @@
     android:background="@drawable/tedroid_repeatable_background"
     android:scrollbars="none" >
 
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scrollbars="none" >
+        android:orientation="vertical" >
 
-        <TableLayout
-            android:id="@+id/score_table"
+        <TextView
+            android:id="@+id/classic_game_header_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="4dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:paddingTop="4dp" />
+            android:paddingTop="20dp"
+            android:text="@string/classic_game_header"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/primary_text_size" />
 
-    </HorizontalScrollView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f83e3e3e" />
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" >
+
+            <TableLayout
+                android:id="@+id/score_classic_table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="4dp" />
+        </HorizontalScrollView>
+
+        <TextView
+            android:id="@+id/special_game_header_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="20dp"
+            android:text="@string/special_game_header"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/primary_text_size" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#f83e3e3e" />
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbars="none" >
+
+            <TableLayout
+                android:id="@+id/score_special_table"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="4dp" />
+        </HorizontalScrollView>
+    </LinearLayout>
 
 </ScrollView>

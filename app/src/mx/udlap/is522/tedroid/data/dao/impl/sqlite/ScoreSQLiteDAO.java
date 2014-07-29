@@ -15,6 +15,7 @@
  */
 package mx.udlap.is522.tedroid.data.dao.impl.sqlite;
 
+import android.annotation.SuppressLint;
 import android.database.Cursor;
 
 import mx.udlap.is522.tedroid.R;
@@ -33,11 +34,43 @@ import java.util.Map;
  */
 public class ScoreSQLiteDAO extends SQLiteTemplate.DAOSupport implements ScoreDAO {
 
+    /**
+     * Las tablas que soporta este DAO
+     * 
+     * @author Daniel Pedraza-Arcega
+     * @since 1.0
+     */
+    public static enum Table {
+
+        CLASSIC, SPECIAL;
+
+        private static final String TABLE_FORMAT = "score_%s";
+
+        /** @return el nombre de la tabla. */
+        @SuppressLint("DefaultLocale")
+        protected String getTableName() {
+            return String.format(TABLE_FORMAT, name().toLowerCase());
+        }
+    }
+
+    private static final String STR_SUBSTITUTION = "%s";
+    
+    private Table table;
+
+    /**
+     * Crea un nuevo ScoreSQLiteDAO para la tabla dada.
+     * 
+     * @param which la tabla.
+     */
+    public ScoreSQLiteDAO(Table which) {
+        table = which;
+    }
+    
     /** {@inheritDoc} */
     @Override
     public List<Score> readAllOrderedByPointsDesc() {
         return getSQLiteTemplate().queryForList(
-                getSqlString(R.string.score_readAllOrderedByPointsDesc_sql), 
+                String.format(getSqlString(R.string.score_readAllOrderedByPointsDesc_sql), STR_SUBSTITUTION, table.getTableName()), 
                 new SQLiteTemplate.RowMapper<Score>() {
 
                     @Override
@@ -56,7 +89,7 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DAOSupport implements ScoreDA
     @Override
     public Map<String, Integer> readSumOfLinesAndPoints() {
         return getSQLiteTemplate().queryForSingleResult(
-                getSqlString(R.string.score_readSumOfLinesAndPoints_sql), 
+                String.format(getSqlString(R.string.score_readSumOfLinesAndPoints_sql), table.getTableName()), 
                 new SQLiteTemplate.RowMapper<Map<String, Integer>>() {
 
                     @Override
@@ -72,13 +105,13 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DAOSupport implements ScoreDA
     /** {@inheritDoc} */
     @Override
     public void save(Score score) {
-        getSQLiteTemplate().execute(getSqlString(R.string.score_insert_sql), 
+        getSQLiteTemplate().execute(String.format(getSqlString(R.string.score_insert_sql), table.getTableName()),
                 new String[] { String.valueOf(score.getLevel()), String.valueOf(score.getLines()), String.valueOf(score.getPoints()) });
     }
 
     /** {@inheritDoc} */
     @Override
     public void deleteAll() {
-        getSQLiteTemplate().execute(getSqlString(R.string.score_deleteAll_sql));
+        getSQLiteTemplate().execute(String.format(getSqlString(R.string.score_deleteAll_sql), table.getTableName()));
     }
 }

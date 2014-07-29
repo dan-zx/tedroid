@@ -40,6 +40,8 @@
     </string-array>
 
     <!-- SCORES ACTIVITY -->
+    <string name="classic_game_header">Classic</string>
+    <string name="special_game_header">Special Challenge</string>
     <string name="points_header">Points</string>
     <string name="level_header">Level</string>
     <string name="lines_header">Lines</string>

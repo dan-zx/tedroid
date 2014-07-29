@@ -81,7 +81,7 @@ class SQLiteTemplate {
             cursor = database.rawQuery(sql, args);
             if (cursor.getCount() == 1 && cursor.moveToNext()) object = rowMapper.mapRow(cursor, 1);
         } catch (Exception ex) {
-            Log.e(TAG, "Couldn't complete query [" + sql + "] with args [" + Arrays.deepToString(args) + "]");
+            Log.e(TAG, "Couldn't complete query [" + sql + "] with args [" + Arrays.deepToString(args) + "]", ex);
         } finally {
             SQLiteUtils.close(cursor);
             SQLiteUtils.close(database);
@@ -123,7 +123,7 @@ class SQLiteTemplate {
             int rowNum = 0;
             while (cursor.moveToNext()) list.add(rowMapper.mapRow(cursor, ++rowNum));
         } catch (Exception ex) {
-            Log.e(TAG, "Couldn't complete query [" + sql + "] with args [" + Arrays.deepToString(args) + "]");
+            Log.e(TAG, "Couldn't complete query [" + sql + "] with args [" + Arrays.deepToString(args) + "]", ex);
         } finally {
             SQLiteUtils.close(cursor);
             SQLiteUtils.close(database);
@@ -146,7 +146,7 @@ class SQLiteTemplate {
             statement.execute();
             database.setTransactionSuccessful();
         } catch (Exception ex) {
-            Log.e(TAG, "Couldn't execute [" + sql + "]");
+            Log.e(TAG, "Couldn't execute [" + sql + "]", ex);
         } finally {
             SQLiteUtils.close(statement);
             SQLiteUtils.endTransaction(database);
@@ -171,7 +171,7 @@ class SQLiteTemplate {
             statement.execute();
             database.setTransactionSuccessful();
         } catch (Exception ex) {
-            Log.e(TAG, "Couldn't execute [" + sql + "] with args");
+            Log.e(TAG, "Couldn't execute [" + sql + "] with args", ex);
         } finally {
             SQLiteUtils.close(statement);
             SQLiteUtils.endTransaction(database);
@@ -198,7 +198,7 @@ class SQLiteTemplate {
             statement.execute();
             database.setTransactionSuccessful();
         } catch (Exception ex) {
-            Log.e(TAG, "Couldn't execute [" + sql + "] with args");
+            Log.e(TAG, "Couldn't execute [" + sql + "] with args", ex);
         } finally {
             SQLiteUtils.close(statement);
             SQLiteUtils.endTransaction(database);
@@ -224,7 +224,7 @@ class SQLiteTemplate {
             }
             database.setTransactionSuccessful();
         } catch (Exception ex) {
-            Log.e(TAG, "Couldn't execute batch " + Arrays.deepToString(sqls));
+            Log.e(TAG, "Couldn't execute batch " + Arrays.deepToString(sqls), ex);
         } finally {
             SQLiteUtils.endTransaction(database);
             SQLiteUtils.close(database);
@@ -252,7 +252,7 @@ class SQLiteTemplate {
             }
             database.setTransactionSuccessful();
         } catch (Exception ex) {
-            Log.e(TAG, "Couldn't execute batch [" + sql + "]");
+            Log.e(TAG, "Couldn't execute batch [" + sql + "]", ex);
         } finally {
             SQLiteUtils.close(statement);
             SQLiteUtils.endTransaction(database);
