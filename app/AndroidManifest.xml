@@ -18,7 +18,7 @@
     package="mx.udlap.is522.tedroid"
     android:installLocation="preferExternal"
     android:versionCode="9"
-    android:versionName="1.2-SNAPSHOT" >
+    android:versionName="1.2" >
 
     <uses-sdk
         android:minSdkVersion="9"
