@@ -218,10 +218,10 @@ public class MainMenuActivity extends BaseGoogleGamesActivity {
                     Intent intent = null;
                     switch (which) {
                         case 0: 
-                            intent = GameActivity.makeIntent(MainMenuActivity.this, GameActivity.GameType.CLASSIC);
+                            intent = new Intent(MainMenuActivity.this, ClassicGameActivity.class);
                             break;
                         case 1:
-                            intent = GameActivity.makeIntent(MainMenuActivity.this, GameActivity.GameType.SPECIAL);
+                            intent = new Intent(MainMenuActivity.this, SpecialGameActivity.class);
                             break;
                     }
                     startActivity(intent);

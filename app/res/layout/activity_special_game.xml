@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2014 Tedroid developers
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2e3047"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <ImageButton
+            android:id="@+id/pause_button"
+            style="@style/TedroidBlueButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/pause_text"
+            android:onClick="onPauseButtonClick"
+            android:src="@drawable/ic_action_pause" />
+
+        <ImageButton
+            android:id="@+id/restart_button"
+            style="@style/TedroidBlueButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/restart_text"
+            android:onClick="onRestartButtonClick"
+            android:src="@drawable/ic_action_restart" />
+
+        <TextView
+            android:id="@+id/levels"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:background="@drawable/tedroid_view_background"
+            android:ems="8"
+            android:gravity="center"
+            android:padding="13dp"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/secondary_text_size"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/score_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/score_text"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/secondary_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/score"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/tedroid_view_background"
+                android:ems="6"
+                android:gravity="center"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/secondary_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lines_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/lines_text"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/secondary_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lines"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@drawable/tedroid_view_background"
+                android:ems="6"
+                android:gravity="center"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/secondary_text_size"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/next_tetromino_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/next_tetromino_text"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/secondary_text_size"
+                android:textStyle="bold" />
+
+            <mx.udlap.is522.tedroid.view.NextTetrominoView
+                android:id="@+id/next_tetromino"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp" />
+        </LinearLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="1.3"
+            android:visibility="gone" >
+
+            <android.support.v4.view.PagerTabStrip
+                android:id="@+id/pager_tab_strip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@android:color/transparent"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/secondary_text_size" />
+        </android.support.v4.view.ViewPager>
+
+        <TextView
+            android:id="@+id/game_over_text"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1.3"
+            android:gravity="center"
+            android:text="@string/game_over_text"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/primary_text_size"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <mx.udlap.is522.tedroid.view.SpecialGameBoardView
+            android:id="@+id/special_game_board"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_margin="10dp"
+            android:layout_weight="1.3"
+            android:background="@drawable/tedroid_gameboardview_background" />
+    </LinearLayout>
+
+</LinearLayout>

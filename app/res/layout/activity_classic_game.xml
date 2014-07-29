@@ -177,14 +177,14 @@
             android:textStyle="bold"
             android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/game_board_layout"
+        <mx.udlap.is522.tedroid.view.GameBoardView
+            android:id="@+id/game_board"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="top|center_horizontal"
             android:layout_margin="10dp"
             android:layout_weight="1.3"
-            android:orientation="vertical" />
+            android:background="@drawable/tedroid_gameboardview_background" />
     </LinearLayout>
 
 </LinearLayout>

@@ -17,13 +17,12 @@ package mx.udlap.is522.tedroid.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.robotium.solo.Solo;
 
 import mx.udlap.is522.tedroid.R;
-import mx.udlap.is522.tedroid.activity.GameActivity;
+import mx.udlap.is522.tedroid.activity.ClassicGameActivity;
 import mx.udlap.is522.tedroid.activity.MainMenuActivity;
 import mx.udlap.is522.tedroid.activity.ScoresActivity;
 import mx.udlap.is522.tedroid.data.source.TedroidSQLiteOpenHelper;
@@ -72,9 +71,9 @@ public class ScorePersistenceTest extends ActivityInstrumentationTestCase2<MainM
         solo.waitForDialogToOpen();
         solo.clickOnButton(solo.getString(R.string.offline_warn_understand));
         solo.waitForDialogToClose();
-        solo.waitForActivity(GameActivity.class);
+        solo.waitForActivity(ClassicGameActivity.class);
         
-        GameBoardView gameBoardView = (GameBoardView) ((LinearLayout) solo.getView(R.id.game_board_layout)).getChildAt(0);
+        GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.game_board);
         TextView scoreTextView = (TextView) solo.getView(R.id.score);
         TextView levelText = (TextView) solo.getView(R.id.levels);
         TextView linesTextView = (TextView) solo.getView(R.id.lines);

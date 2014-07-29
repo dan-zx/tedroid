@@ -35,7 +35,7 @@
     <string name="sign_out_message">Vas a cerrar sesión como %s en Tedroid</string>
     <string name="game_options_title">Escoge el juego</string>
     <string-array name="game_options">
-        <item>Clasico</item>
+        <item>Clásico</item>
         <item>Reto Especial</item>
     </string-array>
 

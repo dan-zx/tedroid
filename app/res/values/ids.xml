@@ -39,8 +39,11 @@
     <string name="in_a_row_achievement_id" translatable="false">CgkI9f_0j-ABEAIQAg</string>
 
     <!-- LEADERBOARD IDS -->
-    <string name="scores_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQFA</string>
-    <string name="levels_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQFg </string>
-    <string name="cleared_lines_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQFQ</string>
+    <string name="scores_classic_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQFA</string>
+    <string name="scores_special_challenge_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQHQ</string>
+    <string name="levels_classic_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQFg</string>
+    <string name="levels_special_challenge_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQHg</string>
+    <string name="cleared_lines_classic_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQFQ</string>
+    <string name="cleared_lines_special_challenge_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQHw</string>
 
 </resources>

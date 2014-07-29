@@ -16,9 +16,7 @@
 package mx.udlap.is522.tedroid.activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -30,7 +28,6 @@ import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import mx.udlap.is522.tedroid.R;
@@ -44,26 +41,19 @@ import mx.udlap.is522.tedroid.view.NextTetrominoView;
 import mx.udlap.is522.tedroid.view.SpecialGameBoardView;
 import mx.udlap.is522.tedroid.view.Tetromino;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 /**
  * Actividad principal del juego donde se puede jugar realmente.
  * 
  * @author Daniel Pedraza-Arcega, Andrés Peña-Peralta, Alejandro Díaz-Torres
  * @since 1.0
  */
-public class GameActivity extends BaseGoogleGamesActivity {
-
-    public static enum GameType { CLASSIC, SPECIAL };
-
-    private static final String GAME_TYPE_EXTRA = "GAME_TYPE";
+public class SpecialGameActivity extends BaseGoogleGamesActivity {
     
     private int totalLines;
     private int totalScore;
     private int level;
     private NextTetrominoView nextTetrominoView;
-    private GameBoardView gameBoardView;
+    private SpecialGameBoardView gameBoardView;
     private TextView gameOverTextView;
     private TextView scoreTextView;
     private TextView levelTextView;
@@ -76,18 +66,11 @@ public class GameActivity extends BaseGoogleGamesActivity {
     private AlertDialog restartDialog;
     private AlertDialog exitDialog;
     private ViewPager viewPager;
-    private LinearLayout gameBoardLayout;
-
-    public static Intent makeIntent(Context context, GameType type) {
-        Intent intent = new Intent(context, GameActivity.class);
-        intent.putExtra(GAME_TYPE_EXTRA, type.name());
-        return intent;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_game);
+        setContentView(R.layout.activity_special_game);
         setUpMediaPlayer();
         initViews();
         setUpFont();
@@ -151,7 +134,7 @@ public class GameActivity extends BaseGoogleGamesActivity {
         nextTetrominoView = (NextTetrominoView) findViewById(R.id.next_tetromino);
         pauseButton = (ImageButton) findViewById(R.id.pause_button);
         viewPager = (ViewPager) findViewById(R.id.pager);
-        gameBoardLayout = (LinearLayout) findViewById(R.id.game_board_layout);
+        gameBoardView = (SpecialGameBoardView) findViewById(R.id.special_game_board);
     }
 
     /** Inicializa el valor de cada textview del puntaje del usuario */
@@ -188,16 +171,6 @@ public class GameActivity extends BaseGoogleGamesActivity {
 
     /** Inicializa el tablero de juego */
     private void setUpGameBoardView() {
-        GameType type = GameType.valueOf(getIntent().getExtras().getString(GAME_TYPE_EXTRA));
-        switch (type) {
-            case CLASSIC:
-                gameBoardView = new GameBoardView(this);
-                break;
-            case SPECIAL:
-                gameBoardView = new SpecialGameBoardView(this);
-                break;
-        }
-        gameBoardView.setBackgroundResource(R.drawable.tedroid_gameboardview_background);
         gameBoardView.setOnCommingNextTetrominoListener(new GameBoardView.OnCommingNextTetrominoListener() {
 
             @Override
@@ -239,7 +212,6 @@ public class GameActivity extends BaseGoogleGamesActivity {
                 new ScoresAsyncTask().execute(newScore);
             }
         });
-        gameBoardLayout.addView(gameBoardView);
         gameBoardView.startGame();
     }
 
@@ -395,12 +367,11 @@ public class GameActivity extends BaseGoogleGamesActivity {
             case 1: factor = 40; break;
             case 2: factor = 100; break;
             case 3: factor = 300; break;
-            case 4: factor = 1200; unlockAchievement(R.string.in_a_row_achievement_id); break;
+            case 4: factor = 1200; break;
             default: factor = 1; break;
         }
 
         totalScore += factor * (level + 1);
-        if (totalScore >= 999999) unlockAchievement(R.string.believe_it_or_not_achievement_id);
     }
 
     /**
@@ -412,21 +383,8 @@ public class GameActivity extends BaseGoogleGamesActivity {
     private boolean updateLevelIfNeeded(int linesCleared) {
         boolean shouldLevelUp = totalLines % 10 >= 6;
         totalLines += linesCleared;
-        if (totalLines >= 9999) unlockAchievement(R.string.like_a_boss_achievement_id);
         if (shouldLevelUp && totalLines % 10 <= 3) {
             level++;
-            switch (level) {
-                case 1: unlockAchievement(R.string.for_dummies_achievement_id); break;
-                case 2: unlockAchievement(R.string.as_easy_as_pie_achievement_id); break;
-                case 3: unlockAchievement(R.string.beginner_achievement_id); break;
-                case 4: unlockAchievement(R.string.amateur_achievement_id); break;
-                case 5: unlockAchievement(R.string.expert_achievement_id); break;
-                case 6: unlockAchievement(R.string.master_achievement_id); break;
-                case 7: unlockAchievement(R.string.pro_achievement_id); break;
-                case 8: unlockAchievement(R.string.pro_plus_plus_achievement_id); break;
-                case 9: unlockAchievement(R.string.lucky_you_achievement_id); break;
-                case 10: unlockAchievement(R.string.whats_next_achievement_id); break;
-            }
             return true;
         }
         return false;
@@ -485,10 +443,9 @@ public class GameActivity extends BaseGoogleGamesActivity {
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    private class ScoresAsyncTask extends AsyncTask<Score, Void, ArrayList<Integer>> {
+    private class ScoresAsyncTask extends AsyncTask<Score, Void, Score> {
 
         private ScoreDAO scoreDAO;
-        private Score awardedScore;
 
         @Override
         protected void onPreExecute() {
@@ -496,26 +453,16 @@ public class GameActivity extends BaseGoogleGamesActivity {
         }
 
         @Override
-        protected ArrayList<Integer> doInBackground(Score... score) {
-            awardedScore = score[0];
-            scoreDAO.save(awardedScore);
-            ArrayList<Integer> unlockedAchievements = new ArrayList<>();
-            Map<String, Integer> sums = scoreDAO.readSumOfLinesAndPoints();
-            int linesSum = sums.get("lines_sum");
-            int pointsSum = sums.get("points_sum");
-            if (linesSum >= 9999) unlockedAchievements.add(R.string.nothing_to_do_achievement_id);
-            if (linesSum >= 999999) unlockedAchievements.add(R.string.get_a_life_achievement_id);
-            if (pointsSum >= 9999) unlockedAchievements.add(R.string.boooooring_achievement_id);
-            if (pointsSum >= 999999) unlockedAchievements.add(R.string.tenacious_achievement_id);
-            return unlockedAchievements;
+        protected Score doInBackground(Score... score) {
+            scoreDAO.save(score[0]); // TODO: guardar puntos en otro lugar
+            return score[0];
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Integer> unlockedAchievements) {
-            for (int id : unlockedAchievements) unlockAchievement(id);
-            submitScore(R.string.scores_leaderboard_id, awardedScore.getPoints());
-            submitScore(R.string.levels_leaderboard_id, awardedScore.getLevel());
-            submitScore(R.string.cleared_lines_leaderboard_id, awardedScore.getLines());
+        protected void onPostExecute(Score score) {
+            submitScore(R.string.scores_special_challenge_leaderboard_id, score.getPoints());
+            submitScore(R.string.levels_special_challenge_leaderboard_id, score.getLevel());
+            submitScore(R.string.cleared_lines_special_challenge_leaderboard_id, score.getLines());
         }
     }
 }

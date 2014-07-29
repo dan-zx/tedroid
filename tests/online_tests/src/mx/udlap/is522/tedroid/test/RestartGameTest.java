@@ -17,22 +17,21 @@ package mx.udlap.is522.tedroid.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
-import android.widget.LinearLayout;
 
 import com.robotium.solo.Solo;
 
 import mx.udlap.is522.tedroid.R;
-import mx.udlap.is522.tedroid.activity.GameActivity;
+import mx.udlap.is522.tedroid.activity.ClassicGameActivity;
 import mx.udlap.is522.tedroid.view.GameBoardView;
 
-public class RestartGameTest extends ActivityInstrumentationTestCase2<GameActivity> {
+public class RestartGameTest extends ActivityInstrumentationTestCase2<ClassicGameActivity> {
 
     private static final String TAG = RestartGameTest.class.getSimpleName();
 
     private Solo solo;
 
     public RestartGameTest() {
-        super(GameActivity.class);
+        super(ClassicGameActivity.class);
     }
 
     @Override
@@ -47,13 +46,13 @@ public class RestartGameTest extends ActivityInstrumentationTestCase2<GameActivi
 
     public void testRun() throws Exception {
         Log.d(TAG, "Waiting for activity...");
-        solo.waitForActivity(GameActivity.class);
+        solo.waitForActivity(ClassicGameActivity.class);
 
         Log.d(TAG, "Restarting game...");
         solo.clickOnView(solo.getView(R.id.restart_button));
         solo.waitForDialogToOpen();
 
-        GameBoardView gameBoardView = (GameBoardView) ((LinearLayout) solo.getView(R.id.game_board_layout)).getChildAt(0);
+        GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.game_board);
         assertNotNull("GameBoardView should not be null", gameBoardView);
         assertTrue("The game should be paused", gameBoardView.isPaused());
 

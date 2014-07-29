@@ -17,15 +17,14 @@ package mx.udlap.is522.tedroid.test;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
-import android.widget.LinearLayout;
 
 import com.robotium.solo.Solo;
 
 import mx.udlap.is522.tedroid.R;
-import mx.udlap.is522.tedroid.activity.GameActivity;
+import mx.udlap.is522.tedroid.activity.ClassicGameActivity;
 import mx.udlap.is522.tedroid.view.GameBoardView;
 
-public class PauseResumeGameTest extends ActivityInstrumentationTestCase2<GameActivity> {
+public class PauseResumeGameTest extends ActivityInstrumentationTestCase2<ClassicGameActivity> {
 
     private static final String TAG = PauseResumeGameTest.class.getSimpleName();
     private static final int DELAY = 2000;
@@ -33,7 +32,7 @@ public class PauseResumeGameTest extends ActivityInstrumentationTestCase2<GameAc
     private Solo solo;
 
     public PauseResumeGameTest() {
-        super(GameActivity.class);
+        super(ClassicGameActivity.class);
     }
 
     @Override
@@ -48,13 +47,13 @@ public class PauseResumeGameTest extends ActivityInstrumentationTestCase2<GameAc
 
     public void testRun() throws Exception {
         Log.d(TAG, "Waiting for activity...");
-        solo.waitForActivity(GameActivity.class);
+        solo.waitForActivity(ClassicGameActivity.class);
 
         Log.d(TAG, "Pausing game...");
         solo.clickOnView(solo.getView(R.id.pause_button));
         solo.sleep(DELAY);
 
-        GameBoardView gameBoardView = (GameBoardView) ((LinearLayout) solo.getView(R.id.game_board_layout)).getChildAt(0);
+        GameBoardView gameBoardView = (GameBoardView) solo.getView(R.id.game_board);
         assertNotNull("GameBoardView should not be null", gameBoardView);
         assertTrue("The game should be paused", gameBoardView.isPaused());
 
