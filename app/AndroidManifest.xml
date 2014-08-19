@@ -18,7 +18,7 @@
     package="mx.udlap.is522.tedroid"
     android:installLocation="preferExternal"
     android:versionCode="9"
-    android:versionName="1.2" >
+    android:versionName="1.3-SNAPSHOT" >
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -31,7 +31,7 @@
         <activity
             android:name=".activity.MainMenuActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,15 +41,15 @@
         <activity
             android:name=".activity.ClassicGameActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar" />
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
         <activity
             android:name=".activity.SpecialGameActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar" />
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
         <activity
             android:name=".activity.ScoresActivity"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Light.NoTitleBar" />
+            android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen" />
         <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/settings_activity_title"
