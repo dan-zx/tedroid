@@ -1,10 +1,4 @@
-<a href="https://play.google.com/store/apps/details?id=mx.udlap.is522.tedroid">
-  <img alt="Disponible en Google Play" src="https://dl.dropboxusercontent.com/u/1995295/img/tedroid/promo.png" />
-</a>
-
-### Versiones beta
-
-Unete a la comunidad de Google+ para probar las caracteristicas de versiones beta -> [Tedroid testers](https://plus.google.com/communities/110136913607995746874)
+![Imagen promocional](https://dl.dropboxusercontent.com/u/1995295/img/tedroid/promo.png)
 
 ### Desarrolladores:
 
