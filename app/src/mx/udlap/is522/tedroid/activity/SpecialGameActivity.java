@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
@@ -47,7 +48,7 @@ import mx.udlap.is522.tedroid.view.Tetromino;
  * @author Daniel Pedraza-Arcega, Andrés Peña-Peralta, Alejandro Díaz-Torres
  * @since 1.0
  */
-public class SpecialGameActivity extends BaseGoogleGamesActivity {
+public class SpecialGameActivity extends FragmentActivity {
     
     private int totalLines;
     private int totalScore;
@@ -79,7 +80,6 @@ public class SpecialGameActivity extends BaseGoogleGamesActivity {
         setUpScoreTextViews();
         setUpRestartDialog();
         setUpExitDialog();
-        connectOnStartIfSignedIn();
     }
 
     /** Inicializa el media player que toca la música */
@@ -443,7 +443,7 @@ public class SpecialGameActivity extends BaseGoogleGamesActivity {
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    private class ScoresAsyncTask extends AsyncTask<Score, Void, Score> {
+    private class ScoresAsyncTask extends AsyncTask<Score, Void, Void> {
 
         private ScoreDAO scoreDAO;
 
@@ -453,16 +453,9 @@ public class SpecialGameActivity extends BaseGoogleGamesActivity {
         }
 
         @Override
-        protected Score doInBackground(Score... score) {
-            scoreDAO.save(score[0]); // TODO: guardar puntos en otro lugar
-            return score[0];
-        }
-
-        @Override
-        protected void onPostExecute(Score score) {
-            submitScore(R.string.scores_special_challenge_leaderboard_id, score.getPoints());
-            submitScore(R.string.levels_special_challenge_leaderboard_id, score.getLevel());
-            submitScore(R.string.cleared_lines_special_challenge_leaderboard_id, score.getLines());
+        protected Void doInBackground(Score... score) {
+            scoreDAO.save(score[0]);
+            return null;
         }
     }
 }

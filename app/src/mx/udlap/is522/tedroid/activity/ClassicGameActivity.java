@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
@@ -40,16 +41,13 @@ import mx.udlap.is522.tedroid.view.GameBoardView;
 import mx.udlap.is522.tedroid.view.NextTetrominoView;
 import mx.udlap.is522.tedroid.view.Tetromino;
 
-import java.util.ArrayList;
-import java.util.Map;
-
 /**
  * Actividad principal del juego donde se puede jugar realmente.
  * 
  * @author Daniel Pedraza-Arcega, Andrés Peña-Peralta, Alejandro Díaz-Torres
  * @since 1.0
  */
-public class ClassicGameActivity extends BaseGoogleGamesActivity {
+public class ClassicGameActivity extends FragmentActivity {
     
     private int totalLines;
     private int totalScore;
@@ -81,7 +79,6 @@ public class ClassicGameActivity extends BaseGoogleGamesActivity {
         setUpScoreTextViews();
         setUpRestartDialog();
         setUpExitDialog();
-        connectOnStartIfSignedIn();
     }
 
     /** Inicializa el media player que toca la música */
@@ -369,12 +366,11 @@ public class ClassicGameActivity extends BaseGoogleGamesActivity {
             case 1: factor = 40; break;
             case 2: factor = 100; break;
             case 3: factor = 300; break;
-            case 4: factor = 1200; unlockAchievement(R.string.in_a_row_achievement_id); break;
+            case 4: factor = 1200; break;
             default: factor = 1; break;
         }
 
         totalScore += factor * (level + 1);
-        if (totalScore >= 999999) unlockAchievement(R.string.believe_it_or_not_achievement_id);
     }
 
     /**
@@ -386,21 +382,8 @@ public class ClassicGameActivity extends BaseGoogleGamesActivity {
     private boolean updateLevelIfNeeded(int linesCleared) {
         boolean shouldLevelUp = totalLines % 10 >= 6;
         totalLines += linesCleared;
-        if (totalLines >= 9999) unlockAchievement(R.string.like_a_boss_achievement_id);
         if (shouldLevelUp && totalLines % 10 <= 3) {
             level++;
-            switch (level) {
-                case 1: unlockAchievement(R.string.for_dummies_achievement_id); break;
-                case 2: unlockAchievement(R.string.as_easy_as_pie_achievement_id); break;
-                case 3: unlockAchievement(R.string.beginner_achievement_id); break;
-                case 4: unlockAchievement(R.string.amateur_achievement_id); break;
-                case 5: unlockAchievement(R.string.expert_achievement_id); break;
-                case 6: unlockAchievement(R.string.master_achievement_id); break;
-                case 7: unlockAchievement(R.string.pro_achievement_id); break;
-                case 8: unlockAchievement(R.string.pro_plus_plus_achievement_id); break;
-                case 9: unlockAchievement(R.string.lucky_you_achievement_id); break;
-                case 10: unlockAchievement(R.string.whats_next_achievement_id); break;
-            }
             return true;
         }
         return false;
@@ -459,7 +442,7 @@ public class ClassicGameActivity extends BaseGoogleGamesActivity {
      * @author Daniel Pedraza-Arcega
      * @since 1.0
      */
-    private class ScoresAsyncTask extends AsyncTask<Score, Void, ArrayList<Integer>> {
+    private class ScoresAsyncTask extends AsyncTask<Score, Void, Void> {
 
         private ScoreDAO scoreDAO;
         private Score awardedScore;
@@ -470,26 +453,10 @@ public class ClassicGameActivity extends BaseGoogleGamesActivity {
         }
 
         @Override
-        protected ArrayList<Integer> doInBackground(Score... score) {
+        protected Void doInBackground(Score... score) {
             awardedScore = score[0];
             scoreDAO.save(awardedScore);
-            ArrayList<Integer> unlockedAchievements = new ArrayList<>();
-            Map<String, Integer> sums = scoreDAO.readSumOfLinesAndPoints();
-            int linesSum = sums.get("lines_sum");
-            int pointsSum = sums.get("points_sum");
-            if (linesSum >= 9999) unlockedAchievements.add(R.string.nothing_to_do_achievement_id);
-            if (linesSum >= 999999) unlockedAchievements.add(R.string.get_a_life_achievement_id);
-            if (pointsSum >= 9999) unlockedAchievements.add(R.string.boooooring_achievement_id);
-            if (pointsSum >= 999999) unlockedAchievements.add(R.string.tenacious_achievement_id);
-            return unlockedAchievements;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Integer> unlockedAchievements) {
-            for (int id : unlockedAchievements) unlockAchievement(id);
-            submitScore(R.string.scores_classic_leaderboard_id, awardedScore.getPoints());
-            submitScore(R.string.levels_classic_leaderboard_id, awardedScore.getLevel());
-            submitScore(R.string.cleared_lines_classic_leaderboard_id, awardedScore.getLines());
+            return null;
         }
     }
 }

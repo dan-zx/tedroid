@@ -22,9 +22,7 @@ import mx.udlap.is522.tedroid.R;
 import mx.udlap.is522.tedroid.data.Score;
 import mx.udlap.is522.tedroid.data.dao.ScoreDAO;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Data Access Object de tipo Score que usa una base de datos SQLite como fuente de datos.
@@ -81,23 +79,6 @@ public class ScoreSQLiteDAO extends SQLiteTemplate.DAOSupport implements ScoreDA
                         score.setLines(SQLiteUtils.getInteger(cursor, "lines"));
                         score.setPoints(SQLiteUtils.getInteger(cursor, "points"));
                         return score;
-                    }
-                });
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public Map<String, Integer> readSumOfLinesAndPoints() {
-        return getSQLiteTemplate().queryForSingleResult(
-                String.format(getSqlString(R.string.score_readSumOfLinesAndPoints_sql), table.getTableName()), 
-                new SQLiteTemplate.RowMapper<Map<String, Integer>>() {
-
-                    @Override
-                    public Map<String, Integer> mapRow(Cursor cursor, int rowNum) {
-                        HashMap<String, Integer> row = new HashMap<>(2);
-                        row.put("lines_sum", SQLiteUtils.getInteger(cursor, "lines_sum"));
-                        row.put("points_sum", SQLiteUtils.getInteger(cursor, "points_sum"));
-                        return row;
                     }
                 });
     }

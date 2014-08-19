@@ -30,7 +30,6 @@ import mx.udlap.is522.tedroid.data.dao.impl.DAOFactory;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 @RunWith(RobolectricTestRunner.class)
 public class ScoreClassicDAOTest {
@@ -75,34 +74,6 @@ public class ScoreClassicDAOTest {
         scoreDAO.deleteAll();
         List<Score> all = scoreDAO.readAllOrderedByPointsDesc();
         assertThat(all).isNotNull().isEmpty();
-    }
-
-    @Test
-    public void shouldSumCorrectly() throws Exception {
-        Score score1 = new Score();
-        score1.setLevel(5);
-        score1.setLines(54);
-        score1.setPoints(27442346);
-
-        Score score2 = new Score();
-        score2.setLevel(6);
-        score2.setLines(65);
-        score2.setPoints(453543678);
-
-        Score score3 = new Score();
-        score3.setLevel(2);
-        score3.setLines(21);
-        score3.setPoints(456456);
-
-        shouldPersist(score1, score2, score3);
-
-        int expectedPointsSum = score1.getPoints() + score2.getPoints() + score3.getPoints();
-        int expectedLinesSum = score1.getLines() + score2.getLines() + score3.getLines();
-
-        Map<String, Integer> sums = scoreDAO.readSumOfLinesAndPoints();
-
-        assertThat(sums.get("points_sum")).isEqualTo(expectedPointsSum);
-        assertThat(sums.get("lines_sum")).isEqualTo(expectedLinesSum);
     }
 
     private void shouldPersist(Score... scores) throws Exception {
