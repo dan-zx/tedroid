@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2014 Tedroid developers
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+
+    <!-- GOOGLE PLAY GAMES APP ID -->
+    <string name="app_id" translatable="false">60162916341</string>
+
+    <!-- ACHIEVEMENT IDS -->
+    <string name="like_a_boss_achievement_id" translatable="false">CgkI9f_0j-ABEAIQCA</string>
+    <string name="believe_it_or_not_achievement_id" translatable="false">CgkI9f_0j-ABEAIQCQ</string>
+    <string name="get_a_life_achievement_id" translatable="false">CgkI9f_0j-ABEAIQBg</string>
+    <string name="tenacious_achievement_id" translatable="false">CgkI9f_0j-ABEAIQBQ</string>
+    <string name="nothing_to_do_achievement_id" translatable="false">CgkI9f_0j-ABEAIQBA</string>
+    <string name="boooooring_achievement_id" translatable="false">CgkI9f_0j-ABEAIQAw</string>
+    <string name="whats_next_achievement_id" translatable="false">CgkI9f_0j-ABEAIQEw</string>
+    <string name="lucky_you_achievement_id" translatable="false">CgkI9f_0j-ABEAIQEg</string>
+    <string name="pro_plus_plus_achievement_id" translatable="false">CgkI9f_0j-ABEAIQEQ</string>
+    <string name="pro_achievement_id" translatable="false">CgkI9f_0j-ABEAIQEA</string>
+    <string name="master_achievement_id" translatable="false">CgkI9f_0j-ABEAIQDw</string>
+    <string name="expert_achievement_id" translatable="false">CgkI9f_0j-ABEAIQDg</string>
+    <string name="amateur_achievement_id" translatable="false">CgkI9f_0j-ABEAIQDQ</string>
+    <string name="beginner_achievement_id" translatable="false">CgkI9f_0j-ABEAIQDA</string>
+    <string name="as_easy_as_pie_achievement_id" translatable="false">CgkI9f_0j-ABEAIQCw</string>
+    <string name="for_dummies_achievement_id" translatable="false">CgkI9f_0j-ABEAIQCg</string>
+    <string name="in_a_row_achievement_id" translatable="false">CgkI9f_0j-ABEAIQAg</string>
+
+    <!-- LEADERBOARD IDS -->
+    <string name="scores_classic_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQFA</string>
+    <string name="scores_special_challenge_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQHQ</string>
+    <string name="levels_classic_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQFg</string>
+    <string name="levels_special_challenge_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQHg</string>
+    <string name="cleared_lines_classic_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQFQ</string>
+    <string name="cleared_lines_special_challenge_leaderboard_id" translatable="false">CgkI9f_0j-ABEAIQHw</string>
+
+</resources>
