@@ -1,12 +1,5 @@
 ![Imagen promocional](https://dl.dropboxusercontent.com/u/1995295/img/tedroid/promo.png)
 
-### Desarrolladores:
-
-* Daniel Pedraza Arcega [@dan-zx](https://github.com/dan-zx)
-* Andrés Peña Peralta [@andres-pena-peralta](https://github.com/andres-pena-peralta)
-* Alejandro Díaz Torres [@alex9006](https://github.com/alex9006)
-* Wassim Lima Saad [@JohnDoe25](https://github.com/JohnDoe25)
-
 ### Licencia
 
     Copyright 2014 Tedroid developers
